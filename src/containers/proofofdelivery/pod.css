@@ -1,0 +1,49 @@
+
+.date-picker{
+	margin-left: 20px !important;
+	margin-right: 20px !important;
+}
+
+.datepicker-container{
+	display: flex;
+	align-items: center;
+	color: #323F8B;
+	padding: 30px 20px 20px 20px;
+	background-color: #ffffff;
+}
+
+.css-i4bv87-MuiSvgIcon-root {
+	color: #323F8B;
+}
+.css-nxo287-MuiInputBase-input-MuiOutlinedInput-input{
+	height: 0.4375em !important;
+}
+
+.select-date-hr{
+	height: 1px;
+	background-color: #ccc;
+}
+
+.pod-data-container{
+	padding: 20px;
+}
+
+.date-range-text{
+	color: #323F8B;
+	font-size: 16px;
+	margin-bottom: 16px;
+}
+
+.MuiTableCell-root {
+	border-bottom: 2px solid rgba(224, 224, 224, 1) !important;
+	padding: 12px !important;
+}
+
+.MuiTableCell-head{
+	color: #323F8B !important;
+}
+
+.address-cell{
+	text-align: left !important;
+	width: 300px !important;
+}

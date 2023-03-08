@@ -1,0 +1,226 @@
+.appbar-container{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.css-j0vej8-MuiPaper-root-MuiAppBar-root {
+	box-shadow: none !important;
+	border-bottom: 1px solid #DFDFDF;
+	background-color: #323F8B !important;
+}
+
+.portal-title{
+	font-weight: bolder;
+	font-size: 22px;
+	letter-spacing: 2px;
+	width: 100%;
+	text-align: center;
+}
+
+.appbar-container .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+	border-color: white !important;
+}
+
+.nav-listitem{
+	background-color: rgb(202, 183, 183);
+}
+
+.search-box-div{
+	width: 400px;
+}
+
+.search-inp {
+	padding: 10px;
+	font-size: 15px;
+	border: 1px solid #808080;
+	float: left;
+	width: 80%;
+	background: #ffffff;
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+}
+.search-inp:focus {
+	outline: none;
+}
+  
+.search-btn {
+	float: left;
+	width: 20%;
+	/*padding: 10px 10px;*/
+	height: 100%;
+	background: #ffffff;
+	color: white;
+	font-size: 17px;
+	border: 1px solid #808080;
+	border-left: none;
+	cursor: pointer;
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+  
+.search-btn:hover {
+	background: #323F8B;
+}
+
+.search-icon{
+	height: 28px !important;
+	color: #808080;
+}
+
+.search-btn:hover .search-icon {
+	color: #ffffff;
+}
+
+.appbar-content{
+	display: flex;
+	width: 100%;
+}
+
+.report-issue-container {
+	border: 1px solid #ffffff;
+	background-color: #ffffff;
+	display: flex;
+	border-radius: 2px;
+	align-items: center;
+	padding: 7px 8px;
+    min-width: 180px;
+	margin-right: 40px;
+}
+
+.report-issue-container span{
+	color: #323F8B;
+	margin: 0;
+	font-size: 1vw;
+}
+
+.report-icon {
+	color: #323F8B;
+	margin-right: 10px;
+}
+.report-icon-mobile {
+	color: #ffffff;
+}
+
+.user-icon-container{
+	float: right;
+	display: flex;
+    width: 200px;
+    align-items: center;
+}
+
+.user-icon{
+	color: #ffffff;
+	font-size: 38px !important;
+    margin: 8px !important;
+}
+
+.icon-btn{
+	padding: 0 !important;
+}
+
+.user-info {
+	color: #ffffff;
+	font-size: 14px;
+	text-align: right;
+}
+
+.user-name{
+	font-size: 15px;
+	font-weight: 400;
+}
+.user-business-name{
+	font-size: 13px;
+}
+
+.user-business-info th{
+	font-weight: 300;
+	font-size: 12px;
+}
+
+.user-business-info td{
+	font-size: 13px;
+	padding-left: 10px;
+}
+
+.css-cveggr-MuiListItemIcon-root{
+	min-width: 0px !important;
+}
+
+.list-item-text span{
+	font-weight: 700 ;
+}
+
+.logout-container{
+	display: flex;
+	justify-content: center;
+	padding-bottom: 8px;
+	cursor: pointer;
+}
+
+
+/*  for mobile */
+@media screen and (max-width: 1200px) {
+	.user-info {
+		display: none;
+	}
+
+	.user-icon-container {
+		width: 60px;
+	}
+
+	.user-icon {
+		font-size: 25px !important;
+	}
+
+	.search-box-div{
+		width: 220px;	
+	}
+
+	.search-inp {
+		padding: 10px;
+		font-size: 12px;
+		border: 1px solid #808080;
+		float: left;
+		/*width: 80%;*/
+		background: #ffffff;
+		border-top-left-radius: 4px;
+		border-bottom-left-radius: 4px;
+		border-top-right-radius: 0px;
+		border-bottom-right-radius: 0px;
+	}
+
+	.search-btn {
+		float: left;
+		/*width: 18%;*/
+		/*padding: 2px 10px;*/
+		height: 100%;
+		/*position: relative;*/
+		/*top: 2px;*/
+		background: #ffffff;
+		color: white;
+		font-size: 12px;
+		border: 1px solid #808080;
+		border-left: none;
+		cursor: pointer;
+		border-top-right-radius: 4px;
+		border-bottom-right-radius: 4px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.report-issue-container {
+		border: none;
+		background-color: inherit;
+		border-radius: 2px;
+		align-items: center;
+		padding-left: 10px;
+		min-width: 0;
+		margin-right: 0px;
+	}
+  }
