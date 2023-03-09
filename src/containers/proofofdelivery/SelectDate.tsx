@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Dayjs } from 'dayjs';
 import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
@@ -53,4 +53,4 @@ const SelectDate: React.FC<IPros> = ({ fromDate, toDate, setFromDate, setToDate 
 	);
 };
 
-export default SelectDate;
+export default React.memo(SelectDate);

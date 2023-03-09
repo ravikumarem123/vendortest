@@ -1,5 +1,7 @@
-import { createProxyMiddleware } from 'http-proxy-middleware';
-module.exports = function (app) {
+import { createProxyMiddleware, RequestHandler } from 'http-proxy-middleware';
+module.exports = function (app: {
+    use: (arg0: string, arg1: RequestHandler) => void;
+}) {
     app.use(
         '/api',
         createProxyMiddleware({

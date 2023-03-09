@@ -15,10 +15,10 @@ import ErrorIcon from '@mui/icons-material/Error';
 import Toolbar from '@mui/material/Toolbar';
 import Menu from '@mui/material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Fade from '@mui/material/Fade';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
+import { BrowserView, MobileView } from 'react-device-detect';
 import SearchBox from './SearchBox';
 
 import './sidebar.css';
@@ -26,10 +26,6 @@ import './sidebar.css';
 const drawerWidth = 240;
 
 interface Props {
-	/**
-	 * Injected by the documentation to work in an iframe.
-	 * You won't need it on your project.
-	 */
 	window?: () => Window;
 }
 
@@ -75,7 +71,6 @@ const SideBar = (props: Props) => {
 				>
 					<ListItemButton>
 						<ListItemIcon>
-							{/*{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}*/}
 						</ListItemIcon>
 						<ListItemText className='list-item-text' primary={'Proof of Delivery'} />
 					</ListItemButton>
@@ -162,18 +157,20 @@ const SideBar = (props: Props) => {
 							}}
 						>
 							<table className='user-business-info'>
-								<tr>
-									<th>Business Name:</th>
-									<td>Shri PQR Traders</td>
-								</tr>
-								<tr>
-									<th>Business Address:</th>
-									<td>Office No #758, APMC yard, Bengaluru</td>
-								</tr>
-								<tr>
-									<th>GST No.:</th>
-									<td>123456687923193</td>
-								</tr>
+								<tbody>
+									<tr>
+										<th>Business Name:</th>
+										<td>Shri PQR Traders</td>
+									</tr>
+									<tr>
+										<th>Business Address:</th>
+										<td>Office No #758, APMC yard, Bengaluru</td>
+									</tr>
+									<tr>
+										<th>GST No.:</th>
+										<td>123456687923193</td>
+									</tr>
+								</tbody>
 							</table>
 							<hr style={{ width: '90%' }} />
 							<div className='logout-container'>

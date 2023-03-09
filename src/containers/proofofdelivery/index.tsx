@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import SelectDate from "./SelectDate";
+import { useAppDispatch, useAppSelector } from "../../reduxInit/hooks";
 import PodTable from "./PodTable";
+import { isSearchClicked } from "./podSelector";
+import { sagaActions } from "../../reduxInit/sagaActions";
 import './pod.css';
+
 
 
 
@@ -12,6 +16,10 @@ const ProofOfDelivery = () => {
 
 	const [fromDate, setFromDate] = useState<Dayjs | null>(null);
 	const [toDate, setToDate] = useState<Dayjs | null>(null);
+	const [page, setPage] = useState<number>(1);
+	const searchClicked = useAppSelector(isSearchClicked);
+
+	const dispatch = useAppDispatch();
 
 
 	useEffect(() => {
@@ -19,6 +27,17 @@ const ProofOfDelivery = () => {
 			console.log(`toDate is changed fromDate is: ${fromDate} and toDate is: ${toDate}`);
 		}
 	}, [toDate]);
+
+	useEffect(() => {
+		dispatch({ type: sagaActions.FETCH_POD_DETAILS });
+	}, []);
+
+	useEffect(() => {
+		if (searchClicked) {
+			setToDate(null);
+			setFromDate(null);
+		}
+	}, [searchClicked]);
 
 	return (
 		<LocalizationProvider dateAdapter={AdapterDayjs}>

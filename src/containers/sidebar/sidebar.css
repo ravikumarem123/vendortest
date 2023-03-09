@@ -90,6 +90,7 @@
 	padding: 7px 8px;
     min-width: 180px;
 	margin-right: 40px;
+	cursor: pointer;
 }
 
 .report-issue-container span{

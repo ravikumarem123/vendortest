@@ -1,3 +1,4 @@
+import React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -78,4 +79,4 @@ const PodTable = () => {
 	);
 };
 
-export default PodTable;
+export default React.memo(PodTable);

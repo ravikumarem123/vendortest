@@ -3,10 +3,12 @@ import {
 	Route,
 	Routes,
 } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import Login from '../containers/auth';
 import Counter from '../containers/counter';
 import ProofOfDelivery from '../containers/proofofdelivery';
 import SideBar from '../containers/sidebar';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -21,7 +23,7 @@ const AppRoutes = () => {
 					<Route path='/' element={<ProofOfDelivery />} />
 				</Route>
 			</Routes>
-
+			<ToastContainer />
 		</BrowserRouter>
 	);
 };
