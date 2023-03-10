@@ -3,9 +3,8 @@ export const getToken = function () {
     return authToken;
 };
 
-export const baseurl: string =
-    'http://vendor.localhost.jumbotail.com:5173/api/'; // local
-//const baseurl = 'http://test.api.jumbotail.com:5555';
+//const baseurl: string = 'http://vendor.localhost.jumbotail.com:5173/api/'; // local
+const baseurl = 'http://vendor-preprod.jumbotail.com';
 
 const http = function (
     path: string,
