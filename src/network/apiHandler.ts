@@ -4,7 +4,7 @@ export const getToken = function () {
 };
 
 //const baseurl: string = 'http://vendor.localhost.jumbotail.com:5173/api/'; // local
-const baseurl = 'http://vendor-preprod.jumbotail.com';
+const baseurl = 'https://vendor-preprod.jumbotail.com';
 
 const http = function (
     path: string,
