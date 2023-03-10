@@ -4,4 +4,26 @@ const isSearchClicked = (state: RootState) => {
     return state.pod.searchClicked;
 };
 
-export { isSearchClicked };
+const getSearchedText = (state: RootState) => {
+    return state.pod.searchText;
+};
+
+const getInvoiceList = (state: RootState) => {
+    return state.pod.invoiceList;
+};
+
+const getLastReadInvoice = (state: RootState) => {
+    return state.pod.prevPageLastInvId;
+};
+
+const getIsInvoiceLoading = (state: RootState) => {
+    return state.pod.loading;
+};
+
+export {
+    isSearchClicked,
+    getSearchedText,
+    getInvoiceList,
+    getLastReadInvoice,
+    getIsInvoiceLoading,
+};

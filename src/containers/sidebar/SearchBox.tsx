@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { useAppDispatch } from '../../reduxInit/hooks';
 import SearchIcon from '@mui/icons-material/Search';
+import { useAppDispatch, useAppSelector } from '../../reduxInit/hooks';
 import { sagaActions } from '../../reduxInit/sagaActions';
+import { isSearchClicked } from '../proofofdelivery/podSelector';
 
 const SearchBox = () => {
 
 	const [searchText, setSearchText] = useState<string>('');
 	const dispatch = useAppDispatch();
+	const searchClicked = useAppSelector(isSearchClicked);
 
 	const handleSearchByInvoice = () => {
 		if (searchText.length > 0) {
@@ -30,6 +32,12 @@ const SearchBox = () => {
 			});
 		}
 	};
+
+	useEffect(() => {
+		if (!searchClicked) {
+			setSearchText('');
+		}
+	}, [searchClicked]);
 
 	return (
 		<div

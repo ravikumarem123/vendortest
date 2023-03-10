@@ -4,7 +4,8 @@ export const getToken = function () {
 };
 
 export const baseurl: string =
-    'http://vendor.localhost.jumbotail.com:5123/api/'; // local
+    'http://vendor.localhost.jumbotail.com:5173/api/'; // local
+//const baseurl = 'http://test.api.jumbotail.com:5555';
 
 const http = function (
     path: string,
@@ -41,6 +42,7 @@ const http = function (
     return new Promise((resolve, reject) => {
         fetch(url, method)
             .then(async (response) => {
+                console.log(response);
                 if (response.ok) {
                     return response.json();
                 }
@@ -68,6 +70,12 @@ const http = function (
 const apiHandler = {
     // TODO: change object type to the union of all the types in createPayload.ts
     post: function (path: string, data: object, headers = null) {
+        console.log(
+            'Inside post function path is: ',
+            path,
+            ' and data is: ',
+            data
+        );
         return http(
             path,
             { method: 'POST', body: JSON.stringify(data) },

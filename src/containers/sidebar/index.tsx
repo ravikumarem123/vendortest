@@ -11,7 +11,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
-import ErrorIcon from '@mui/icons-material/Error';
+//import ErrorIcon from '@mui/icons-material/Error';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import Toolbar from '@mui/material/Toolbar';
 import Menu from '@mui/material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -110,13 +111,20 @@ const SideBar = (props: Props) => {
 
 					<BrowserView>
 						<div className='report-issue-container'>
-							<ErrorIcon className='report-icon' />
-							<span>Report an issue</span>
+							<SupportAgentIcon className='report-icon' />
+							<div style={{
+								display: 'flex',
+								flexDirection: 'column'
+							}}>
+								<span style={{ fontSize: '8px' }}>Report an issue</span>
+								<span style={{ fontSize: '12px' }}><a href="tel:12223334444">+91 9999999999</a></span>
+							</div>
+
 						</div>
 					</BrowserView>
 					<MobileView>
 						<div className='report-issue-container'>
-							<ErrorIcon className='report-icon-mobile' />
+							<SupportAgentIcon className='report-icon-mobile' />
 						</div>
 
 					</MobileView>

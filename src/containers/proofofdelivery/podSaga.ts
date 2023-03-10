@@ -1,6 +1,6 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { getJCLedgerPayload } from '../../network/createPayload';
-import apiRepository from '../../network/apiHandler';
+import { fetchInvoicePayload } from '../../network/createPayload';
+import apiRepository from '../../network/apiRepository';
 import { sagaActions } from '../../reduxInit/sagaActions';
 import { History } from 'history';
 import { Action } from 'redux';
@@ -8,14 +8,15 @@ import {
     setPodDetails,
     setPodError,
     setPodLoading,
-    setSearchClicked,
+    setSearchParams,
 } from './podSlice';
 import { Dayjs } from 'dayjs';
 
 interface Props {
     searchText?: string;
-    fromDate?: string;
-    toDate?: string;
+    startTime?: Dayjs;
+    endTime?: Dayjs;
+    lastReadInvoice?: string;
 }
 
 interface ActionResult<T> extends Action<string> {
@@ -23,36 +24,65 @@ interface ActionResult<T> extends Action<string> {
     payload: T;
 }
 
+interface IResponse {
+    success: boolean;
+    statusCode: number;
+    error: string | null;
+    data: object;
+    fresh?: boolean;
+}
+
 export function* fetchPodDetails(
     history: History,
     action: ActionResult<Props>
 ) {
     try {
-        console.log('Inside FetchPodDetails: ', action, history);
+        //console.log(result);
         const { payload } = action;
-        if (payload.searchText) {
-            //call the API for search text with page number 1
-            yield put(setSearchClicked(true));
-        } else if (payload.fromDate && payload.toDate) {
-            // call the API for date filter with page number 1
+        console.log(payload);
+        if (payload?.searchText) {
+            yield put(
+                setSearchParams({ clicked: true, text: payload?.searchText })
+            );
+            const result: IResponse = yield call(
+                apiRepository.getPodInfo,
+                fetchInvoicePayload({
+                    vendorId: 'VNDR-1526001151',
+                    pageSize: 10,
+                    invoiceNumber: payload?.searchText,
+                })
+            );
+            result.fresh = true;
+            yield put(setPodDetails(result));
+        } else if (payload?.startTime && payload?.endTime) {
+            console.log('call the API for date filter with page number 1');
+            const result: IResponse = yield call(
+                apiRepository.getPodInfo,
+                fetchInvoicePayload({
+                    vendorId: 'VNDR-1526001151',
+                    pageSize: 10,
+                    startTime: payload?.startTime,
+                    endTime: payload?.endTime,
+                })
+            );
+            result.fresh = true;
+            yield put(setPodDetails(result));
         } else {
-            // call the API normally considering page number
+            console.log('call the API normally considering page number');
+            const result: IResponse = yield call(
+                apiRepository.getPodInfo,
+                fetchInvoicePayload({
+                    vendorId: 'VNDR-1526001151',
+                    pageSize: 10,
+                    lastReadInvoice: payload?.lastReadInvoice,
+                })
+            );
+            result.fresh = false;
+            console.log(result);
+            yield put(setPodDetails(result));
         }
-        //const businessId = yield select(AuthSelector.getBusinessId);
-        //const result = yield call(
-        //    apiRepository.getJCLedger,
-        //    getJCLedgerPayload(businessId, payload.payload.pageNumber, 20)
-        //);
-        //const walletDetailsPayload = {
-        //    balance: result.data.walletBO.balance,
-        //    hasMore: result.hasMore,
-        //    walletId: result.data.walletBO.walletId,
-        //    walletOwnerId: result.data.walletBO.walletOwnerId,
-        //    transactionList: result.data.j24LedgerBOList,
-        //    pageNumber: result.currentPage,
-        //};
-        //yield put(setWalletDetails(walletDetailsPayload));
     } catch (e) {
+        console.log('Inside catch: ', e);
         //const error = e.error?.toString();
         //yield put(setLedgerError(error));
         //yield put(

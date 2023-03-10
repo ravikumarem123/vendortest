@@ -44,6 +44,23 @@
 }
 
 .address-cell{
-	text-align: left !important;
 	width: 300px !important;
+}
+
+.date-apply-btn{
+	padding-right: 22px !important;
+	padding-left: 22px !important;
+	border-radius: 4px !important;
+	border-color: #323F8B !important;
+	color: #323F8B !important;
+}
+
+.date-apply-btn:hover {
+	border-color: #ffffff !important;
+	color: #ffffff !important;
+	background-color: #323F8B !important;
+}
+.back-icon{
+	margin-right: 20px;
+	cursor: pointer;
 }
