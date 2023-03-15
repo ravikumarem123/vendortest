@@ -27,7 +27,10 @@ const podSlice = createSlice({
                     ...payload.invoiceInfoList,
                 ];
             } else {
-                state.invoiceList = payload.invoiceInfoList;
+                state.invoiceList = [
+                    ...state.invoiceList,
+                    ...payload.invoiceInfoList,
+                ];
             }
             state.loading = false;
             state.error = null;
@@ -35,7 +38,6 @@ const podSlice = createSlice({
             state.prevPageLastInvId = payload?.prevPageLastInvId;
         },
         setSearchParams: (state, { payload }) => {
-            console.log(payload);
             state.searchClicked = payload.clicked;
             state.searchText = payload.text;
         },

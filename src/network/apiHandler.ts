@@ -1,3 +1,5 @@
+import { sendEvents, events } from '../appEvents';
+
 export const getToken = function () {
     const authToken = localStorage.getItem('authToken');
     return authToken;
@@ -16,22 +18,16 @@ const http = function (
     method.headers = {
         Accept: '*/*',
     };
-
     if (content) {
         method.headers['content-type'] = content;
     }
     method.credentials = 'include';
-
-    //method.headers['tetantId'] = 'J24';
-
-    //method.headers['requestOrigin'] = 'J24';
+    method.signal = AbortSignal.timeout(5000);
 
     const token = getToken();
     if (token) {
         method.headers['Authorization'] = 'Bearer ' + token;
     }
-    //method.headers['tenantId'] = 'J24';
-    //method.headers['userId'] = 'J24_USER';
     if (headers) {
         method.headers = {
             ...method.headers,
@@ -41,16 +37,24 @@ const http = function (
     return new Promise((resolve, reject) => {
         fetch(url, method)
             .then(async (response) => {
-                console.log(response);
                 if (response.ok) {
                     return response.json();
                 }
                 const text = await response.json();
-                throw new Error(text.error.error);
+                sendEvents(events.HTTP_API_FAILURE, {
+                    error: JSON.stringify(text),
+                });
+                console.log(text);
+                throw new Error(text.error.error, {
+                    cause: { status: text.statusCode },
+                });
             })
             .then((response) => {
-                // console.log('Received ' + path + ' response: ', response);
+                //console.log('Received ' + path + ' response: ', response);
                 if (response.statusCode !== 200) {
+                    sendEvents(events.HTTP_API_FAILURE, {
+                        error: JSON.stringify(response),
+                    });
                     reject({ error: response.error });
                 }
                 if (response.data) {
@@ -60,6 +64,7 @@ const http = function (
                 }
             })
             .catch(function (e) {
+                console.log(e.cause);
                 console.log('Request to ' + path + ' failed: ', e);
                 reject({ error: e });
             });
@@ -69,12 +74,6 @@ const http = function (
 const apiHandler = {
     // TODO: change object type to the union of all the types in createPayload.ts
     post: function (path: string, data: object, headers = null) {
-        console.log(
-            'Inside post function path is: ',
-            path,
-            ' and data is: ',
-            data
-        );
         return http(
             path,
             { method: 'POST', body: JSON.stringify(data) },

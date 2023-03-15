@@ -29,13 +29,12 @@ const SelectDate: React.FC<IPros> = ({ fromDate, toDate, setFromDate, setToDate,
 					format="DD-MM-YYYY"
 					sx={{
 						'.MuiInputBase-input': { md: { padding: '15.5px 7px', width: '60%', height: '1.435em' }, xs: { height: '1em', padding: '10px 7px' } },
-						'.MuiInputBase-formControl': { md: { paddingRight: '0', fontSize: '16px' }, xs: { borderRadius: '0', fontSize: '12px' } },
+						'.MuiInputBase-formControl': { md: { paddingRight: '0', fontSize: '16px' }, xs: { borderRadius: '4px', fontSize: '12px' } },
 						'.MuiOutlinedInput-notchedOutline': { md: { width: '92%' } }
 					}}
 					value={fromDate}
 					onChange={(newValue) => setFromDate(newValue)}
 					disableFuture={true}
-				//maxDate={dayjs()}
 				/>
 			</div>
 
@@ -46,7 +45,7 @@ const SelectDate: React.FC<IPros> = ({ fromDate, toDate, setFromDate, setToDate,
 					format="DD-MM-YYYY"
 					sx={{
 						'.MuiInputBase-input': { md: { padding: '15.5px 7px', width: '60%', height: '1.435em' }, xs: { height: '1em', padding: '10px 7px' } },
-						'.MuiInputBase-formControl': { md: { paddingRight: '0', fontSize: '16px' }, xs: { borderRadius: '0', fontSize: '12px' } },
+						'.MuiInputBase-formControl': { md: { paddingRight: '0', fontSize: '16px' }, xs: { borderRadius: '4px', fontSize: '12px' } },
 						'.MuiOutlinedInput-notchedOutline': { md: { width: '92%' } }
 					}}
 					value={toDate}

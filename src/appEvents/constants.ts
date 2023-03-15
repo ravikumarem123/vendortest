@@ -1,0 +1,8 @@
+const events = {
+    HTTP_API_FAILURE: 'HTTP_API_FAILURE',
+    SEARCH_CLICKED: 'SEARCH_CLICKED',
+    DATE_FILTER_CLICKED: 'DATE_FILTER_CLICKED',
+    PDF_CLICKED: 'PDF_CLICKED',
+};
+
+export { events };

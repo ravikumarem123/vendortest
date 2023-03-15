@@ -6,12 +6,14 @@ import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
+import CallIcon from '@mui/icons-material/Call';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import { useAppSelector } from '../../reduxInit/hooks';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
-//import ErrorIcon from '@mui/icons-material/Error';
+import { useNavigate } from 'react-router-dom';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import Toolbar from '@mui/material/Toolbar';
 import Menu from '@mui/material/Menu';
@@ -21,7 +23,7 @@ import Fade from '@mui/material/Fade';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { BrowserView, MobileView } from 'react-device-detect';
 import SearchBox from './SearchBox';
-
+import { getUserDetails } from '../auth/authSelector';
 import './sidebar.css';
 
 const drawerWidth = 240;
@@ -34,6 +36,8 @@ const SideBar = (props: Props) => {
 	const { window } = props;
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+	const navigate = useNavigate();
+	const userDetails = useAppSelector(getUserDetails);
 
 	const handleDrawerToggle = () => {
 		setMobileOpen(!mobileOpen);
@@ -47,13 +51,22 @@ const SideBar = (props: Props) => {
 		setAnchorEl(null);
 	};
 
+	const handleLogout = () => {
+		console.log("Inside handleLogout")
+		localStorage.removeItem('vendorId');
+		navigate('/login');
+	};
+
 
 	const drawer = (
 		<div>
 			<Toolbar
 				sx={{ backgroundColor: '#323F8B', color: '#ffffff' }}
 			>
-				<p className='portal-title'>VP</p>
+				<p
+					className='portal-title'
+					onClick={() => location.reload()}
+				>VP</p>
 			</Toolbar>
 			<Divider />
 			<List
@@ -111,13 +124,15 @@ const SideBar = (props: Props) => {
 
 					<BrowserView>
 						<div className='report-issue-container'>
-							<SupportAgentIcon className='report-icon' />
+							<CallIcon className='report-icon' />
 							<div style={{
 								display: 'flex',
 								flexDirection: 'column'
 							}}>
-								<span style={{ fontSize: '8px' }}>Report an issue</span>
-								<span style={{ fontSize: '12px' }}><a href="tel:12223334444">+91 9999999999</a></span>
+								{/*<span style={{ fontSize: '8px' }}>Call for support</span>*/}
+								<span style={{ fontSize: '15px' }}>
+									<a href="tel:12223334444">08045654545</a>
+								</span>
 							</div>
 
 						</div>
@@ -133,7 +148,7 @@ const SideBar = (props: Props) => {
 					<div className='user-icon-container'>
 						<div className='user-info'>
 							<p className='user-name'> Hello User</p>
-							<p className='user-business-name'>Sri sai traders</p>
+							<p className='user-business-name'>{userDetails?.businessName}</p>
 						</div>
 						<IconButton
 							size="large"
@@ -168,20 +183,20 @@ const SideBar = (props: Props) => {
 								<tbody>
 									<tr>
 										<th>Business Name:</th>
-										<td>Shri PQR Traders</td>
+										<td> {userDetails?.businessName} </td>
 									</tr>
 									<tr>
 										<th>Business Address:</th>
-										<td>Office No #758, APMC yard, Bengaluru</td>
+										<td>{userDetails?.businessAddress}</td>
 									</tr>
 									<tr>
 										<th>GST No.:</th>
-										<td>123456687923193</td>
+										<td>{userDetails?.gstNumber}</td>
 									</tr>
 								</tbody>
 							</table>
 							<hr style={{ width: '90%' }} />
-							<div className='logout-container'>
+							<div className='logout-container' onClick={handleLogout}>
 								<LogoutIcon className='logout-icon' />
 								<span className='logout-text'>Logout</span>
 							</div>

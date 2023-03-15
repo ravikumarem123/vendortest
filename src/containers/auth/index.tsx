@@ -1,8 +1,11 @@
-
+import { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { makeStyles } from '@mui/styles';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../reduxInit/hooks';
 import { Loginhead, Partnership } from '../../assets';
+import { sagaActions } from '../../reduxInit/sagaActions';
 import './auth.css';
 
 
@@ -19,8 +22,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = () => {
-
+	const [emailId, setEmailId] = useState<string>('');
+	const [password, setPassword] = useState<string>('');
+	const dispatch = useAppDispatch();
 	const buttonClasses = useStyles();
+	const navigate = useNavigate();
+
+	const handleLogin = () => {
+		const payload = {
+			emailId,
+			password,
+			navigate
+		};
+		if (emailId && password) {
+			dispatch({ type: sagaActions.LOGIN, payload });
+		}
+	};
 
 	return (
 		<div className="login-page">
@@ -36,7 +53,6 @@ const Login = () => {
 				<form>
 					<div className='input-fields'>
 						<TextField
-							id="outlined-basic"
 							label="E-mail"
 							variant="outlined"
 							InputLabelProps={{
@@ -45,13 +61,15 @@ const Login = () => {
 							inputProps={{
 								style: { width: '300px' },
 							}}
-							placeholder="Type here"
+							placeholder="Enter email"
 							className='login-input'
 							sx={{ display: 'block' }}
+							value={emailId}
+							required
+							onChange={(e) => setEmailId(e.target.value)}
 						/>
 
 						<TextField
-							id="outlined-basic"
 							label="Password"
 							type="password"
 							variant="outlined"
@@ -61,14 +79,18 @@ const Login = () => {
 							inputProps={{
 								style: { width: '300px' },
 							}}
-							placeholder="Type here"
+							placeholder="Enter password"
 							className='login-input'
 							sx={{ display: 'block' }}
+							value={password}
+							required
+							onChange={(e) => setPassword(e.target.value)}
 						/>
 
 						<Button
 							variant="contained"
 							classes={{ root: buttonClasses.root }}
+							onClick={handleLogin}
 						>Login</Button>
 					</div>
 				</form>

@@ -7,7 +7,7 @@ import SelectDate from "./SelectDate";
 import { useAppDispatch, useAppSelector } from "../../reduxInit/hooks";
 import PodTable from "./PodTable";
 import { setSearchParams } from "./podSlice";
-import { getInvoiceList, getIsInvoiceLoading, getLastReadInvoice, getSearchedText, isSearchClicked } from "./podSelector";
+import { getInvoiceList, getIsInvoiceLoading, getLastReadInvoice, getPodError, getSearchedText, isSearchClicked } from "./podSelector";
 import { sagaActions } from "../../reduxInit/sagaActions";
 import './pod.css';
 
@@ -24,15 +24,21 @@ const ProofOfDelivery = () => {
 	const lastReadInvoice = useAppSelector(getLastReadInvoice);
 	const isInvoiceLoading = useAppSelector(getIsInvoiceLoading);
 	const invoiceList = useAppSelector(getInvoiceList);
+	const podError = useAppSelector(getPodError);
 
 	const dispatch = useAppDispatch();
 
 
 	useEffect(() => {
-		dispatch({ type: sagaActions.FETCH_POD_DETAILS });
+		const payload = {
+			pageSize: 20
+		};
+		dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
 	}, []);
 
 	useEffect(() => {
+		console.log("Inside useEffect of searchclicked change");
+
 		if (searchClicked) {
 			setToDate(null);
 			setFromDate(null);
@@ -40,8 +46,12 @@ const ProofOfDelivery = () => {
 		}
 	}, [searchClicked]);
 
+	console.log(`searchClicked is: ${searchClicked}`);
+
 	const handleBackClickOnSearch = () => {
-		dispatch({ type: sagaActions.FETCH_POD_DETAILS });
+		const payload = {
+		};
+		dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
 		dispatch(setSearchParams({ clicked: false, text: '' }))
 		setDateClicked(false);
 	};
@@ -50,12 +60,11 @@ const ProofOfDelivery = () => {
 		dispatch(setSearchParams({ clicked: false, text: '' }))
 		if (toDate && fromDate) {
 			setDateClicked(true);
-			console.log(`toDate is changed fromDate is: ${fromDate} and toDate is: ${toDate}`);
-			console.log(dayjs(fromDate).startOf('day').valueOf());
 			const payload = {
 				startTime: dayjs(fromDate).startOf('day').valueOf(),
-				endTime: dayjs(toDate).startOf('day').valueOf()
-			}
+				endTime: dayjs(toDate).endOf('day').valueOf(),
+				dateClicked: true,
+			};
 			dispatch({
 				type: sagaActions.FETCH_POD_DETAILS,
 				payload,
@@ -64,8 +73,10 @@ const ProofOfDelivery = () => {
 	};
 
 	const fetchData = () => {
-		const payload = {
-			lastReadInvoice
+		let payload = {
+			lastReadInvoice,
+			startTime: fromDate ? dayjs(fromDate).startOf('day').valueOf() : null,
+			endTime: toDate ? dayjs(toDate).endOf('day').valueOf() : null,
 		};
 		dispatch({
 			type: sagaActions.FETCH_POD_DETAILS,
@@ -104,7 +115,7 @@ const ProofOfDelivery = () => {
 				<div className="pod-data-container">
 					<p className="date-range-text">{
 						searchClicked && `Showing Data for Invoice ${searchText}`
-					}{dateClicked && `Showing Data from ${dayjs(fromDate).format('DD/MM/YYYY')} to ${dayjs(toDate).format('DD/MM/YYYY')}`}</p>
+					}{(dateClicked && !podError) && `Showing Data from ${dayjs(fromDate).format('DD/MM/YYYY')} to ${dayjs(toDate).format('DD/MM/YYYY')}`}</p>
 
 					{
 						isInvoiceLoading ? <h1 style={{ textAlign: 'center' }}>Loading.....</h1> :

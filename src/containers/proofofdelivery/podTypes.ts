@@ -1,4 +1,5 @@
 import { Dayjs } from 'dayjs';
+import { Action } from 'redux';
 
 export interface VendorAddress {
     addressCity: null | string;
@@ -9,13 +10,18 @@ export interface VendorAddress {
     buyerName: null | string;
 }
 
+export interface IBuyerInfo {
+    name: string;
+    addressDetails: string;
+}
+
 export interface Invoice {
     number: string;
     podUrl: string;
     invoiceDate: Dayjs;
     deliveryDate: Dayjs;
     amount: number;
-    shippedAddress: VendorAddress;
+    buyerInfo: IBuyerInfo;
 }
 
 export interface PodInitialState {
@@ -26,4 +32,31 @@ export interface PodInitialState {
     error: null | string;
     searchText: string;
     searchClicked: boolean;
+}
+export interface IResponse {
+    success: boolean;
+    statusCode: number;
+    error: string | null;
+    data: object;
+    fresh?: boolean;
+}
+
+export interface Props {
+    searchText?: string;
+    startTime?: Dayjs;
+    endTime?: Dayjs;
+    dateClicked?: boolean;
+    lastReadInvoice?: string;
+    pageSize?: number;
+    invoiceNumber?: string;
+    vendorId?: string;
+}
+
+export interface ActionResult<T> extends Action<string> {
+    type: string;
+    payload: T;
+}
+
+export interface Error {
+    error: string;
 }

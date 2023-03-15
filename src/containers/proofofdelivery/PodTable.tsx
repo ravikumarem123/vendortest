@@ -7,9 +7,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import PictureAsPdfOutlinedIcon from '@mui/icons-material/PictureAsPdfOutlined';
+import SimCardDownloadOutlinedIcon from '@mui/icons-material/SimCardDownloadOutlined';
 import { Invoice } from './podTypes';
 import dayjs from 'dayjs';
+import { PodIcon, PodIcon2 } from '../../assets';
 
 interface PodTablePros {
 	lastReadInvoice: string;
@@ -61,19 +62,21 @@ const PodTable: React.FC<PodTablePros> = ({ lastReadInvoice, invoiceList, fetchD
 										key={index}
 										sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
 									>
-										{/*<TableCell component="th" scope="row">
-											{index}
-										</TableCell>*/}
-										<TableCell align="center">{invoice.number}</TableCell>
-										<TableCell align="center">&#8377;{invoice.amount}</TableCell>
-										<TableCell align="center">{dayjs(invoice.deliveryDate).format('DD/MM/YYYY')}</TableCell>
+										<TableCell align="center" style={{ fontWeight: 'bold' }}>{invoice.number}</TableCell>
+										<TableCell align="center">
+											&#8377;{new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(invoice.amount)}
+										</TableCell>
+										<TableCell align="center">
+											{dayjs(invoice.deliveryDate).format('DD/MM/YYYY')}
+										</TableCell>
 										<TableCell align="center" className='address-cell'>
-											{invoice.shippedAddress.addressCity}
-											{/*<p>{row.deliveryAddress.subtitle}</p>*/}
+											<p style={{ fontWeight: '500' }}>{invoice.buyerInfo?.name ?? 'Buyer'}</p>
+											{invoice.buyerInfo?.addressDetails ?? 'dummy address'}
 										</TableCell>
 										<TableCell align="center" >
 											<a href={invoice.podUrl} target="_blank">
-												<PictureAsPdfOutlinedIcon />
+												{/*<SimCardDownloadOutlinedIcon style={{ fontSize: '40px', color: '#d32f2f' }} />*/}
+												<img alt='pod' src={PodIcon2} style={{ width: '45px' }} />
 											</a>
 										</TableCell>
 									</TableRow>
@@ -82,7 +85,7 @@ const PodTable: React.FC<PodTablePros> = ({ lastReadInvoice, invoiceList, fetchD
 						</Table>
 					</InfiniteScroll>
 				) : (
-					<><h1 style={{ textAlign: 'center' }}>No Data....</h1></>
+					<><h1 style={{ textAlign: 'center' }}>No Records Found....</h1></>
 				)
 			}
 

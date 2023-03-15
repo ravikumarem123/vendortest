@@ -17,6 +17,7 @@
 	letter-spacing: 2px;
 	width: 100%;
 	text-align: center;
+	cursor: pointer;
 }
 
 .appbar-container .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
@@ -135,7 +136,8 @@
 	font-weight: 400;
 }
 .user-business-name{
-	font-size: 13px;
+	text-transform: capitalize;
+	font-size: 12px;
 }
 
 .user-business-info th{

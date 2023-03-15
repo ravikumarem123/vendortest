@@ -6,6 +6,10 @@ const apiRepository = {
         const URL = 'invoice/get/info';
         return apiHandler.post(URL, data);
     },
+    login: function (data: object) {
+        const URL = 'v1/login';
+        return apiHandler.post(URL, data);
+    },
 };
 
 export default apiRepository;
