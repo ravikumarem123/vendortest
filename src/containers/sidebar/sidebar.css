@@ -5,7 +5,13 @@
 	width: 100%;
 }
 
-.css-j0vej8-MuiPaper-root-MuiAppBar-root {
+/*.css-j0vej8-MuiPaper-root-MuiAppBar-root {
+	box-shadow: none !important;
+	border-bottom: 1px solid #DFDFDF;
+	background-color: #323F8B !important;
+}*/
+
+.MuiAppBar-root {
 	box-shadow: none !important;
 	border-bottom: 1px solid #DFDFDF;
 	background-color: #323F8B !important;
