@@ -12,10 +12,19 @@
 	background-color: #ffffff;
 }
 
-.css-i4bv87-MuiSvgIcon-root {
+/*.css-i4bv87-MuiSvgIcon-root {
+	color: #323F8B;
+}*/
+
+.MuiInputAdornment-root .MuiButtonBase-root .MuiSvgIcon-root {
 	color: #323F8B;
 }
-.css-nxo287-MuiInputBase-input-MuiOutlinedInput-input{
+
+/*.css-nxo287-MuiInputBase-input-MuiOutlinedInput-input{
+	height: 0.4375em !important;
+}*/
+
+.datepicker-container .MuiInputBase-root .MuiOutlinedInput-input {
 	height: 0.4375em !important;
 }
 

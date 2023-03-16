@@ -147,7 +147,7 @@ const SideBar = (props: Props) => {
 
 					<div className='user-icon-container'>
 						<div className='user-info'>
-							<p className='user-name'> Hello User</p>
+							<p className='user-name'>Welcome</p>
 							<p className='user-business-name'>{userDetails?.businessName}</p>
 						</div>
 						<IconButton
