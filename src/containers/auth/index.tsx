@@ -47,7 +47,7 @@ const Login = () => {
 					<img src={Partnership} alt='login' className='login-head-img' />
 				</div>
 
-				<h2 className='login-header'>Login</h2>
+				<h2 className='login-header'>Loginnnn</h2>
 
 
 				<form>

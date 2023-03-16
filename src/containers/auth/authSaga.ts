@@ -36,22 +36,26 @@ export function* login(history: History, action: ActionResult<Props>) {
     } catch (e: any) {
         if (e?.error?.message === 'Failed to fetch') {
             const dialogPayload = {
-                title: 'NO INTERNET CONNECTION',
+                title: 'Something went wrong',
                 content: 'please check your internet connection and try again.',
             };
             yield put(setDialogOpen(dialogPayload));
         } else {
             if (e?.error?.cause?.status === 401) {
                 const dialogPayload = {
-                    title: 'SOMETHING WENT WRONG',
-                    content: e?.error?.message,
+                    title: 'Something went wrong',
+                    content: `${e?.error?.message} You’ll be logged out, please login again to continue`,
                     logout: true,
                 };
                 yield put(setDialogOpen(dialogPayload));
             } else if (e?.error?.message?.length > 0) {
                 const dialogPayload = {
-                    title: 'SOMETHING WENT WRONG',
-                    content: `${e?.error?.message}. Refresh the page to try again.`,
+                    title: 'Something went wrong',
+                    content: `${e?.error?.message}. ${
+                        e?.error?.cause?.status?.toString().includes('5')
+                            ? 'Please Refresh to try again'
+                            : ''
+                    }`,
                 };
                 yield put(setDialogOpen(dialogPayload));
                 //} else if ((e.error.name = 'TimeoutError')) {
@@ -63,8 +67,9 @@ export function* login(history: History, action: ActionResult<Props>) {
                 //    yield put(setDialogOpen(dialogPayload));
             } else {
                 const dialogPayload = {
-                    title: 'SOMETHING WENT WRONG',
-                    content: 'Please try again later, or contact support',
+                    title: 'Something went wrong',
+                    content:
+                        'We are facing some technical issues, please try again',
                 };
                 yield put(setDialogOpen(dialogPayload));
             }

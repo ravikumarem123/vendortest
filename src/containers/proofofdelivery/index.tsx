@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
+import CircularProgress from '@mui/material/CircularProgress';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SelectDate from "./SelectDate";
@@ -118,7 +119,7 @@ const ProofOfDelivery = () => {
 					}{(dateClicked && !podError) && `Showing Data from ${dayjs(fromDate).format('DD/MM/YYYY')} to ${dayjs(toDate).format('DD/MM/YYYY')}`}</p>
 
 					{
-						isInvoiceLoading ? <h1 style={{ textAlign: 'center' }}>Loading.....</h1> :
+						isInvoiceLoading ? <h1 style={{ textAlign: 'center' }}> <CircularProgress /></h1> :
 
 							<PodTable
 								lastReadInvoice={lastReadInvoice}

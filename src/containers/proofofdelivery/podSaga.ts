@@ -87,7 +87,7 @@ export function* fetchPodDetails(
         yield put(setPodError(e?.error?.message));
         if (e?.error?.message === 'Failed to fetch') {
             const dialogPayload = {
-                title: 'NO INTERNET CONNECTION',
+                title: 'Something went wrong',
                 content: 'please check your internet connection and try again.',
             };
             yield put(setDialogOpen(dialogPayload));
@@ -95,7 +95,7 @@ export function* fetchPodDetails(
             if (e?.error?.cause?.status === 401) {
                 const dialogPayload = {
                     title: 'someting went wrong',
-                    content: e?.error?.message,
+                    content: `${e?.error?.message} You’ll be logged out, please login again to continue`,
                     logout: true,
                 };
                 yield put(setDialogOpen(dialogPayload));

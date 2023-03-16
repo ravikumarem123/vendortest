@@ -1,12 +1,6 @@
 import { sendEvents, events } from '../appEvents';
 
-export const getToken = function () {
-    const authToken = localStorage.getItem('authToken');
-    return authToken;
-};
-
-//const baseurl: string = 'http://vendor.localhost.jumbotail.com:5173/api/'; // local
-const baseurl = 'https://vendor-preprod.jumbotail.com/api/';
+const baseurl = import.meta.env.VITE_API_URL;
 
 const http = function (
     path: string,
@@ -24,10 +18,6 @@ const http = function (
     method.credentials = 'include';
     method.signal = AbortSignal.timeout(5000);
 
-    const token = getToken();
-    if (token) {
-        method.headers['Authorization'] = 'Bearer ' + token;
-    }
     if (headers) {
         method.headers = {
             ...method.headers,

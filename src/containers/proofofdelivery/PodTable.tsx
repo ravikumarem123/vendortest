@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import CircularProgress from '@mui/material/CircularProgress';
 import SimCardDownloadOutlinedIcon from '@mui/icons-material/SimCardDownloadOutlined';
 import { Invoice } from './podTypes';
 import dayjs from 'dayjs';
@@ -29,7 +30,7 @@ const PodTable: React.FC<PodTablePros> = ({ lastReadInvoice, invoiceList, fetchD
 						dataLength={invoiceList?.length} //This is important field to render the next data
 						next={fetchData}
 						hasMore={lastReadInvoice ? true : false}
-						loader={<h1>Loading more data....</h1>}
+						loader={<div style={{ display: 'flex', justifyContent: 'center' }}><CircularProgress /></div>}
 						endMessage={<p style={{ textAlign: 'center' }}></p>}
 						// below props only if you need pull down functionality
 						refreshFunction={() => { }}
@@ -49,6 +50,7 @@ const PodTable: React.FC<PodTablePros> = ({ lastReadInvoice, invoiceList, fetchD
 						<Table sx={{ minWidth: 650 }} aria-label="simple table"  >
 							<TableHead>
 								<TableRow>
+									<TableCell align="center">S NO.</TableCell>
 									<TableCell align="center">INVOICE NO.</TableCell>
 									<TableCell align="center">INVOICE AMOUNT</TableCell>
 									<TableCell align="center">DELIVERY DATE</TableCell>
@@ -62,8 +64,9 @@ const PodTable: React.FC<PodTablePros> = ({ lastReadInvoice, invoiceList, fetchD
 										key={index}
 										sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
 									>
+										<TableCell align="center" style={{ fontWeight: 'bold' }}>{index + 1}</TableCell>
 										<TableCell align="center" style={{ fontWeight: 'bold' }}>{invoice.number}</TableCell>
-										<TableCell align="center">
+										<TableCell align="center" style={{ fontWeight: 'bold' }}>
 											&#8377;{new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(invoice.amount)}
 										</TableCell>
 										<TableCell align="center">
