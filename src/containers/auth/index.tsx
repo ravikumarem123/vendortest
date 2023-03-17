@@ -2,9 +2,12 @@ import { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { makeStyles } from '@mui/styles';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../reduxInit/hooks';
 import { Loginhead, Partnership } from '../../assets';
+import { InputAdornment, IconButton } from '@mui/material';
 import { sagaActions } from '../../reduxInit/sagaActions';
 import './auth.css';
 
@@ -24,9 +27,13 @@ const useStyles = makeStyles((theme) => ({
 const Login = () => {
 	const [emailId, setEmailId] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
+	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
 	const buttonClasses = useStyles();
 	const navigate = useNavigate();
+
+	const handleClickShowPassword = () => setShowPassword(!showPassword);
+	const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
 	const handleLogin = () => {
 		const payload = {
@@ -71,13 +78,26 @@ const Login = () => {
 
 						<TextField
 							label="Password"
-							type="password"
+							type={showPassword ? "text" : "password"}
 							variant="outlined"
 							InputLabelProps={{
 								shrink: true,
 							}}
+							InputProps={{
+								endAdornment: (
+									<InputAdornment position="end">
+										<IconButton
+											aria-label="toggle password visibility"
+											onClick={handleClickShowPassword}
+											onMouseDown={handleMouseDownPassword}
+										>
+											{showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+										</IconButton>
+									</InputAdornment>
+								)
+							}}
 							inputProps={{
-								style: { width: '300px' },
+								style: { width: '255px' },
 							}}
 							placeholder="Enter password"
 							className='login-input'
