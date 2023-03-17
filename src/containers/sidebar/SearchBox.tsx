@@ -14,7 +14,7 @@ const SearchBox = () => {
 
 	const handleSearchByInvoice = () => {
 		if (searchText.length > 0) {
-			sendEvents(events.SEARCH_CLICKED, {
+			sendEvents(events.ON_CLICK_SEARCH, {
 				searchText: searchText
 			});
 			dispatch({
@@ -64,7 +64,6 @@ const SearchBox = () => {
 			<button
 				className="search-btn"
 				type="submit"
-				onClick={handleSearchByInvoice}
 			>
 				<SearchIcon className='search-icon' />
 			</button>

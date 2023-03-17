@@ -25,6 +25,7 @@ import { BrowserView, MobileView } from 'react-device-detect';
 import SearchBox from './SearchBox';
 import { getUserDetails } from '../auth/authSelector';
 import './sidebar.css';
+import { events, sendEvents } from '../../appEvents';
 
 const drawerWidth = 240;
 
@@ -44,6 +45,7 @@ const SideBar = (props: Props) => {
 	};
 
 	const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+		sendEvents(events.ON_CLICK_USER_PROFILE, {});
 		setAnchorEl(event.currentTarget);
 	};
 
@@ -52,7 +54,7 @@ const SideBar = (props: Props) => {
 	};
 
 	const handleLogout = () => {
-		console.log("Inside handleLogout")
+		sendEvents(events.ON_CLICK_LOGOUT, {});
 		localStorage.removeItem('vendorId');
 		navigate('/login');
 	};
@@ -86,7 +88,11 @@ const SideBar = (props: Props) => {
 					<ListItemButton>
 						<ListItemIcon>
 						</ListItemIcon>
-						<ListItemText className='list-item-text' primary={'Proof of Delivery'} />
+						<ListItemText
+							className='list-item-text'
+							primary={'Proof of Delivery'}
+							onClick={() => sendEvents(events.ON_CLICK_SIDE_MENU, { menu: 'pod' })}
+						/>
 					</ListItemButton>
 				</ListItem>
 			</List>
@@ -123,7 +129,10 @@ const SideBar = (props: Props) => {
 					</div>
 
 					<BrowserView>
-						<div className='report-issue-container'>
+						<div
+							className='report-issue-container'
+							onClick={() => sendEvents(events.ON_CLICK_REPORT, {})}
+						>
 							<CallIcon className='report-icon' />
 							<div style={{
 								display: 'flex',

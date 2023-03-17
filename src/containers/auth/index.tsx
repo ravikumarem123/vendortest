@@ -10,6 +10,7 @@ import { Loginhead, Partnership } from '../../assets';
 import { InputAdornment, IconButton } from '@mui/material';
 import { sagaActions } from '../../reduxInit/sagaActions';
 import './auth.css';
+import { events, sendEvents } from '../../appEvents';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -42,6 +43,9 @@ const Login = () => {
 			navigate
 		};
 		if (emailId && password) {
+			sendEvents(events.ON_CLICK_LOGIN, {
+				email: emailId
+			});
 			dispatch({ type: sagaActions.LOGIN, payload });
 		}
 	};

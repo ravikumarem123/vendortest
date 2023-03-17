@@ -11,6 +11,7 @@ import { setSearchParams } from "./podSlice";
 import { getInvoiceList, getIsInvoiceLoading, getLastReadInvoice, getPodError, getSearchedText, isSearchClicked } from "./podSelector";
 import { sagaActions } from "../../reduxInit/sagaActions";
 import './pod.css';
+import { events, sendEvents } from "../../appEvents";
 
 
 
@@ -52,6 +53,7 @@ const ProofOfDelivery = () => {
 	const handleBackClickOnSearch = () => {
 		const payload = {
 		};
+		sendEvents(events.ON_CLICK_BACK_FROM_SEARCH, {})
 		dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
 		dispatch(setSearchParams({ clicked: false, text: '' }))
 		setDateClicked(false);
@@ -66,6 +68,10 @@ const ProofOfDelivery = () => {
 				endTime: dayjs(toDate).endOf('day').valueOf(),
 				dateClicked: true,
 			};
+			sendEvents(events.ON_CLICK_DATE_APPLY, {
+				startTime: dayjs(fromDate).startOf('day').valueOf(),
+				endTime: dayjs(toDate).endOf('day').valueOf(),
+			});
 			dispatch({
 				type: sagaActions.FETCH_POD_DETAILS,
 				payload,
