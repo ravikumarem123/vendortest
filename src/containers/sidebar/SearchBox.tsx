@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import SearchIcon from '@mui/icons-material/Search';
 import { useAppDispatch, useAppSelector } from '../../reduxInit/hooks';
@@ -37,6 +37,11 @@ const SearchBox = () => {
 		}
 	};
 
+	const handleFormSubmit = (e: SyntheticEvent) => {
+		e.preventDefault();
+		handleSearchByInvoice();
+	};
+
 	useEffect(() => {
 		if (!searchClicked) {
 			setSearchText('');
@@ -44,8 +49,9 @@ const SearchBox = () => {
 	}, [searchClicked]);
 
 	return (
-		<div
+		<form
 			className='search-box-div'
+			onSubmit={handleFormSubmit}
 		>
 			<input
 				type="text"
@@ -62,7 +68,8 @@ const SearchBox = () => {
 			>
 				<SearchIcon className='search-icon' />
 			</button>
-		</div>
+
+		</form>
 	);
 };
 
