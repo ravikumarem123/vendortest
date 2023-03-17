@@ -1,9 +1,10 @@
 import { events } from './constants';
 const sendEvents = async (eventName: string, eventProperties: object) => {
     const webhookUrl = 'https://in-webhook.hevodata.com/t/ud1knpzm4w';
-    const vendorId = localStorage.getItem('VendorId') || '';
+    const vendorId = localStorage.getItem('vendorId') || '';
 
-    const DEV = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+    const DEV = import.meta.env.MODE === 'development';
+
     const properties = {
         eventName: eventName,
         vendorId: vendorId || '',
