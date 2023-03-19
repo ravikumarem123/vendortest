@@ -39,8 +39,6 @@ const ProofOfDelivery = () => {
 	}, []);
 
 	useEffect(() => {
-		console.log("Inside useEffect of searchclicked change");
-
 		if (searchClicked) {
 			setToDate(null);
 			setFromDate(null);
@@ -48,7 +46,15 @@ const ProofOfDelivery = () => {
 		}
 	}, [searchClicked]);
 
-	console.log(`searchClicked is: ${searchClicked}`);
+	useEffect(() => {
+		if (!dateClicked) {
+			setToDate(null);
+			setFromDate(null);
+			const payload = {
+			};
+			dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
+		}
+	}, [dateClicked]);
 
 	const handleBackClickOnSearch = () => {
 		const payload = {
@@ -113,6 +119,8 @@ const ProofOfDelivery = () => {
 							setFromDate={setFromDate}
 							setToDate={setToDate}
 							handleDateApplyClicked={handleDateApplyClicked}
+							dateClicked={dateClicked}
+							setDateClicked={setDateClicked}
 						/>
 
 				}
@@ -120,9 +128,12 @@ const ProofOfDelivery = () => {
 				<div className="select-date-hr" ></div>
 
 				<div className="pod-data-container">
-					<p className="date-range-text">{
-						searchClicked && `Showing Data for Invoice ${searchText}`
-					}{(dateClicked && !podError) && `Showing Data from ${dayjs(fromDate).format('DD/MM/YYYY')} to ${dayjs(toDate).format('DD/MM/YYYY')}`}</p>
+					<p className="date-range-text">
+						{searchClicked && `Showing Data for Invoice ${searchText}`}
+						{(dateClicked && !podError) && `Showing Data from ${dayjs(fromDate).format('DD/MM/YYYY')} 
+						to 
+						${dayjs(toDate).format('DD/MM/YYYY')}`}
+					</p>
 
 					{
 						isInvoiceLoading ? <h1 style={{ textAlign: 'center' }}> <CircularProgress /></h1> :
