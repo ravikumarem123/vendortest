@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs, { Dayjs } from 'dayjs';
+import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
 
@@ -10,9 +11,20 @@ interface IPros {
 	setFromDate: Dispatch<SetStateAction<Dayjs | null>>;
 	setToDate: Dispatch<SetStateAction<Dayjs | null>>;
 	handleDateApplyClicked: () => void;
+	dateClicked: boolean;
+	setDateClicked: Dispatch<SetStateAction<boolean>>;
 }
 
-const SelectDate: React.FC<IPros> = ({ fromDate, toDate, setFromDate, setToDate, handleDateApplyClicked }) => {
+const SelectDate: React.FC<IPros> = (
+	{
+		fromDate,
+		toDate,
+		setFromDate,
+		setToDate,
+		handleDateApplyClicked,
+		dateClicked,
+		setDateClicked
+	}) => {
 
 
 	return (
@@ -21,7 +33,7 @@ const SelectDate: React.FC<IPros> = ({ fromDate, toDate, setFromDate, setToDate,
 			className='datepicker-container'
 		>
 			<BrowserView>
-				Showing Data from:
+				Filter Data from:
 			</BrowserView>
 			<div>
 				<DatePicker
@@ -54,11 +66,28 @@ const SelectDate: React.FC<IPros> = ({ fromDate, toDate, setFromDate, setToDate,
 			</div>
 
 			<div>
-				<Button
-					variant="outlined"
-					className="date-apply-btn"
-					onClick={handleDateApplyClicked}
-				>Apply</Button>
+				{
+					dateClicked ?
+
+						<Button
+							variant="outlined"
+							className="date-apply-btn"
+							onClick={() => setDateClicked(false)}
+							startIcon={<CloseIcon />}
+						>
+							Remove
+						</Button>
+
+						:
+
+						<Button
+							variant="outlined"
+							className={`date-apply-btn ${(toDate && fromDate) ? '' : 'disabled-btn'}`}
+							onClick={handleDateApplyClicked}
+						>
+							Apply
+						</Button>
+				}
 			</div>
 
 		</div>
