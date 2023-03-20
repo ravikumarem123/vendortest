@@ -27,6 +27,7 @@ const http = function (
     return new Promise((resolve, reject) => {
         fetch(url, method)
             .then(async (response) => {
+                console.log(response);
                 if (response.ok) {
                     return response.json();
                 }
@@ -54,7 +55,8 @@ const http = function (
                 }
             })
             .catch(function (e) {
-                console.log(e.cause);
+                console.log(e?.name);
+                console.log(e?.message);
                 console.log('Request to ' + path + ' failed: ', e);
                 reject({ error: e });
             });
