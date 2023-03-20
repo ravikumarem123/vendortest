@@ -123,6 +123,7 @@ const ProofOfDelivery = () => {
 							dateClicked={dateClicked}
 							setDateClicked={setDateClicked}
 							podError={podError}
+							podLoading={podLoading}
 						/>
 
 				}

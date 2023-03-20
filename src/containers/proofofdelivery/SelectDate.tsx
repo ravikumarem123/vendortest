@@ -14,6 +14,7 @@ interface IPros {
 	dateClicked: boolean;
 	setDateClicked: Dispatch<SetStateAction<boolean>>;
 	podError: string | null;
+	podLoading: boolean;
 }
 
 const SelectDate: React.FC<IPros> = (
@@ -26,6 +27,7 @@ const SelectDate: React.FC<IPros> = (
 		dateClicked,
 		setDateClicked,
 		podError,
+		podLoading,
 	}) => {
 
 
@@ -69,7 +71,7 @@ const SelectDate: React.FC<IPros> = (
 
 			<div>
 				{
-					(dateClicked && !podError) ?
+					(dateClicked && !podError && !podLoading) ?
 
 						<Button
 							variant="outlined"
