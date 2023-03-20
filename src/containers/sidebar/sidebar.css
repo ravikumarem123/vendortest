@@ -89,10 +89,10 @@
 }
 
 .report-issue-container {
-	border: 1px solid #ffffff;
-	background-color: #ffffff;
+	/*border: 1px solid #ffffff;*/
+	/*background-color: #ffffff;*/
 	display: flex;
-	border-radius: 2px;
+	/*border-radius: 2px;*/
 	align-items: center;
 	padding: 7px 8px;
     min-width: 180px;
@@ -100,14 +100,15 @@
 }
 
 .report-issue-container span{
-	color: #323F8B;
+	color: #ffffff;
 	margin: 0;
 	font-size: 1vw;
 }
 
 .report-icon {
-	color: #323F8B;
+	color: #ffffff;
 	margin-right: 10px;
+	font-size: 32px !important;
 }
 .report-icon-mobile {
 	color: #ffffff;
@@ -118,6 +119,7 @@
 	display: flex;
     width: 200px;
     align-items: center;
+	justify-content: end;
 }
 
 .user-icon{
@@ -134,6 +136,7 @@
 	color: #ffffff;
 	font-size: 14px;
 	text-align: right;
+	width: 200px;
 }
 
 .user-name{

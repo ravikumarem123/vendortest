@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { makeStyles } from '@mui/styles';
@@ -15,12 +15,11 @@ import { events, sendEvents } from '../../appEvents';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		backgroundColor: '#323F8B !important', // Change the background color
-		height: '50px', // Change the height
+		backgroundColor: '#323F8B !important',
+		height: '50px',
 		width: '330px',
-		//fontSize: '16px',
 		'&:hover': {
-			backgroundColor: '#323F8B', // Change the background color on hover
+			backgroundColor: '#323F8B',
 		},
 	},
 }));
@@ -36,7 +35,8 @@ const Login = () => {
 	const handleClickShowPassword = () => setShowPassword(!showPassword);
 	const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
-	const handleLogin = () => {
+	const handleLogin = (e: SyntheticEvent) => {
+		e.preventDefault();
 		const payload = {
 			emailId,
 			password,
@@ -61,7 +61,7 @@ const Login = () => {
 				<h2 className='login-header'>Login</h2>
 
 
-				<form>
+				<form onSubmit={handleLogin}>
 					<div className='input-fields'>
 						<TextField
 							label="E-mail"
@@ -113,15 +113,11 @@ const Login = () => {
 
 						<Button
 							variant="contained"
+							type='submit'
 							classes={{ root: buttonClasses.root }}
-							onClick={handleLogin}
 						>Login</Button>
 					</div>
 				</form>
-
-
-
-
 			</div >
 		</div >
 	);
