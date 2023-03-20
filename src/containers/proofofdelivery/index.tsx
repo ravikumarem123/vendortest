@@ -27,6 +27,7 @@ const ProofOfDelivery = () => {
 	const isInvoiceLoading = useAppSelector(getIsInvoiceLoading);
 	const invoiceList = useAppSelector(getInvoiceList);
 	const podError = useAppSelector(getPodError);
+	const podLoading = useAppSelector(getIsInvoiceLoading);
 
 	const dispatch = useAppDispatch();
 
@@ -121,6 +122,7 @@ const ProofOfDelivery = () => {
 							handleDateApplyClicked={handleDateApplyClicked}
 							dateClicked={dateClicked}
 							setDateClicked={setDateClicked}
+							podError={podError}
 						/>
 
 				}
@@ -130,7 +132,7 @@ const ProofOfDelivery = () => {
 				<div className="pod-data-container">
 					<p className="date-range-text">
 						{searchClicked && `Showing Data for Invoice ${searchText}`}
-						{(dateClicked && !podError) && `Showing Data from ${dayjs(fromDate).format('DD/MM/YYYY')} 
+						{(dateClicked && !podError && !podLoading) && `Showing Data from ${dayjs(fromDate).format('DD/MM/YYYY')} 
 						to 
 						${dayjs(toDate).format('DD/MM/YYYY')}`}
 					</p>

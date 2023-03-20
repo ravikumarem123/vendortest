@@ -45,7 +45,7 @@ const podSlice = createSlice({
             state.loading = false;
             state.error = payload;
         },
-        setPodLoading: (state, { payload }) => {
+        setPodLoading: (state) => {
             state.loading = true;
         },
     },
