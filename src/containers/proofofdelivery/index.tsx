@@ -32,12 +32,13 @@ const ProofOfDelivery = () => {
 	const dispatch = useAppDispatch();
 
 
-	useEffect(() => {
-		const payload = {
-			pageSize: 20
-		};
-		dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
-	}, []);
+	//useEffect(() => {
+	//	const payload = {
+	//		pageSize: 20
+	//	};
+	//	console.log("calling api from first time useEffect");
+	//	dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
+	//}, []);
 
 	useEffect(() => {
 		if (searchClicked) {
@@ -53,6 +54,7 @@ const ProofOfDelivery = () => {
 			setFromDate(null);
 			const payload = {
 			};
+			console.log("calling api from dateclicked useEffect");
 			dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
 		}
 	}, [dateClicked]);
@@ -61,6 +63,7 @@ const ProofOfDelivery = () => {
 		const payload = {
 		};
 		sendEvents(events.ON_CLICK_BACK_FROM_SEARCH, {})
+		console.log("calling api from handleBackClickOnSearch function");
 		dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
 		dispatch(setSearchParams({ clicked: false, text: '' }))
 		setDateClicked(false);
@@ -79,6 +82,7 @@ const ProofOfDelivery = () => {
 				startTime: dayjs(fromDate).startOf('day').valueOf(),
 				endTime: dayjs(toDate).endOf('day').valueOf(),
 			});
+			console.log("calling api from handleDateApplyClicked function");
 			dispatch({
 				type: sagaActions.FETCH_POD_DETAILS,
 				payload,
@@ -92,6 +96,7 @@ const ProofOfDelivery = () => {
 			startTime: fromDate ? dayjs(fromDate).startOf('day').valueOf() : null,
 			endTime: toDate ? dayjs(toDate).endOf('day').valueOf() : null,
 		};
+		console.log("calling api from fetchData function");
 		dispatch({
 			type: sagaActions.FETCH_POD_DETAILS,
 			payload,
@@ -139,7 +144,7 @@ const ProofOfDelivery = () => {
 					</p>
 
 					{
-						isInvoiceLoading ? <h1 style={{ textAlign: 'center' }}> <CircularProgress /></h1> :
+						(isInvoiceLoading && invoiceList.length < 1) ? <h1 style={{ textAlign: 'center' }}> <CircularProgress /></h1> :
 
 							<PodTable
 								lastReadInvoice={lastReadInvoice}

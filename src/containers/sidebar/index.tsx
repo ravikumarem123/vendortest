@@ -140,8 +140,9 @@ const SideBar = (props: Props) => {
 							}}>
 								{/*<span style={{ fontSize: '8px' }}>Call for support</span>*/}
 								<span style={{ fontSize: '15px' }}>
-									<a href="tel:12223334444">08045654545</a>
+									<a href="#">08045654545</a>
 								</span>
+								<span style={{ fontSize: '12px' }}>8AM to 8PM Helpline</span>
 							</div>
 
 						</div>
