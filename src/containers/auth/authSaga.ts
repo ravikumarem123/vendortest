@@ -34,6 +34,7 @@ export function* login(history: History, action: ActionResult<Props>) {
         localStorage.setItem('userDetails', JSON.stringify(result));
         yield call(history.push, '/');
     } catch (e: any) {
+        console.log('error in login: ', e);
         if (e?.error?.message === 'Failed to fetch') {
             const dialogPayload = {
                 title: 'Something went wrong',
@@ -44,32 +45,30 @@ export function* login(history: History, action: ActionResult<Props>) {
             if (e?.error?.cause?.status === 401) {
                 const dialogPayload = {
                     title: 'Something went wrong',
-                    content: `${e?.error?.message} You’ll be logged out, please login again to continue`,
+                    content: `${e?.error?.message}`,
                     logout: true,
                 };
                 yield put(setDialogOpen(dialogPayload));
-            } else if (e?.error?.message?.length > 0) {
+            } else if (e?.error?.cause?.status?.toString().includes('5')) {
                 const dialogPayload = {
                     title: 'Something went wrong',
-                    content: `${e?.error?.message}. ${
-                        e?.error?.cause?.status?.toString().includes('5')
-                            ? 'Please Refresh to try again'
-                            : ''
+                    content: `Please try again after some time`,
+                };
+                yield put(setDialogOpen(dialogPayload));
+            } else if (e?.error?.cause?.status?.toString().includes('4')) {
+                const dialogPayload = {
+                    title: 'Something went wrong',
+                    content: `${
+                        e?.error?.message
+                            ? e?.error?.message
+                            : 'Please try again after some time'
                     }`,
                 };
                 yield put(setDialogOpen(dialogPayload));
-                //} else if ((e.error.name = 'TimeoutError')) {
-                //    const dialogPayload = {
-                //        title: 'ERR_TIMEOUT',
-                //        content:
-                //            'Timeout: It took more than 5 seconds to get the result!',
-                //    };
-                //    yield put(setDialogOpen(dialogPayload));
             } else {
                 const dialogPayload = {
                     title: 'Something went wrong',
-                    content:
-                        'We are facing some technical issues, please try again',
+                    content: 'Please try again after some time',
                 };
                 yield put(setDialogOpen(dialogPayload));
             }
