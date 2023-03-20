@@ -16,11 +16,12 @@ export function* fetchPodDetails(
     history: History,
     action: ActionResult<Props>
 ) {
-    const testingVendorId = 'VNDR-1526001151'; //VNDR-1526007917
-    //const testingVendorId = localStorage.getItem('vendorId');
+    //const testingVendorId = 'VNDR-1526001151'; //VNDR-1526007917
+    const testingVendorId = localStorage.getItem('vendorId') as string;
     try {
         const { payload } = action;
         if (payload) payload.vendorId = testingVendorId;
+        yield put(setPodLoading());
         const result: IResponse = yield call(
             apiRepository.getPodInfo,
             fetchInvoicePayload(payload)
