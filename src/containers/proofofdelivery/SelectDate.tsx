@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import CloseIcon from '@mui/icons-material/Close';
@@ -30,6 +30,23 @@ const SelectDate: React.FC<IPros> = (
 		podLoading,
 	}) => {
 
+	const [dateChanged, setDateChanged] = useState(false);
+
+	const handleDateChanged = (val: Dayjs | null, type: string) => {
+		type === 'to' ? setToDate(val) : setFromDate(val);
+
+		if (dateClicked && !podError && !podLoading) {
+			setDateChanged(true);
+		} else {
+			setDateChanged(false);
+		}
+	};
+
+	const handleApplyClick = () => {
+		setDateChanged(false);
+		handleDateApplyClicked();
+	};
+
 
 	return (
 
@@ -49,7 +66,7 @@ const SelectDate: React.FC<IPros> = (
 						'.MuiOutlinedInput-notchedOutline': { md: { width: '92%' } }
 					}}
 					value={fromDate}
-					onChange={(newValue) => setFromDate(newValue)}
+					onChange={(newValue) => handleDateChanged(newValue, 'from')}
 					disableFuture={true}
 				/>
 			</div>
@@ -65,13 +82,13 @@ const SelectDate: React.FC<IPros> = (
 						'.MuiOutlinedInput-notchedOutline': { md: { width: '92%' } }
 					}}
 					value={toDate}
-					onChange={(newValue) => setToDate(newValue)}
+					onChange={(newValue) => handleDateChanged(newValue, 'to')}
 				/>
 			</div>
 
 			<div>
 				{
-					(dateClicked && !podError && !podLoading) ?
+					((dateClicked && !podError && !podLoading && !dateChanged)) ?
 
 						<Button
 							variant="outlined"
@@ -87,7 +104,7 @@ const SelectDate: React.FC<IPros> = (
 						<Button
 							variant="outlined"
 							className={`date-apply-btn ${(toDate && fromDate) ? '' : 'disabled-btn'}`}
-							onClick={handleDateApplyClicked}
+							onClick={handleApplyClick}
 						>
 							Apply
 						</Button>
