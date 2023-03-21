@@ -5,12 +5,6 @@
 	width: 100%;
 }
 
-/*.css-j0vej8-MuiPaper-root-MuiAppBar-root {
-	box-shadow: none !important;
-	border-bottom: 1px solid #DFDFDF;
-	background-color: #301134 !important;
-}*/
-
 .MuiAppBar-root {
 	box-shadow: none !important;
 	border-bottom: 1px solid #DFDFDF;
@@ -18,12 +12,13 @@
 }
 
 .portal-title{
-	font-weight: bolder;
-	font-size: 22px;
-	letter-spacing: 2px;
 	width: 100%;
 	text-align: center;
 	cursor: pointer;
+}
+
+.logo-jeet{
+	width: 100px;
 }
 
 .appbar-container .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
@@ -55,7 +50,6 @@
 .search-btn {
 	float: left;
 	width: 20%;
-	/*padding: 10px 10px;*/
 	height: 100%;
 	background: #ffffff;
 	color: white;

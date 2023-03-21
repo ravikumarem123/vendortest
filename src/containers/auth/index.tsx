@@ -6,7 +6,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../reduxInit/hooks';
-import { Loginhead, Partnership } from '../../assets';
+import { JeetLogo } from '../../assets';
 import { InputAdornment, IconButton } from '@mui/material';
 import { sagaActions } from '../../reduxInit/sagaActions';
 import './auth.css';
@@ -55,7 +55,7 @@ const Login = () => {
 
 			<div className='login-white-box'>
 				<div className='head-img-container'>
-					<img src={Partnership} alt='login' className='login-head-img' />
+					<img src={JeetLogo} alt='login' className='login-head-img' />
 				</div>
 
 				<h2 className='login-header'>Login</h2>
