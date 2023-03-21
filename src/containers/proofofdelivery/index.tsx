@@ -4,11 +4,13 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import CircularProgress from '@mui/material/CircularProgress';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import SelectDate from "./SelectDate";
 import { useAppDispatch, useAppSelector } from "../../reduxInit/hooks";
 import PodTable from "./PodTable";
 import { setSearchParams } from "./podSlice";
-import { getInvoiceList, getIsInvoiceLoading, getLastReadInvoice, getPodError, getSearchedText, isSearchClicked } from "./podSelector";
+import { getDefaultTime, getInvoiceList, getIsInvoiceLoading, getLastReadInvoice, getPodError, getSearchedText, isSearchClicked } from "./podSelector";
 import { sagaActions } from "../../reduxInit/sagaActions";
 import './pod.css';
 import { events, sendEvents } from "../../appEvents";
@@ -20,6 +22,7 @@ const ProofOfDelivery = () => {
 
 	const [fromDate, setFromDate] = useState<Dayjs | null>(null);
 	const [toDate, setToDate] = useState<Dayjs | null>(null);
+	const [isBttVisible, setIsBttVisible] = useState<boolean>(false);
 	const searchClicked = useAppSelector(isSearchClicked);
 	const searchText = useAppSelector(getSearchedText);
 	const [dateClicked, setDateClicked] = useState<boolean>(false);
@@ -28,17 +31,15 @@ const ProofOfDelivery = () => {
 	const invoiceList = useAppSelector(getInvoiceList);
 	const podError = useAppSelector(getPodError);
 	const podLoading = useAppSelector(getIsInvoiceLoading);
+	const getDefaultDates = useAppSelector(getDefaultTime);
 
 	const dispatch = useAppDispatch();
 
 
-	//useEffect(() => {
-	//	const payload = {
-	//		pageSize: 20
-	//	};
-	//	console.log("calling api from first time useEffect");
-	//	dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
-	//}, []);
+	useEffect(() => {
+		window.addEventListener('scroll', handleScroll);
+		return () => window.removeEventListener('scroll', handleScroll);
+	}, []);
 
 	useEffect(() => {
 		if (searchClicked) {
@@ -53,17 +54,17 @@ const ProofOfDelivery = () => {
 			setToDate(null);
 			setFromDate(null);
 			const payload = {
+				pageSize: 20
 			};
-			console.log("calling api from dateclicked useEffect");
 			dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
 		}
 	}, [dateClicked]);
 
 	const handleBackClickOnSearch = () => {
 		const payload = {
+			pageSize: 20
 		};
 		sendEvents(events.ON_CLICK_BACK_FROM_SEARCH, {})
-		console.log("calling api from handleBackClickOnSearch function");
 		dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
 		dispatch(setSearchParams({ clicked: false, text: '' }))
 		setDateClicked(false);
@@ -82,7 +83,6 @@ const ProofOfDelivery = () => {
 				startTime: dayjs(fromDate).startOf('day').valueOf(),
 				endTime: dayjs(toDate).endOf('day').valueOf(),
 			});
-			console.log("calling api from handleDateApplyClicked function");
 			dispatch({
 				type: sagaActions.FETCH_POD_DETAILS,
 				payload,
@@ -96,11 +96,24 @@ const ProofOfDelivery = () => {
 			startTime: fromDate ? dayjs(fromDate).startOf('day').valueOf() : null,
 			endTime: toDate ? dayjs(toDate).endOf('day').valueOf() : null,
 		};
-		console.log("calling api from fetchData function");
 		dispatch({
 			type: sagaActions.FETCH_POD_DETAILS,
 			payload,
 		});
+	};
+
+	const handleScroll = () => {
+		const scrollTop = window.pageYOffset;
+		const screenTop = window.innerHeight;
+		if (scrollTop > screenTop) {
+			setIsBttVisible(true);
+		} else {
+			setIsBttVisible(false);
+		}
+	};
+
+	const handleBackToTop = () => {
+		window.scrollTo({ top: 0, behavior: 'smooth' });
 	};
 
 	return (
@@ -138,9 +151,14 @@ const ProofOfDelivery = () => {
 				<div className="pod-data-container">
 					<p className="date-range-text">
 						{searchClicked && `Showing Data for Invoice ${searchText}`}
-						{(dateClicked && !podError && !podLoading) && `Showing Data from ${dayjs(fromDate).format('DD/MM/YYYY')} 
+						{(dateClicked && !podError && !podLoading) && `Showing Data from 
+						${dayjs(fromDate).format('DD/MM/YYYY')} 
 						to 
 						${dayjs(toDate).format('DD/MM/YYYY')}`}
+						{(!dateClicked && !searchClicked) && `Showing Data from 
+						${dayjs(getDefaultDates?.startTime).format('DD/MM/YYYY')} 
+						to 
+						${dayjs(getDefaultDates?.endTime).format('DD/MM/YYYY')}`}
 					</p>
 
 					{
@@ -153,6 +171,13 @@ const ProofOfDelivery = () => {
 							/>
 
 					}
+					{
+						isBttVisible &&
+						<div className="btt-container">
+							<p className="btt-text" onClick={handleBackToTop}>Back to top  <ExpandLessIcon className="btt-icon" /></p>
+						</div>
+					}
+
 
 				</div>
 

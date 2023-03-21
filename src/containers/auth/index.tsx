@@ -15,11 +15,11 @@ import { events, sendEvents } from '../../appEvents';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		backgroundColor: '#323F8B !important',
+		backgroundColor: '#301134 !important',
 		height: '50px',
 		width: '330px',
 		'&:hover': {
-			backgroundColor: '#323F8B',
+			backgroundColor: '#301134',
 		},
 	},
 }));

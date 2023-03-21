@@ -32,6 +32,8 @@ export interface PodInitialState {
     error: null | string;
     searchText: string;
     searchClicked: boolean;
+    defaultStartTime?: Dayjs | null;
+    defaultEndTime?: Dayjs | null;
 }
 export interface IResponse {
     success: boolean;

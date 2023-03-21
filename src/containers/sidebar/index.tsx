@@ -59,18 +59,22 @@ const SideBar = (props: Props) => {
 		navigate('/login');
 	};
 
+	const handleSideMenuClick = (menu: string) => {
+		navigate('/');
+		sendEvents(events.ON_CLICK_SIDE_MENU, { menu: menu });
+	};
 
 	const drawer = (
 		<div>
 			<Toolbar
-				sx={{ backgroundColor: '#323F8B', color: '#ffffff' }}
+				sx={{ backgroundColor: '#301134', color: '#ffffff' }}
 			>
 				<p
 					className='portal-title'
 					onClick={() => location.reload()}
 				>VP</p>
 			</Toolbar>
-			<Divider />
+			{/*<Divider />*/}
 			<List
 				sx={{
 					paddingTop: '0'
@@ -80,18 +84,17 @@ const SideBar = (props: Props) => {
 					key={'pod'}
 					disablePadding
 					sx={{
-						border: '1px solid #ffffff',
-						background: '#6F79AE',
-						color: '#ffffff',
+						border: '1px solid #301134',
+						borderTopWidth: 0,
+						background: '#FFFFFF',
+						color: '#301134',
 					}}
 				>
 					<ListItemButton>
-						<ListItemIcon>
-						</ListItemIcon>
 						<ListItemText
 							className='list-item-text'
 							primary={'Proof of Delivery'}
-							onClick={() => sendEvents(events.ON_CLICK_SIDE_MENU, { menu: 'pod' })}
+							onClick={() => handleSideMenuClick('pod')}
 						/>
 					</ListItemButton>
 				</ListItem>
@@ -110,7 +113,6 @@ const SideBar = (props: Props) => {
 				sx={{
 					width: { sm: `calc(100% - ${drawerWidth}px)` },
 					ml: { sm: `${drawerWidth}px` },
-					backgroundColor: '#ffffff'
 				}}
 			>
 				<Toolbar>
@@ -138,7 +140,6 @@ const SideBar = (props: Props) => {
 								display: 'flex',
 								flexDirection: 'column'
 							}}>
-								{/*<span style={{ fontSize: '8px' }}>Call for support</span>*/}
 								<span style={{ fontSize: '15px' }}>
 									<a href="#">08045654545</a>
 								</span>
@@ -185,7 +186,7 @@ const SideBar = (props: Props) => {
 								style: {
 									width: '280px',
 									minHeight: '130px',
-									border: '1px solid #323F8B'
+									border: '1px solid #301134'
 								},
 							}}
 						>
@@ -221,7 +222,6 @@ const SideBar = (props: Props) => {
 				sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
 				aria-label="mailbox folders"
 			>
-				{/* The implementation can be swapped with js to avoid SEO duplication of links. */}
 				<Drawer
 					container={container}
 					variant="temporary"
@@ -241,7 +241,7 @@ const SideBar = (props: Props) => {
 					variant="permanent"
 					sx={{
 						display: { xs: 'none', sm: 'block' },
-						'& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+						'& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, background: 'linear-gradient(180deg, #301134 0%, rgba(48, 17, 52, 0.8) 100%)' },
 					}}
 					open
 				>

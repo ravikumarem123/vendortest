@@ -8,13 +8,13 @@
 /*.css-j0vej8-MuiPaper-root-MuiAppBar-root {
 	box-shadow: none !important;
 	border-bottom: 1px solid #DFDFDF;
-	background-color: #323F8B !important;
+	background-color: #301134 !important;
 }*/
 
 .MuiAppBar-root {
 	box-shadow: none !important;
 	border-bottom: 1px solid #DFDFDF;
-	background-color: #323F8B !important;
+	background-color: #301134 !important;
 }
 
 .portal-title{
@@ -71,7 +71,7 @@
 }
   
 .search-btn:hover {
-	background: #323F8B;
+	background: #301134;
 }
 
 .search-icon{

@@ -9,6 +9,8 @@ const initialState: PodInitialState = {
     error: null,
     searchText: '',
     searchClicked: false,
+    defaultStartTime: null,
+    defaultEndTime: null,
 };
 
 const podSlice = createSlice({
@@ -32,6 +34,8 @@ const podSlice = createSlice({
                     ...payload.invoiceInfoList,
                 ];
             }
+            state.defaultEndTime = payload.endTime;
+            state.defaultStartTime = payload.startTime;
             state.loading = false;
             state.error = null;
             state.hasMore = payload?.prevPageLastInvId ? true : false;
