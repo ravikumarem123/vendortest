@@ -13,6 +13,7 @@ import { getDefaultTime, getInvoiceList, getIsInvoiceLoading, getLastReadInvoice
 import { sagaActions } from "../../reduxInit/sagaActions";
 import './pod.css';
 import { events, sendEvents } from "../../appEvents";
+import { setDialogOpen } from "../../common/commonSlice";
 
 
 
@@ -55,7 +56,10 @@ const ProofOfDelivery = () => {
 			const payload = {
 				pageSize: 20
 			};
-			dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
+			if (invoiceList.length < 1) {
+				dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
+			}
+
 		}
 	}, [dateClicked]);
 
@@ -72,6 +76,14 @@ const ProofOfDelivery = () => {
 	const handleDateApplyClicked = () => {
 		dispatch(setSearchParams({ clicked: false, text: '' }))
 		if (toDate && fromDate) {
+			//if (dayjs(toDate).isBefore(dayjs(fromDate))) {
+			//	const dialogPayload = {
+			//		title: 'Something went wrong',
+			//		content: 'please check your internet connection and try again.',
+			//	};
+			//	dispatch(setDialogOpen(dialogPayload));
+			//	return;
+			//}
 			setDateClicked(true);
 			const payload = {
 				startTime: dayjs(fromDate).startOf('day').valueOf(),
@@ -90,11 +102,17 @@ const ProofOfDelivery = () => {
 	};
 
 	const fetchData = () => {
+
 		let payload = {
 			lastReadInvoice,
-			startTime: fromDate ? dayjs(fromDate).startOf('day').valueOf() : null,
-			endTime: toDate ? dayjs(toDate).endOf('day').valueOf() : null,
+			startTime: (dateClicked && fromDate && !podError) ? dayjs(fromDate).startOf('day').valueOf() : null,
+			endTime: (dateClicked && toDate && !podError) ? dayjs(toDate).endOf('day').valueOf() : null,
 		};
+		if (podError) {
+			setFromDate(null);
+			setToDate(null);
+			setDateClicked(false);
+		}
 		dispatch({
 			type: sagaActions.FETCH_POD_DETAILS,
 			payload,
@@ -161,7 +179,9 @@ const ProofOfDelivery = () => {
 					</p>
 
 					{
-						(isInvoiceLoading && invoiceList.length < 1) ? <h1 style={{ textAlign: 'center' }}> <CircularProgress /></h1> :
+						(isInvoiceLoading && invoiceList.length < 1) ?
+							<h1 style={{ textAlign: 'center' }}> <CircularProgress /></h1>
+							:
 
 							<PodTable
 								lastReadInvoice={lastReadInvoice}

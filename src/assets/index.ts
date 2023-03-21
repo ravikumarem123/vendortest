@@ -3,5 +3,6 @@ import Partnership from './partnership.svg';
 import PodIcon from './pod.svg';
 import PodIcon2 from './pod3.svg';
 import JeetLogo from './Jeet-logo.svg';
+import NoInvoice from './noInvoice.svg';
 
-export { Loginhead, Partnership, PodIcon, PodIcon2, JeetLogo };
+export { Loginhead, Partnership, PodIcon, PodIcon2, JeetLogo, NoInvoice };
