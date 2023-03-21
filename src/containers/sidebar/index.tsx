@@ -2,14 +2,12 @@ import { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import CallIcon from '@mui/icons-material/Call';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import { useAppSelector } from '../../reduxInit/hooks';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -26,6 +24,7 @@ import SearchBox from './SearchBox';
 import { getUserDetails } from '../auth/authSelector';
 import './sidebar.css';
 import { events, sendEvents } from '../../appEvents';
+import { JeetLogo } from '../../assets';
 
 const drawerWidth = 240;
 
@@ -72,7 +71,7 @@ const SideBar = (props: Props) => {
 				<p
 					className='portal-title'
 					onClick={() => location.reload()}
-				>VP</p>
+				><img src={JeetLogo} alt='logo' className='logo-jeet' /></p>
 			</Toolbar>
 			{/*<Divider />*/}
 			<List
