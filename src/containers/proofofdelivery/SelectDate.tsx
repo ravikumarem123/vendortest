@@ -47,6 +47,8 @@ const SelectDate: React.FC<IPros> = (
 		handleDateApplyClicked();
 	};
 
+	const dateClassName = ((!toDate || !fromDate)) ? 'disabled-btn' : '';
+
 
 	return (
 
@@ -103,7 +105,7 @@ const SelectDate: React.FC<IPros> = (
 
 						<Button
 							variant="outlined"
-							className={`date-apply-btn ${(toDate && fromDate) ? '' : 'disabled-btn'}`}
+							className={`date-apply-btn ${dateClassName}`}
 							onClick={handleApplyClick}
 						>
 							Apply
