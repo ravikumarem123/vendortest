@@ -61,6 +61,13 @@
 	color: #ffffff !important;
 	background-color: #301134 !important;
 }
+
+.disabled-btn:hover {
+	background-color: #C5C5C5 !important;
+	color: #ffffff !important;
+	border-color: #C5C5C5 !important;
+}
+
 .back-icon{
 	margin-right: 20px;
 	cursor: pointer;

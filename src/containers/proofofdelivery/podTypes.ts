@@ -27,7 +27,7 @@ export interface Invoice {
 export interface PodInitialState {
     invoiceList: Array<Invoice>;
     loading: boolean;
-    prevPageLastInvId: string;
+    prevPageLastInvId: string | null;
     hasMore: boolean;
     error: null | string;
     searchText: string;

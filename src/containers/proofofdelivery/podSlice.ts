@@ -4,7 +4,7 @@ import { PodInitialState } from './podTypes';
 const initialState: PodInitialState = {
     invoiceList: [],
     loading: true,
-    prevPageLastInvId: '',
+    prevPageLastInvId: null,
     hasMore: true,
     error: null,
     searchText: '',

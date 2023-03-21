@@ -13,7 +13,7 @@ import dayjs from 'dayjs';
 import { PodIcon2, NoInvoice } from '../../assets';
 
 interface PodTablePros {
-	lastReadInvoice: string;
+	lastReadInvoice: string | null;
 	invoiceList: Array<Invoice>;
 	fetchData: () => void;
 }
