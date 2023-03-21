@@ -24,6 +24,13 @@ const getPodError = (state: RootState) => {
     return state.pod.error;
 };
 
+const getDefaultTime = (state: RootState) => {
+    return {
+        startTime: state.pod.defaultStartTime,
+        endTime: state.pod.defaultEndTime,
+    };
+};
+
 export {
     isSearchClicked,
     getSearchedText,
@@ -31,4 +38,5 @@ export {
     getLastReadInvoice,
     getIsInvoiceLoading,
     getPodError,
+    getDefaultTime,
 };

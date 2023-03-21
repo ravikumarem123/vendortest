@@ -27,7 +27,7 @@ const http = function (
     return new Promise((resolve, reject) => {
         fetch(url, method)
             .then(async (response) => {
-                console.log(response);
+                //console.log(response);
                 if (response.ok) {
                     return response.json();
                 }
