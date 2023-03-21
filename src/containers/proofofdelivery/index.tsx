@@ -151,10 +151,10 @@ const ProofOfDelivery = () => {
 					<p className="date-range-text">
 						{searchClicked && `Showing Data for Invoice ${searchText}`}
 						{(dateClicked && !podError && !podLoading) && `Showing Data from 
-						${dayjs(fromDate).format('DD/MM/YYYY')} 
+						${dayjs(getDefaultDates?.startTime).format('DD/MM/YYYY')} 
 						to 
-						${dayjs(toDate).format('DD/MM/YYYY')}`}
-						{(!dateClicked && !searchClicked) && `Showing Data from 
+						${dayjs(getDefaultDates?.endTime).format('DD/MM/YYYY')}`}
+						{(!dateClicked && !searchClicked && getDefaultDates?.startTime) && `Showing Data from 
 						${dayjs(getDefaultDates?.startTime).format('DD/MM/YYYY')} 
 						to 
 						${dayjs(getDefaultDates?.endTime).format('DD/MM/YYYY')}`}
