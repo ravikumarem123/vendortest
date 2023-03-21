@@ -26,7 +26,11 @@ export function* fetchPodDetails(
             apiRepository.getPodInfo,
             fetchInvoicePayload(payload)
         );
-        if (payload?.searchText || payload?.dateClicked) {
+        if (
+            payload?.searchText ||
+            payload?.dateClicked ||
+            !payload?.lastReadInvoice
+        ) {
             result.fresh = true;
         } else {
             result.fresh = false;

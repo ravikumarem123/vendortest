@@ -50,15 +50,18 @@ const ProofOfDelivery = () => {
 	}, [searchClicked]);
 
 	useEffect(() => {
+		/* this will run 
+		1. when user clicks remove button
+		2. when search button is clicked
+		*/
 		if (!dateClicked) {
 			setToDate(null);
 			setFromDate(null);
 			const payload = {
-				pageSize: 20
+				pageSize: 20,
+				lastReadInvoice
 			};
-			if (invoiceList.length < 1) {
-				dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
-			}
+			dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
 
 		}
 	}, [dateClicked]);
@@ -112,11 +115,12 @@ const ProofOfDelivery = () => {
 			setFromDate(null);
 			setToDate(null);
 			setDateClicked(false);
+		} else {
+			dispatch({
+				type: sagaActions.FETCH_POD_DETAILS,
+				payload,
+			});
 		}
-		dispatch({
-			type: sagaActions.FETCH_POD_DETAILS,
-			payload,
-		});
 	};
 
 	const handleScroll = () => {
