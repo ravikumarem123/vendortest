@@ -11,6 +11,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Invoice } from './podTypes';
 import dayjs from 'dayjs';
 import { PodIcon2, NoInvoice } from '../../assets';
+import { events, sendEvents } from '../../appEvents';
 
 interface PodTablePros {
 	lastReadInvoice: string | null;
@@ -19,6 +20,11 @@ interface PodTablePros {
 }
 
 const PodTable: React.FC<PodTablePros> = ({ lastReadInvoice, invoiceList, fetchData }) => {
+
+	const handlePodClick = () => {
+		sendEvents(events.ON_CLICK_POD_DOWNLOAD, {	
+		});
+	};
 
 	return (
 
@@ -76,8 +82,8 @@ const PodTable: React.FC<PodTablePros> = ({ lastReadInvoice, invoiceList, fetchD
 												<p style={{ fontWeight: '500' }}>{invoice.buyerInfo?.name ?? 'Buyer'}</p>
 												{invoice.buyerInfo?.addressDetails ?? 'dummy address'}
 											</TableCell>
-											<TableCell align="center" >
-												<a href={invoice.podUrl} target="_blank">
+											<TableCell align="center" onClick={handlePodClick} >
+												<a href={invoice.podUrl} target="_blank" >
 													{/*<SimCardDownloadOutlinedIcon style={{ fontSize: '40px', color: '#d32f2f' }} />*/}
 													<img alt='pod' src={PodIcon2} style={{ width: '45px' }} />
 												</a>

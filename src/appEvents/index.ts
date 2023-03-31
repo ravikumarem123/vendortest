@@ -12,6 +12,7 @@ const sendEvents = async (eventName: string, eventProperties: object) => {
         ...eventProperties,
     };
     const requestData = { event: 'hevo_events', properties };
+	DEV && console.log(JSON.stringify(requestData));
     !DEV &&
         fetch(webhookUrl, {
             method: 'POST',
