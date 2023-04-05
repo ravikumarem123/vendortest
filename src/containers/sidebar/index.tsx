@@ -55,6 +55,8 @@ const SideBar = (props: Props) => {
 	const handleLogout = () => {
 		sendEvents(events.ON_CLICK_LOGOUT, {});
 		localStorage.removeItem('vendorId');
+		localStorage.clear();
+		location.reload();
 		navigate('/login');
 	};
 
