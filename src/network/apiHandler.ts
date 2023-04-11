@@ -34,6 +34,7 @@ const http = function (
                 const text = await response.json();
                 sendEvents(events.HTTP_API_FAILURE, {
                     error: JSON.stringify(text),
+					url: url,
                 });
                 console.log(text);
                 throw new Error(text.error.error, {
@@ -49,6 +50,10 @@ const http = function (
                     reject({ error: response.error });
                 }
                 if (response.data) {
+					sendEvents(events.HTTP_API_SUCCESS, {
+						response: JSON.stringify(response.data),
+						url: url,
+					});
                     resolve(response.data);
                 } else {
                     resolve(response);
