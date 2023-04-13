@@ -51,7 +51,7 @@ const http = function (
                 }
                 if (response.data) {
 					sendEvents(events.HTTP_API_SUCCESS, {
-						response: JSON.stringify(response.data),
+						body: method?.body,
 						url: url,
 					});
                     resolve(response.data);
