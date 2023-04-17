@@ -22,7 +22,7 @@ declare module 'i18next' {
 i18n.use(initReactI18next).init({
     resources: resources,
     returnNull: false,
-    lng: 'kn', //default language
+    lng: 'en', //default language
     interpolation: {
         escapeValue: false,
     },
