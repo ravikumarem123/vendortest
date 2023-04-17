@@ -39,7 +39,7 @@ const SideBar = (props: Props) => {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const navigate = useNavigate();
 	const userDetails = useAppSelector(getUserDetails);
-	const { t, i18n } = useTranslation();
+	const { t } = useTranslation();
 
 	const handleDrawerToggle = () => {
 		setMobileOpen(!mobileOpen);
@@ -131,8 +131,6 @@ const SideBar = (props: Props) => {
 
 					<div className='appbar-content'>
 						<SearchBox />
-						<button onClick={() => i18n.changeLanguage('kn')}>kannada</button>
-						<button onClick={() => i18n.changeLanguage('en')}>English</button>
 					</div>
 
 					<BrowserView>
