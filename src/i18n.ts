@@ -26,7 +26,7 @@ i18n.use(initReactI18next).init({
     interpolation: {
         escapeValue: false,
     },
-    debug: true, // enable debug mode
+    debug: process.env.NODE_ENV === 'development' ? true : false, // enable debug mode
 });
 
 export default i18n;
