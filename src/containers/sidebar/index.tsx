@@ -6,6 +6,7 @@ import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import CallIcon from '@mui/icons-material/Call';
+import { useTranslation } from "react-i18next";
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import { useAppSelector } from '../../reduxInit/hooks';
@@ -38,6 +39,7 @@ const SideBar = (props: Props) => {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const navigate = useNavigate();
 	const userDetails = useAppSelector(getUserDetails);
+	const { t, i18n } = useTranslation();
 
 	const handleDrawerToggle = () => {
 		setMobileOpen(!mobileOpen);
@@ -94,7 +96,7 @@ const SideBar = (props: Props) => {
 					<ListItemButton>
 						<ListItemText
 							className='list-item-text'
-							primary={'Proof of Delivery'}
+							primary={t('sidebar.proofofdelivery')}
 							onClick={() => handleSideMenuClick('pod')}
 						/>
 					</ListItemButton>
@@ -129,6 +131,8 @@ const SideBar = (props: Props) => {
 
 					<div className='appbar-content'>
 						<SearchBox />
+						<button onClick={() => i18n.changeLanguage('kn')}>kannada</button>
+						<button onClick={() => i18n.changeLanguage('en')}>English</button>
 					</div>
 
 					<BrowserView>
@@ -144,7 +148,7 @@ const SideBar = (props: Props) => {
 								<span style={{ fontSize: '15px' }}>
 									<a href="#">08045654545</a>
 								</span>
-								<span style={{ fontSize: '12px' }}>8AM to 8PM Helpline</span>
+								<span style={{ fontSize: '12px' }}>8AM to 8PM {t('sidebar.helpline')}</span>
 							</div>
 
 						</div>
@@ -159,7 +163,7 @@ const SideBar = (props: Props) => {
 
 					<div className='user-icon-container'>
 						<div className='user-info'>
-							<p className='user-name'>Welcome</p>
+							<p className='user-name'>{t('sidebar.welcome')}</p>
 							<p className='user-business-name'>{userDetails?.businessName}</p>
 						</div>
 						<IconButton
@@ -194,15 +198,15 @@ const SideBar = (props: Props) => {
 							<table className='user-business-info'>
 								<tbody>
 									<tr>
-										<th>Business Name:</th>
+										<th>{t('sidebar.businessname')}:</th>
 										<td> {userDetails?.businessName} </td>
 									</tr>
 									<tr>
-										<th>Business Address:</th>
+										<th>{t('sidebar.businessaddress')}:</th>
 										<td>{userDetails?.businessAddress}</td>
 									</tr>
 									<tr>
-										<th>GST No.:</th>
+										<th>{t('sidebar.gstno')}:</th>
 										<td>{userDetails?.gstNumber}</td>
 									</tr>
 								</tbody>
@@ -210,7 +214,7 @@ const SideBar = (props: Props) => {
 							<hr style={{ width: '90%' }} />
 							<div className='logout-container' onClick={handleLogout}>
 								<LogoutIcon className='logout-icon' />
-								<span className='logout-text'>Logout</span>
+								<span className='logout-text'>{t('sidebar.logout')}</span>
 							</div>
 
 						</Menu>

@@ -1,16 +1,17 @@
 import { SyntheticEvent, useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 import SearchIcon from '@mui/icons-material/Search';
 import { useAppDispatch, useAppSelector } from '../../reduxInit/hooks';
 import { sagaActions } from '../../reduxInit/sagaActions';
 import { isSearchClicked } from '../proofofdelivery/podSelector';
 import { sendEvents, events } from '../../appEvents';
+import { useTranslation } from 'react-i18next';
 
 const SearchBox = () => {
 
 	const [searchText, setSearchText] = useState<string>('');
 	const dispatch = useAppDispatch();
 	const searchClicked = useAppSelector(isSearchClicked);
+	const { t } = useTranslation();
 
 	const handleSearchByInvoice = () => {
 		if (searchText.length > 0) {
@@ -56,7 +57,7 @@ const SearchBox = () => {
 			<input
 				type="text"
 				className="search-inp"
-				placeholder="Search by Invoice No."
+				placeholder={t('pod.searchbyinvoiceno')}
 				name="search"
 				value={searchText}
 				onChange={(e) => setSearchText(e.target.value)}

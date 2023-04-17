@@ -1,9 +1,10 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
-import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
+import { BrowserView } from 'react-device-detect';
+import { useTranslation } from 'react-i18next';
 
 interface IPros {
 	fromDate: Dayjs | null;
@@ -31,6 +32,7 @@ const SelectDate: React.FC<IPros> = (
 	}) => {
 
 	const [dateChanged, setDateChanged] = useState(false);
+	const { t } = useTranslation();
 
 	const handleDateChanged = (val: Dayjs | null, type: string) => {
 		type === 'to' ? setToDate(val) : setFromDate(val);
@@ -56,7 +58,7 @@ const SelectDate: React.FC<IPros> = (
 			className='datepicker-container'
 		>
 			<BrowserView>
-				Filter Data from:
+				{t('pod.filterdatafrom')}:
 			</BrowserView>
 			<div>
 				<DatePicker
@@ -98,7 +100,7 @@ const SelectDate: React.FC<IPros> = (
 							onClick={() => setDateClicked(false)}
 							startIcon={<CloseIcon />}
 						>
-							Remove
+							{t('pod.remove')}
 						</Button>
 
 						:
@@ -108,7 +110,7 @@ const SelectDate: React.FC<IPros> = (
 							className={`date-apply-btn ${dateClassName}`}
 							onClick={handleApplyClick}
 						>
-							Apply
+							{t('pod.apply')}
 						</Button>
 				}
 			</div>
