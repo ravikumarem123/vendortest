@@ -1,0 +1,38 @@
+{
+	"auth": {
+		"login": "Login",
+		"email": "E-mail",
+		"password": "Password",
+		"enteremail": "Enter email",
+		"enterpassword": "Enter password"
+	},
+	"sidebar": {
+		"helpline": "Helpline",
+		"welcome": "Welcome",
+		"businessname": "Business Name",
+		"businessaddress": "Business Address",
+		"gstno": "GST No.",
+		"logout": "Logout",
+		"proofofdelivery": "Proof of Delivery"
+	},
+	"pod": {
+		"searchbyinvoiceno": "Search by Invoice No.",
+		"filterdatafrom": "Filter Data from",
+		"remove": "Remove",
+		"apply": "Apply",
+		"noinvoicesfound": "No Invoices Found",
+		"table": {
+			"pod": "PROOF OF DELIVERY",
+			"sno": "S NO.",
+			"invoiceno": "INVOICE NO.",
+			"invoiceamount": "INVOICE AMOUNT",
+			"deliverydate": "DELIVERY DATE",
+			"goodsda": "GOODS DELIVERED AT"
+		},
+		"backtotop": "Back to top ",
+		"showingsr": "Showing Search Results",
+		"showingdf": "Showing Data from",
+		"showingdfi": "Showing Data for Invoice",
+		"to": "to"
+	}
+}
