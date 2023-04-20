@@ -61,6 +61,9 @@ const Login = () => {
 				</div>
 
 				<h2 className='login-header'>{t('login')}</h2>
+
+				<p>testing</p>
+				<p>testing</p>
 				<p>testing</p>
 
 				<form onSubmit={handleLogin}>
