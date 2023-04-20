@@ -4,13 +4,14 @@ import Button from '@mui/material/Button';
 import { makeStyles } from '@mui/styles';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { useTranslation } from "react-i18next";
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../reduxInit/hooks';
 import { JeetLogo } from '../../assets';
 import { InputAdornment, IconButton } from '@mui/material';
 import { sagaActions } from '../../reduxInit/sagaActions';
-import './auth.css';
 import { events, sendEvents } from '../../appEvents';
+import './auth.css';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,6 +32,7 @@ const Login = () => {
 	const dispatch = useAppDispatch();
 	const buttonClasses = useStyles();
 	const navigate = useNavigate();
+	const { t } = useTranslation();
 
 	const handleClickShowPassword = () => setShowPassword(!showPassword);
 	const handleMouseDownPassword = () => setShowPassword(!showPassword);
@@ -64,7 +66,7 @@ const Login = () => {
 				<form onSubmit={handleLogin}>
 					<div className='input-fields'>
 						<TextField
-							label="E-mail"
+							label={t('auth.email')}
 							variant="outlined"
 							InputLabelProps={{
 								shrink: true,
@@ -72,7 +74,7 @@ const Login = () => {
 							inputProps={{
 								style: { width: '300px' },
 							}}
-							placeholder="Enter email"
+							placeholder={t('auth.enteremail')}
 							className='login-input'
 							sx={{ display: 'block' }}
 							value={emailId}
@@ -81,7 +83,7 @@ const Login = () => {
 						/>
 
 						<TextField
-							label="Password"
+							label={t('auth.password')}
 							type={showPassword ? "text" : "password"}
 							variant="outlined"
 							InputLabelProps={{
@@ -103,7 +105,7 @@ const Login = () => {
 							inputProps={{
 								style: { width: '255px' },
 							}}
-							placeholder="Enter password"
+							placeholder={t('auth.enterpassword')}
 							className='login-input'
 							sx={{ display: 'block' }}
 							value={password}
@@ -115,7 +117,7 @@ const Login = () => {
 							variant="contained"
 							type='submit'
 							classes={{ root: buttonClasses.root }}
-						>Login</Button>
+						>{t('auth.login')}</Button>
 					</div>
 				</form>
 			</div >

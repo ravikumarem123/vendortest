@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { store } from './reduxInit/store';
 import App from './App';
 import './index.css';
+import './i18n.ts';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<Provider store={store}>

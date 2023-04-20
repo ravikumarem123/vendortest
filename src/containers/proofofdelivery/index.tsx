@@ -5,6 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import { useTranslation } from "react-i18next";
 import SelectDate from "./SelectDate";
 import { useAppDispatch, useAppSelector } from "../../reduxInit/hooks";
 import PodTable from "./PodTable";
@@ -13,7 +14,6 @@ import { getDefaultTime, getInvoiceList, getIsInvoiceLoading, getLastReadInvoice
 import { sagaActions } from "../../reduxInit/sagaActions";
 import './pod.css';
 import { events, sendEvents } from "../../appEvents";
-import { setDialogOpen } from "../../common/commonSlice";
 
 
 
@@ -32,6 +32,7 @@ const ProofOfDelivery = () => {
 	const podError = useAppSelector(getPodError);
 	const podLoading = useAppSelector(getIsInvoiceLoading);
 	const getDefaultDates = useAppSelector(getDefaultTime);
+	const { t } = useTranslation();
 
 	const dispatch = useAppDispatch();
 
@@ -171,14 +172,14 @@ const ProofOfDelivery = () => {
 
 				<div className="pod-data-container">
 					<p className="date-range-text">
-						{searchClicked && `Showing Data for Invoice ${searchText}`}
-						{(dateClicked && !podError && !podLoading) && `Showing Data from 
+						{searchClicked && `${t('pod.showingdfi')} ${searchText}`}
+						{(dateClicked && !podError && !podLoading) && `${t('pod.showingdf')} 
 						${dayjs(getDefaultDates?.startTime).format('DD/MM/YYYY')} 
-						to 
+						${t('pod.to')} 
 						${dayjs(getDefaultDates?.endTime).format('DD/MM/YYYY')}`}
-						{(!dateClicked && !searchClicked && getDefaultDates?.startTime) && `Showing Data from 
+						{(!dateClicked && !searchClicked && getDefaultDates?.startTime) && `${t('pod.showingdf')} 
 						${dayjs(getDefaultDates?.startTime).format('DD/MM/YYYY')} 
-						to 
+						${t('pod.to')}  
 						${dayjs(getDefaultDates?.endTime).format('DD/MM/YYYY')}`}
 					</p>
 
@@ -197,7 +198,7 @@ const ProofOfDelivery = () => {
 					{
 						isBttVisible &&
 						<div className="btt-container">
-							<p className="btt-text" onClick={handleBackToTop}>Back to top  <ExpandLessIcon className="btt-icon" /></p>
+							<p className="btt-text" onClick={handleBackToTop}>{t('pod.backtotop')}  <ExpandLessIcon className="btt-icon" /></p>
 						</div>
 					}
 
