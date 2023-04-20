@@ -58,7 +58,7 @@ const Login = () => {
 					<img src={JeetLogo} alt='login' className='login-head-img' />
 				</div>
 
-				<h2 className='login-header'>Login</h2>
+				<h2 className='login-header'>Loginn</h2>
 
 
 				<form onSubmit={handleLogin}>
