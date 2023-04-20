@@ -2,14 +2,15 @@ import React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
+import dayjs from 'dayjs';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useTranslation } from 'react-i18next';
 import { Invoice } from './podTypes';
-import dayjs from 'dayjs';
 import { PodIcon2, NoInvoice } from '../../assets';
 import { events, sendEvents } from '../../appEvents';
 
@@ -21,8 +22,10 @@ interface PodTablePros {
 
 const PodTable: React.FC<PodTablePros> = ({ lastReadInvoice, invoiceList, fetchData }) => {
 
+	const { t } = useTranslation();
+
 	const handlePodClick = () => {
-		sendEvents(events.ON_CLICK_POD_DOWNLOAD, {	
+		sendEvents(events.ON_CLICK_POD_DOWNLOAD, {
 		});
 	};
 
@@ -56,12 +59,12 @@ const PodTable: React.FC<PodTablePros> = ({ lastReadInvoice, invoiceList, fetchD
 							<Table sx={{ minWidth: 650 }} aria-label="simple table"  >
 								<TableHead>
 									<TableRow>
-										<TableCell align="center">S NO.</TableCell>
-										<TableCell align="center">INVOICE NO.</TableCell>
-										<TableCell align="center">INVOICE AMOUNT</TableCell>
-										<TableCell align="center">DELIVERY DATE</TableCell>
-										<TableCell align="center">GOODS DELIVERED AT</TableCell>
-										<TableCell align="center">PROOF OF DELIVERY</TableCell>
+										<TableCell align="center">{t('pod.table.sno')}</TableCell>
+										<TableCell align="center">{t('pod.table.invoiceno')}</TableCell>
+										<TableCell align="center">{t('pod.table.invoiceamount')}</TableCell>
+										<TableCell align="center">{t('pod.table.deliverydate')}</TableCell>
+										<TableCell align="center">{t('pod.table.goodsda')}</TableCell>
+										<TableCell align="center">{t('pod.table.pod')}</TableCell>
 									</TableRow>
 								</TableHead>
 								<TableBody>
@@ -97,7 +100,7 @@ const PodTable: React.FC<PodTablePros> = ({ lastReadInvoice, invoiceList, fetchD
 				) : (
 					<div className='no-record-container'>
 						<img src={NoInvoice} alt='no-invoice' className='no-invoice-img' />
-						<p className='no-invoice-text'>No Invoices Found</p>
+						<p className='no-invoice-text'>{t('pod.noinvoicesfound')}</p>
 					</div>
 				)
 			}
