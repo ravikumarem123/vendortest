@@ -49,4 +49,13 @@ const fetchLoginPayload = (params: ILoginParams) => {
     };
 };
 
-export { getJCLedgerPayload, fetchInvoicePayload, fetchLoginPayload };
+const fetchGetUTRPayload = () => {
+    return {};
+};
+
+export {
+    getJCLedgerPayload,
+    fetchInvoicePayload,
+    fetchLoginPayload,
+    fetchGetUTRPayload,
+};

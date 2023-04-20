@@ -1,14 +1,17 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { fetchInvoicePayload } from '../../network/createPayload';
+import {
+    fetchInvoicePayload,
+    fetchGetUTRPayload,
+} from '../../network/createPayload';
 import apiRepository from '../../network/apiRepository';
 import { sagaActions } from '../../reduxInit/sagaActions';
 import { History } from 'history';
-import { setPodDetails, setPodError, setPodLoading } from './podSlice';
+import { setUTRList, setPaymentError, setPaymentLoading } from './paymentSlice';
 import { setSearchParams } from '../../common/commonSlice';
-import { IResponse, ActionResult, Props, Error } from './podTypes';
+import { IResponse, ActionResult, Props, Error } from './paymentTypes';
 import { setDialogOpen } from '../../common/commonSlice';
 
-export function* fetchPodDetails(
+export function* fetchPaymentDetails(
     history: History,
     action: ActionResult<Props>
 ) {
@@ -17,10 +20,10 @@ export function* fetchPodDetails(
     try {
         const { payload } = action;
         if (payload) payload.vendorId = testingVendorId;
-        yield put(setPodLoading());
+        yield put(setPaymentLoading());
         const result: IResponse = yield call(
-            apiRepository.getPodInfo,
-            fetchInvoicePayload(payload)
+            apiRepository.getUTRList,
+            fetchGetUTRPayload()
         );
         if (
             payload?.searchText ||
@@ -36,10 +39,10 @@ export function* fetchPodDetails(
                 setSearchParams({ clicked: true, text: payload?.searchText })
             );
         }
-        yield put(setPodDetails(result));
+        yield put(setUTRList(result));
     } catch (e: any) {
         console.log(e);
-        yield put(setPodError(e?.error?.message));
+        yield put(setPaymentError(e?.error?.message));
         if (e?.error?.message === 'Failed to fetch') {
             const dialogPayload = {
                 title: 'Something went wrong',
@@ -81,6 +84,10 @@ export function* fetchPodDetails(
     }
 }
 
-export default function* podSaga(history: History) {
-    yield takeLatest(sagaActions.FETCH_POD_DETAILS, fetchPodDetails, history);
+export default function* paymentSaga(history: History) {
+    yield takeLatest(
+        sagaActions.FETCH_PAYMENT_DETAILS,
+        fetchPaymentDetails,
+        history
+    );
 }
