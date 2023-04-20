@@ -60,8 +60,8 @@ const Login = () => {
 					<img src={JeetLogo} alt='login' className='login-head-img' />
 				</div>
 
-				<h2 className='login-header'>Loginn</h2>
-
+				<h2 className='login-header'>{t('login')}</h2>
+				<p>testing</p>
 
 				<form onSubmit={handleLogin}>
 					<div className='input-fields'>
