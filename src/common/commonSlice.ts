@@ -6,6 +6,11 @@ const initialState: ICommonState = {
     dialogTitle: '',
     dialogContent: '',
     dialogLogout: false,
+    searchText: '',
+    searchClicked: false,
+    fromDate: null,
+    toDate: null,
+    dateClicked: false,
 };
 
 const commonSlice = createSlice({
@@ -23,8 +28,28 @@ const commonSlice = createSlice({
             state.dialogContent = '';
             state.dialogOpen = false;
         },
+        setSearchParams: (state, { payload }) => {
+            state.searchClicked = payload.clicked;
+            state.searchText = payload.text;
+        },
+        setFromDate: (state, { payload }) => {
+            state.fromDate = payload.fromDate;
+        },
+        setToDate: (state, { payload }) => {
+            state.toDate = payload.toDate;
+        },
+        setDateClicked: (state, { payload }) => {
+            state.dateClicked = payload;
+        },
     },
 });
 
-export const { setDialogOpen, setDialogClose } = commonSlice.actions;
+export const {
+    setDialogOpen,
+    setDialogClose,
+    setSearchParams,
+    setFromDate,
+    setToDate,
+    setDateClicked,
+} = commonSlice.actions;
 export default commonSlice.reducer;

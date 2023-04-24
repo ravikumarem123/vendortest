@@ -1,5 +1,21 @@
 import { RootState } from '../reduxInit/store';
 
+const isSearchClicked = (state: RootState) => {
+    return state.common.searchClicked;
+};
+
+const getSearchedText = (state: RootState) => {
+    return state.common.searchText;
+};
+
+const getFromDate = (state: RootState) => {
+    return state.common.fromDate;
+};
+
+const getToDate = (state: RootState) => {
+    return state.common.toDate;
+};
+
 const getDialogDetails = (state: RootState) => {
     return {
         title: state.common.dialogTitle,
@@ -9,4 +25,10 @@ const getDialogDetails = (state: RootState) => {
     };
 };
 
-export { getDialogDetails };
+export {
+    getDialogDetails,
+    isSearchClicked,
+    getSearchedText,
+    getFromDate,
+    getToDate,
+};

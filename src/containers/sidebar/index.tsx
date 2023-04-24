@@ -12,7 +12,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import { useAppSelector } from '../../reduxInit/hooks';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import Toolbar from '@mui/material/Toolbar';
 import Menu from '@mui/material/Menu';
@@ -36,10 +36,13 @@ interface Props {
 const SideBar = (props: Props) => {
 	const { window } = props;
 	const [mobileOpen, setMobileOpen] = useState(false);
+	const { pathname } = useLocation();
+	const [activeTab, setActiveTab] = useState(pathname.substring(1));
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const navigate = useNavigate();
 	const userDetails = useAppSelector(getUserDetails);
 	const { t } = useTranslation();
+	console.log(location);
 
 	const handleDrawerToggle = () => {
 		setMobileOpen(!mobileOpen);
@@ -63,7 +66,8 @@ const SideBar = (props: Props) => {
 	};
 
 	const handleSideMenuClick = (menu: string) => {
-		navigate('/');
+		setActiveTab(menu);
+		navigate(`/${menu}`);
 		sendEvents(events.ON_CLICK_SIDE_MENU, { menu: menu });
 	};
 
@@ -86,18 +90,26 @@ const SideBar = (props: Props) => {
 				<ListItem
 					key={'pod'}
 					disablePadding
-					sx={{
-						border: '1px solid #301134',
-						borderTopWidth: 0,
-						background: '#FFFFFF',
-						color: '#301134',
-					}}
+					className={(activeTab === 'pod' || activeTab === '') ? 'active-tab' : 'default-tab'}
+					onClick={() => handleSideMenuClick('pod')}
 				>
 					<ListItemButton>
 						<ListItemText
 							className='list-item-text'
 							primary={t('sidebar.proofofdelivery')}
-							onClick={() => handleSideMenuClick('pod')}
+						/>
+					</ListItemButton>
+				</ListItem>
+				<ListItem
+					key={'payment'}
+					disablePadding
+					className={activeTab === 'payment' ? 'active-tab' : 'default-tab'}
+					onClick={() => handleSideMenuClick('payment')}
+				>
+					<ListItemButton>
+						<ListItemText
+							className='list-item-text'
+							primary={t('sidebar.payment')}
 						/>
 					</ListItemButton>
 				</ListItem>

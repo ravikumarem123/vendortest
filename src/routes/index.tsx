@@ -8,11 +8,11 @@ import CustomHistoryRouter from './CustomHistoryRouter';
 import ProofOfDelivery from '../containers/proofofdelivery';
 import SideBar from '../containers/sidebar';
 import ErrorDialog from '../common/ErrorDialog';
-import 'react-toastify/dist/ReactToastify.css';
 import { history } from '../reduxInit/store';
 import PrivateRoutes from './PrivateRoutes';
 import CheckedRoutes from './CheckedRoutes';
-
+import Payments from '../containers/payments';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AppRoutes = () => {
 
@@ -26,6 +26,8 @@ const AppRoutes = () => {
 				>
 					<Route path='/' element={<SideBar />}>
 						<Route path='/' element={<ProofOfDelivery />} />
+						<Route path='/pod' element={<ProofOfDelivery />} />
+						<Route path='/payment' element={<Payments />} />
 					</Route>
 				</Route>
 				<Route

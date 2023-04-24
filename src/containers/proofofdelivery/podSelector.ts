@@ -1,13 +1,5 @@
 import type { RootState } from '../../reduxInit/store';
 
-const isSearchClicked = (state: RootState) => {
-    return state.pod.searchClicked;
-};
-
-const getSearchedText = (state: RootState) => {
-    return state.pod.searchText;
-};
-
 const getInvoiceList = (state: RootState) => {
     return state.pod.invoiceList;
 };
@@ -32,8 +24,6 @@ const getDefaultTime = (state: RootState) => {
 };
 
 export {
-    isSearchClicked,
-    getSearchedText,
     getInvoiceList,
     getLastReadInvoice,
     getIsInvoiceLoading,

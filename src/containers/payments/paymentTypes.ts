@@ -24,10 +24,10 @@ export interface Invoice {
     buyerInfo: IBuyerInfo;
 }
 
-export interface PodInitialState {
-    invoiceList: Array<Invoice>;
+export interface PaymentInitialState {
+    paymentList: Array<Invoice>;
     loading: boolean;
-    prevPageLastInvId: string | null;
+    prevPageLastPaymentId: string | null;
     hasMore: boolean;
     error: null | string;
     defaultStartTime?: Dayjs | null;

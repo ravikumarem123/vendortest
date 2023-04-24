@@ -1,8 +1,9 @@
 import { SyntheticEvent, useEffect, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
+import { useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../reduxInit/hooks';
 import { sagaActions } from '../../reduxInit/sagaActions';
-import { isSearchClicked } from '../proofofdelivery/podSelector';
+import { isSearchClicked } from '../../common/commonSelector';
 import { sendEvents, events } from '../../appEvents';
 import { useTranslation } from 'react-i18next';
 
@@ -12,6 +13,7 @@ const SearchBox = () => {
 	const dispatch = useAppDispatch();
 	const searchClicked = useAppSelector(isSearchClicked);
 	const { t } = useTranslation();
+	const { pathname } = useLocation();
 
 	const handleSearchByInvoice = () => {
 		if (searchText.length > 0) {
@@ -24,17 +26,6 @@ const SearchBox = () => {
 					searchClicked: true
 				}
 			});
-		} else {
-			//toast.error("Invalid Invoice number", {
-			//	position: "top-right",
-			//	autoClose: 3000,
-			//	hideProgressBar: false,
-			//	closeOnClick: true,
-			//	pauseOnHover: true,
-			//	draggable: true,
-			//	progress: undefined,
-			//	theme: "light",
-			//});
 		}
 	};
 
@@ -49,6 +40,15 @@ const SearchBox = () => {
 		}
 	}, [searchClicked]);
 
+	const getSearchPlaceholder = (): string => {
+		if (pathname === '/pod' || pathname === '/') {
+			return 'pod.searchbyinvoiceno';
+		} else if (pathname === '/payment') {
+			return 'payment.searchbyutr';
+		}
+		return 'pod.searchbyinvoiceno';
+	}
+
 	return (
 		<form
 			className='search-box-div'
@@ -57,7 +57,7 @@ const SearchBox = () => {
 			<input
 				type="text"
 				className="search-inp"
-				placeholder={t('pod.searchbyinvoiceno')}
+				placeholder={t(getSearchPlaceholder())}
 				name="search"
 				value={searchText}
 				onChange={(e) => setSearchText(e.target.value)}

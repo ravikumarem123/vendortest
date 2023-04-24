@@ -83,10 +83,7 @@
 }
 
 .report-issue-container {
-	/*border: 1px solid #ffffff;*/
-	/*background-color: #ffffff;*/
 	display: flex;
-	/*border-radius: 2px;*/
 	align-items: center;
 	padding: 7px 8px;
     min-width: 180px;
@@ -229,3 +226,14 @@
 		margin-right: 0px;
 	}
   }
+
+.active-tab{
+	border: 1px solid #301134;
+	border-top-width: 0;
+	background: #ffffff;
+	color: #301134;
+}
+
+.default-tab {
+	color: #ffffff;
+}

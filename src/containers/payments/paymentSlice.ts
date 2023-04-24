@@ -1,34 +1,34 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { PodInitialState } from './podTypes';
+import { PaymentInitialState } from './paymentTypes';
 
-const initialState: PodInitialState = {
-    invoiceList: [],
+const initialState: PaymentInitialState = {
+    paymentList: [],
     loading: true,
-    prevPageLastInvId: null,
+    prevPageLastPaymentId: null,
     hasMore: true,
     error: null,
     defaultStartTime: null,
     defaultEndTime: null,
 };
 
-const podSlice = createSlice({
-    name: 'podReducer',
+const paymentSlice = createSlice({
+    name: 'paymentReducer',
     initialState,
     reducers: {
-        setPodDetails: (state, { payload }) => {
+        setUTRList: (state, { payload }) => {
             if (payload?.fresh) {
-                state.invoiceList = payload.invoiceInfoList;
+                state.paymentList = payload.invoiceInfoList;
             } else if (
                 payload?.prevPageLastInvId &&
                 payload?.prevPageLastInvId.length > 1
             ) {
-                state.invoiceList = [
-                    ...state.invoiceList,
+                state.paymentList = [
+                    ...state.paymentList,
                     ...payload.invoiceInfoList,
                 ];
             } else {
-                state.invoiceList = [
-                    ...state.invoiceList,
+                state.paymentList = [
+                    ...state.paymentList,
                     ...payload.invoiceInfoList,
                 ];
             }
@@ -37,17 +37,18 @@ const podSlice = createSlice({
             state.loading = false;
             state.error = null;
             state.hasMore = payload?.prevPageLastInvId ? true : false;
-            state.prevPageLastInvId = payload?.prevPageLastInvId;
+            state.prevPageLastPaymentId = payload?.prevPageLastInvId;
         },
-        setPodError: (state, { payload }) => {
+        setPaymentError: (state, { payload }) => {
             state.loading = false;
             state.error = payload;
         },
-        setPodLoading: (state) => {
+        setPaymentLoading: (state) => {
             state.loading = true;
         },
     },
 });
 
-export const { setPodDetails, setPodError, setPodLoading } = podSlice.actions;
-export default podSlice.reducer;
+export const { setUTRList, setPaymentError, setPaymentLoading } =
+    paymentSlice.actions;
+export default paymentSlice.reducer;
