@@ -4,27 +4,15 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { IUTRItem } from './paymentTypes';
 
-
-function createData(
-	title: string,
-	credit: string,
-	debit: string,
-	netamount: string,
-) {
-	return { title, credit, debit, netamount };
+interface IProps {
+	items: Array<IUTRItem>;
+	amount: number;
 }
 
-const rows = [
-	createData('Invoice', '₹ 25,02,640.92', '-', '₹ 25,02,640.92'),
-	createData('Debit Notes', '-', '₹ 30,000', '-₹ 30,000'),
-	createData('CCOG Debit Notes', '-', '₹0', '-₹ 0'),
-	createData('TDS', '-', '₹ 14,000', '-₹ 14,000'),
-	createData('Total Amount', '', '', '₹ 24,58,640.92'),
-];
+const PaymentAdviceTable: React.FC<IProps> = ({ items, amount }) => {
 
-
-const PaymentAdviceTable = () => {
 	return (
 		<TableContainer>
 			<Table aria-label="simple table">
@@ -37,19 +25,27 @@ const PaymentAdviceTable = () => {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{rows.map((row) => (
+					{items.map((row) => (
 						<TableRow
 							key={row.title}
 							sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
 						>
-							<TableCell component="th" scope="row" className='p-table-cell-title'>
+							<TableCell scope="row">
 								{row.title}
 							</TableCell>
 							<TableCell align="center">{row.credit}</TableCell>
 							<TableCell align="center">{row.debit}</TableCell>
-							<TableCell align="right">{row.netamount}</TableCell>
+							<TableCell align="right">{row.amount}</TableCell>
 						</TableRow>
 					))}
+					<TableRow className='p-table-cell-row'>
+						<TableCell component="th" scope="row" className='p-table-cell-title'>
+							Total Amount
+						</TableCell>
+						<TableCell align='center'></TableCell>
+						<TableCell align='center'></TableCell>
+						<TableCell align='right' style={{ fontWeight: 500 }}>{amount}</TableCell>
+					</TableRow>
 				</TableBody>
 			</Table>
 		</TableContainer>

@@ -11,7 +11,7 @@ import Paper from '@mui/material/Paper';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTranslation } from 'react-i18next';
 import { Invoice } from './podTypes';
-import { PodIcon2, NoInvoice } from '../../assets';
+import { NoInvoice, PodIcon3 } from '../../assets';
 import { events, sendEvents } from '../../appEvents';
 
 interface PodTablePros {
@@ -26,6 +26,7 @@ const PodTable: React.FC<PodTablePros> = ({ lastReadInvoice, invoiceList, fetchD
 
 	const handlePodClick = () => {
 		sendEvents(events.ON_CLICK_POD_DOWNLOAD, {
+			screen: 'POD'
 		});
 	};
 
@@ -76,7 +77,7 @@ const PodTable: React.FC<PodTablePros> = ({ lastReadInvoice, invoiceList, fetchD
 											<TableCell align="center" style={{ fontWeight: 'bold' }}>{index + 1}</TableCell>
 											<TableCell align="center" style={{ fontWeight: 'bold' }}>{invoice.number}</TableCell>
 											<TableCell align="center" style={{ fontWeight: 'bold' }}>
-												&#8377;{new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(invoice.amount)}
+												&#8377;{new Intl.NumberFormat('en-IN', { minimumFractionDigits: 0 }).format(invoice.amount)}
 											</TableCell>
 											<TableCell align="center">
 												{dayjs(invoice.deliveryDate).format('DD/MM/YYYY')}
@@ -88,7 +89,7 @@ const PodTable: React.FC<PodTablePros> = ({ lastReadInvoice, invoiceList, fetchD
 											<TableCell align="center" onClick={handlePodClick} >
 												<a href={invoice.podUrl} target="_blank" >
 													{/*<SimCardDownloadOutlinedIcon style={{ fontSize: '40px', color: '#d32f2f' }} />*/}
-													<img alt='pod' src={PodIcon2} style={{ width: '45px' }} />
+													<img alt='pod' src={PodIcon3} style={{ width: '45px' }} />
 												</a>
 											</TableCell>
 										</TableRow>

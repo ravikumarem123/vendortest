@@ -1,6 +1,10 @@
 import { Dayjs } from 'dayjs';
 import { Md5 } from 'ts-md5';
 import { Props } from '../containers/proofofdelivery/podTypes';
+import {
+    IUTRDetailsPayload,
+    IUTRPayload,
+} from '../containers/payments/paymentTypes';
 
 const getJCLedgerPayload = (
     businessId: string,
@@ -49,13 +53,35 @@ const fetchLoginPayload = (params: ILoginParams) => {
     };
 };
 
-const fetchGetUTRPayload = () => {
-    return {};
+const fetchGetUTRListPayload = (params: IUTRPayload) => {
+    return {
+        vendorId: params.vendorId,
+        startTime: params.startTime,
+        endTime: params.endTime,
+        pageNumber: params.pageNumber,
+        utr: params.searchText,
+    };
+};
+
+const fetchUTRInfoPayload = (params: IUTRDetailsPayload) => {
+    return {
+        vendorId: params.vendorId,
+        utr: params.utr,
+    };
+};
+
+const fetchUTRIngestionPayload = (params: IUTRDetailsPayload) => {
+	return {
+        vendorId: params.vendorId,
+        utr: params.utr,
+    };
 };
 
 export {
     getJCLedgerPayload,
     fetchInvoicePayload,
     fetchLoginPayload,
-    fetchGetUTRPayload,
+    fetchGetUTRListPayload,
+    fetchUTRInfoPayload,
+	fetchUTRIngestionPayload,
 };

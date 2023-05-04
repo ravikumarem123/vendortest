@@ -34,6 +34,7 @@
 		"showingsr": "Showing Search Results",
 		"showingdf": "Showing Data from",
 		"showingdfi": "Showing Data for Invoice",
+		"showingdfutr": "Showing Data for UTR",
 		"to": "to"
 	},
 	"payment": {

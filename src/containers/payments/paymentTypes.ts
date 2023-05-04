@@ -1,4 +1,4 @@
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { Action } from 'redux';
 
 export interface VendorAddress {
@@ -15,24 +15,57 @@ export interface IBuyerInfo {
     addressDetails: string;
 }
 
-export interface Invoice {
-    number: string;
-    podUrl: string;
-    invoiceDate: Dayjs;
-    deliveryDate: Dayjs;
-    amount: number;
-    buyerInfo: IBuyerInfo;
+export interface IUTR {
+    utr: string;
+    settledDate: string;
+    amount: string;
+}
+
+export interface IUTRItem {
+	amount: number;
+	title: string;
+	credit?: string;
+	debit?: string;
+}
+
+export interface IPaymentIngestionInfo {
+	debitNoteType: null | string;
+	documentCreatedDate: Dayjs | null;
+	documentNumber: number;
+	documentType: string;
+	excessPaidInPrevPayment: number;
+	excessPaidUtrId: string | null;
+	linkedInvoiceCreatedDate: Dayjs | null;
+	linkedInvoiceNumber: number | null;
+	netInvoiceAmount:  number | null;
+	netSettledAmount: number | null;
+	settledDate: number | null;
+	tds: number | null;
+	transactionRemark: string | null;
+	utr: string;
 }
 
 export interface PaymentInitialState {
-    paymentList: Array<Invoice>;
+    paymentList: Array<IUTR>;
     loading: boolean;
-    prevPageLastPaymentId: string | null;
     hasMore: boolean;
     error: null | string;
     defaultStartTime?: Dayjs | null;
     defaultEndTime?: Dayjs | null;
+	utrDetails: {
+		settledDate?: Dayjs | null,
+		utr?: string,
+		totalAmount?: number | null,
+		items?: Array<IUTRItem>
+	}
+	paymentAdviceLoading: boolean;
+	isIngestionLoading: boolean;
 }
+
+//ingestionData: {
+//	paymentInfoHeaders?: IPaymentIngestionInfo,
+//	paymentInfoLineItems?: Array<IPaymentIngestionInfo> 
+//}
 export interface IResponse {
     success: boolean;
     statusCode: number;
@@ -41,15 +74,25 @@ export interface IResponse {
     fresh?: boolean;
 }
 
-export interface Props {
-    searchText?: string;
+export interface IIngestionResponse {
+	paymentInfoHeaders?: IPaymentIngestionInfo;
+	paymentInfoLineItems?: Array<IPaymentIngestionInfo>;
+	ingestionFileName?: string;
+}
+
+export interface IUTRPayload {
+    vendorId: string;
     startTime?: Dayjs;
     endTime?: Dayjs;
+    pageNumber?: number;
+    utr?: string;
     dateClicked?: boolean;
-    lastReadInvoice?: string;
-    pageSize?: number;
-    invoiceNumber?: string;
-    vendorId?: string;
+	searchText?: string;
+}
+
+export interface IUTRDetailsPayload {
+    vendorId: string;
+    utr?: string;
 }
 
 export interface ActionResult<T> extends Action<string> {

@@ -4,16 +4,18 @@ const sendEvents = async (eventName: string, eventProperties: object) => {
     const vendorId = localStorage.getItem('vendorId') || '';
 
     const DEV = import.meta.env.MODE === 'development';
+    const PROD = import.meta.env.MODE === 'production';
 
     const properties = {
         eventName: eventName,
         vendorId: vendorId || '',
         timeStamp: Date.now(),
+        origin: window.location.origin.toString(),
         ...eventProperties,
     };
     const requestData = { event: 'hevo_events', properties };
-	DEV && console.log(JSON.stringify(requestData));
-    !DEV &&
+    !PROD && console.log(JSON.stringify(requestData));
+    PROD &&
         fetch(webhookUrl, {
             method: 'POST',
             body: JSON.stringify(requestData),

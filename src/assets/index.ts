@@ -13,9 +13,22 @@ const PodIcon =
     'https://j24storelogoandcovers.s3.ap-southeast-1.amazonaws.com/vendorstaticimages/pod.svg';
 const PodIcon2 =
     'https://j24storelogoandcovers.s3.ap-southeast-1.amazonaws.com/vendorstaticimages/pod2.svg';
+const PodIcon3 =
+    'https://j24storelogoandcovers.s3.ap-southeast-1.amazonaws.com/vendorstaticimages/pod3.svg';
 const JeetLogo =
     'https://j24storelogoandcovers.s3.ap-southeast-1.amazonaws.com/vendorstaticimages/jeet-logo.svg';
 const NoInvoice =
     'https://j24storelogoandcovers.s3.ap-southeast-1.amazonaws.com/vendorstaticimages/noInvoice.svg';
+const EmptyUTRImg =
+    'https://j24storelogoandcovers.s3.ap-southeast-1.amazonaws.com/vendorstaticimages/emptyUtr.svg';
 
-export { Loginhead, Partnership, PodIcon, PodIcon2, JeetLogo, NoInvoice };
+export {
+    Loginhead,
+    Partnership,
+    PodIcon,
+    PodIcon2,
+    JeetLogo,
+    NoInvoice,
+    EmptyUTRImg,
+    PodIcon3,
+};

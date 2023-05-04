@@ -1,23 +1,34 @@
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
+import { IUTR } from './paymentTypes';
 
-const PaymentUTRCard = () => {
+interface IPros {
+	utrInfo: IUTR;
+	handleUTRCardClick: (utr: string) => void;
+	activeUTRCard: string | null;
+	index: number;
+}
+
+const PaymentUTRCard: React.FC<IPros> = ({ utrInfo, handleUTRCardClick, activeUTRCard, index }) => {
 	return (
-		<div className="utr-card-container">
+		<div
+			className={`utr-card-container ${utrInfo.utr === activeUTRCard ? 'active-utr-card' : ''}`}
+			onClick={() => handleUTRCardClick(utrInfo.utr)}
+		>
 			<div className="utr-card-sno">
-				1
+				{index + 1}
 			</div>
 			<div className="utr-card-titles">
 				<div className="utr-card-titles-container">
-					<p>UTR No.</p>
+					<p>UTR</p>
 					<p>Amount</p>
-					<p>Last updated</p>
+					<p>Settlement Date</p>
 				</div>
 			</div>
 			<div className="utr-card-data">
 				<div className="utr-card-data-container">
-					<p>#C743987498347982</p>
-					<p className='utr-card-amount'>₹1,28,600</p>
-					<p>on 12/01/23</p>
+					<p>{utrInfo.utr.length > 16 ? `${utrInfo.utr.slice(0,15)}...` : utrInfo.utr}</p>
+					<p className='utr-card-amount'>{utrInfo.amount}</p>
+					<p>on {utrInfo.settledDate}</p>
 				</div>
 			</div>
 			<div className="utr-card-arrow">

@@ -9,7 +9,7 @@ import CallIcon from '@mui/icons-material/Call';
 import { useTranslation } from "react-i18next";
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import { useAppSelector } from '../../reduxInit/hooks';
+import { useAppDispatch, useAppSelector } from '../../reduxInit/hooks';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -23,9 +23,10 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { BrowserView, MobileView } from 'react-device-detect';
 import SearchBox from './SearchBox';
 import { getUserDetails } from '../auth/authSelector';
-import './sidebar.css';
 import { events, sendEvents } from '../../appEvents';
 import { JeetLogo } from '../../assets';
+import { resetSearchState } from '../../common/commonSlice';
+import './sidebar.css';
 
 const drawerWidth = 240;
 
@@ -40,9 +41,9 @@ const SideBar = (props: Props) => {
 	const [activeTab, setActiveTab] = useState(pathname.substring(1));
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const navigate = useNavigate();
+	const dispatch = useAppDispatch();
 	const userDetails = useAppSelector(getUserDetails);
 	const { t } = useTranslation();
-	console.log(location);
 
 	const handleDrawerToggle = () => {
 		setMobileOpen(!mobileOpen);
@@ -67,8 +68,13 @@ const SideBar = (props: Props) => {
 
 	const handleSideMenuClick = (menu: string) => {
 		setActiveTab(menu);
+		dispatch(resetSearchState());
 		navigate(`/${menu}`);
 		sendEvents(events.ON_CLICK_SIDE_MENU, { menu: menu });
+	};
+
+	const handleHomeClick = () => {
+		location.href = '/';
 	};
 
 	const drawer = (
@@ -78,7 +84,7 @@ const SideBar = (props: Props) => {
 			>
 				<p
 					className='portal-title'
-					onClick={() => location.reload()}
+					onClick={handleHomeClick}
 				><img src={JeetLogo} alt='logo' className='logo-jeet' /></p>
 			</Toolbar>
 			{/*<Divider />*/}
