@@ -19,7 +19,7 @@ const ProofOfDelivery = () => {
 
 	const [fromDate, setFromDate] = useState<Dayjs | null>(null);
 	const [toDate, setToDate] = useState<Dayjs | null>(null);
-	const [isBttVisible, setIsBttVisible] = useState<boolean>(false);
+	const [showBackToTop, setShowBackToTop] = useState<boolean>(false);
 	const searchClicked = useAppSelector(isSearchClicked);
 	const searchText = useAppSelector(getSearchedText);
 	const [dateClicked, setDateClicked] = useState<boolean>(false);
@@ -119,9 +119,9 @@ const ProofOfDelivery = () => {
 		const scrollTop = window.pageYOffset;
 		const screenTop = window.innerHeight;
 		if (scrollTop > screenTop) {
-			setIsBttVisible(true);
+			setShowBackToTop(true);
 		} else {
-			setIsBttVisible(false);
+			setShowBackToTop(false);
 		}
 	};
 
@@ -187,7 +187,7 @@ const ProofOfDelivery = () => {
 
 				}
 				{
-					isBttVisible &&
+					showBackToTop &&
 					<div className="btt-container">
 						<p className="btt-text" onClick={handleBackToTop}>{t('pod.backtotop')}  <ExpandLessIcon className="btt-icon" /></p>
 					</div>

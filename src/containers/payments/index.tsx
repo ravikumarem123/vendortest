@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import dayjs, { Dayjs } from 'dayjs';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { CircularProgress } from '@mui/material';
 import { isSearchClicked, getSearchedText } from '../../common/commonSelector';
 import SelectDate from '../proofofdelivery/SelectDate';
 import { useAppSelector, useAppDispatch } from "../../reduxInit/hooks";
@@ -11,10 +12,10 @@ import PaymentUTRCard from './PaymentUTRCard';
 import PaymentAdviceCard from './PaymentAdviceCard';
 import { getPaymentError, getIsPaymentLoading, getDefaultTime, getPaymentList, getIsPaymentListHasmore } from './paymentSelector';
 import { setSearchParams } from '../../common/commonSlice';
-import './payments.css';
 import { sagaActions } from '../../reduxInit/sagaActions';
 import { events, sendEvents } from '../../appEvents';
-import { CircularProgress } from '@mui/material';
+import './payments.css';
+
 
 const PAGE_SIZE = 10;
 
@@ -194,14 +195,15 @@ const Payments = () => {
 								) :
 
 								<div className='flex-50'>
-									<div className='utr-cards-div'>
+									<div className='utr-cards-div' id="scrollableDiv">
 										<InfiniteScroll
 											dataLength={paymentUTRList.length} //This is important field to render the next data
 											next={fetchData}
 											hasMore={hasMorePayments}
+											scrollableTarget="scrollableDiv"
 											loader={
-											<div style={{ display: 'flex', justifyContent: 'center' }}
-											><CircularProgress /></div>
+												<div style={{ display: 'flex', justifyContent: 'center' }}
+												><CircularProgress /></div>
 											}
 										>
 											{paymentUTRList.map((utr, index) => {

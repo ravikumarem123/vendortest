@@ -55,11 +55,12 @@
 }
 
 .utr-cards-div{
-	overflow-y: scroll;
+	overflow: auto;
 	-ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
 	padding-bottom: 100px;
 	width: 37%;
+	height: 70vh;
 }
 
 .utr-cards-div::-webkit-scrollbar {
