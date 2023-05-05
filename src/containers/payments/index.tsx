@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import dayjs, { Dayjs } from 'dayjs';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -14,25 +14,44 @@ import { getPaymentError, getIsPaymentLoading, getDefaultTime, getPaymentList, g
 import { setSearchParams } from '../../common/commonSlice';
 import { sagaActions } from '../../reduxInit/sagaActions';
 import { events, sendEvents } from '../../appEvents';
+import { NoInvoice, PaymentIdea } from '../../assets';
+import { IPaymentPayload } from './paymentTypes';
 import './payments.css';
 
-
 const PAGE_SIZE = 10;
+
+const getPaymentDetailsPayload = ({
+	pageNumber,
+	pageSize,
+	dateClicked,
+	fromDate,
+	toDate,
+	paymentError
+}: IPaymentPayload) => {
+	return {
+		pageNumber,
+		pageSize: pageSize || PAGE_SIZE,
+		startTime: (dateClicked && fromDate && !paymentError) ? dayjs(fromDate).startOf('day').valueOf() : null,
+		endTime: (dateClicked && toDate && !paymentError) ? dayjs(toDate).endOf('day').valueOf() : null,
+	};
+};
 
 const Payments = () => {
 
 	const [fromDate, setFromDate] = useState<Dayjs | null>(null);
 	const [toDate, setToDate] = useState<Dayjs | null>(null);
-	const [pageNumber, setPageNumber] = useState(0); // for pagination
-	const searchClicked = useAppSelector(isSearchClicked);
-	const searchText = useAppSelector(getSearchedText);
-	const [dateClicked, setDateClicked] = useState<boolean>(false); // date filter applied, will make a call and keep the date filter state maintained
 	const [activeUTRCard, setActiveUTRCard] = useState<string | null>(null);
+	const [pageNumber, setPageNumber] = useState(0);
+	const [dateClicked, setDateClicked] = useState<boolean>(false); // date filter applied, will make a call and keep the date filter state maintained
+
+	// redux selectors
 	const paymentUTRList = useAppSelector(getPaymentList);
 	const paymentError = useAppSelector(getPaymentError);
 	const paymentLoading = useAppSelector(getIsPaymentLoading);
 	const getDefaultDates = useAppSelector(getDefaultTime);
 	const hasMorePayments = useAppSelector(getIsPaymentListHasmore);
+	const searchClicked = useAppSelector(isSearchClicked);
+	const searchText = useAppSelector(getSearchedText);
 	const { t } = useTranslation();
 
 	const dispatch = useAppDispatch();
@@ -47,30 +66,24 @@ const Payments = () => {
 	}, [searchClicked]);
 
 	useEffect(() => {
-		/* this will run 
-		1. when user clicks remove button
-		2. when search button is clicked
+		/* 
+		when user clicks remove button
+		when search button is clicked or first run
 		*/
-		if (!dateClicked) {
+		if (!dateClicked && !searchClicked) {
 			setToDate(null);
 			setFromDate(null);
-			const payload = {
-				pageNumber: 0
-			};
-			setPageNumber(1);
+			// page: 0 is mandatory here as this gets called when user click on remove after date is applied
+			const payload = getPaymentDetailsPayload({ pageNumber: 0, pageSize: 20 });
 			dispatch({ type: sagaActions.FETCH_PAYMENT_DETAILS, payload });
+			setPageNumber(1);
+			//fetchData();
 		}
 	}, [dateClicked]);
 
+	// can't pass parameters as inifinite scroll use this in next call
 	const fetchData = () => {
-
-		// TODO: make a generic payload creator function 
-		let payload = {
-			pageNumber,
-			pageSize: PAGE_SIZE,
-			startTime: (dateClicked && fromDate && !paymentError) ? dayjs(fromDate).startOf('day').valueOf() : null,
-			endTime: (dateClicked && toDate && !paymentError) ? dayjs(toDate).endOf('day').valueOf() : null,
-		};
+		const payload = getPaymentDetailsPayload({ pageNumber, dateClicked, fromDate, paymentError })
 		setPageNumber(pageNumber + 1);
 		if (paymentError) {
 			setFromDate(null);
@@ -84,44 +97,36 @@ const Payments = () => {
 		}
 	};
 
-
 	const handleBackClickOnSearch = () => {
-		const payload = {
-			pageNumber: 0
-		};
-		setPageNumber(1);
-		sendEvents(events.ON_CLICK_BACK_FROM_SEARCH, { screen: 'PAYMENTS' })
+		const payload = getPaymentDetailsPayload({ pageNumber: 0 });
 		dispatch({ type: sagaActions.FETCH_PAYMENT_DETAILS, payload });
+		setPageNumber(1);  // for page 0, we called above. Subsequent calls will be handled by fetchData
+		sendEvents(events.ON_CLICK_BACK_FROM_SEARCH, { screen: 'PAYMENTS' });
 		dispatch(setSearchParams({ clicked: false, text: '' }));
 		setActiveUTRCard(null);
 		setDateClicked(false);
 	};
 
-	const handleDateApplyClicked = () => {
+	const handleDateApplyClicked = useCallback(() => {
 		dispatch(setSearchParams({ clicked: false, text: '' }))
 		if (toDate && fromDate) {
 			setDateClicked(true);
-			const payload = {
-				startTime: dayjs(fromDate).startOf('day').valueOf(),
-				endTime: dayjs(toDate).endOf('day').valueOf(),
-				dateClicked: true,
-				pageNumber: 0,
-			};
-			setPageNumber(1);
+			const payload = getPaymentDetailsPayload({ fromDate, toDate, dateClicked: true, pageNumber: 0 });
+			dispatch({
+				type: sagaActions.FETCH_PAYMENT_DETAILS,
+				payload,
+			});
+			setPageNumber(1); // for page 0, we called above. Subsequent calls will be handled by fetchData
 			sendEvents(events.ON_CLICK_DATE_APPLY, {
 				startTime: dayjs(fromDate).startOf('day').valueOf(),
 				endTime: dayjs(toDate).endOf('day').valueOf(),
 				screen: 'PAYMENTS'
 			});
 			setActiveUTRCard(null);
-			dispatch({
-				type: sagaActions.FETCH_PAYMENT_DETAILS,
-				payload,
-			});
 		}
-	};
+	}, [toDate, fromDate]);
 
-	const handleUTRCardClick = (utr: string) => {
+	const handleUTRCardClick = useCallback((utr: string) => {
 		setActiveUTRCard(utr);
 		const payload = {
 			utr,
@@ -134,7 +139,7 @@ const Payments = () => {
 			type: sagaActions.FETCH_UTR_DETAILS,
 			payload,
 		});
-	};
+	}, [activeUTRCard]);
 
 	return (
 		<div className="payment-container">
@@ -147,7 +152,7 @@ const Payments = () => {
 					>
 						<ArrowBackIcon
 							className="back-icon"
-						/> Showing Search Results
+						/> {t('pod.showingsr')}
 					</div>
 					:
 
@@ -161,6 +166,7 @@ const Payments = () => {
 						setDateClicked={setDateClicked}
 						error={paymentError}
 						loading={paymentLoading}
+						minFromDate={dayjs('2023-05-2')}
 					/>
 
 			}
@@ -180,7 +186,7 @@ const Payments = () => {
 				</p>
 
 				{
-					(paymentLoading && paymentUTRList.length < 1) ?
+					paymentLoading ?
 
 						<h1 style={{ textAlign: 'center' }}> <CircularProgress /></h1>
 
@@ -189,8 +195,9 @@ const Payments = () => {
 						(
 							paymentUTRList && paymentUTRList.length === 0 ?
 								(
-									<div>
-										No Payment Record Found
+									<div className='no-record-container' style={{ height: '69vh' }}>
+										<img src={NoInvoice} alt='no-utr' className='no-invoice-img' />
+										<p className='no-invoice-text'>{t('payment.noutrfound')}</p>
 									</div>
 								) :
 
@@ -225,7 +232,10 @@ const Payments = () => {
 								</div>
 						)
 				}
-
+			</div>
+			<div className='payment-idea-info-div'>
+				<img src={PaymentIdea} className='idea-img' alt='idea-img' />
+				<p className='idea-text'>{t('payment.ideainfo')}</p>
 			</div>
 		</div>
 	);

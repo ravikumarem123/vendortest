@@ -88,7 +88,6 @@ const PodTable: React.FC<PodTablePros> = ({ lastReadInvoice, invoiceList, fetchD
 											</TableCell>
 											<TableCell align="center" onClick={handlePodClick} >
 												<a href={invoice.podUrl} target="_blank" >
-													{/*<SimCardDownloadOutlinedIcon style={{ fontSize: '40px', color: '#d32f2f' }} />*/}
 													<img alt='pod' src={PodIcon3} style={{ width: '45px' }} />
 												</a>
 											</TableCell>

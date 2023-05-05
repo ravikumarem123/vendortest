@@ -175,7 +175,7 @@ const ProofOfDelivery = () => {
 				</p>
 
 				{
-					(isInvoiceLoading && invoiceList.length < 1) ?
+					isInvoiceLoading ?
 						<h1 style={{ textAlign: 'center' }}> <CircularProgress /></h1>
 						:
 

@@ -38,6 +38,21 @@
 		"to": "to"
 	},
 	"payment": {
-		"searchbyutr": "Search by UTR No."
+		"searchbyutr": "Search by UTR",
+		"noutrfound": "No UTR Found",
+		"emptyUtrtext": "Please select a UTR card to see the Payment Advice details",
+		"padvicesummary": "Payment Advice Summary",
+		"settledon": "Settled on",
+		"downloading...": "Downloading...",
+		"downloaddetails": "Download Details",
+		"totalamount": "Total Amount",
+		"credit": "CREDIT",
+		"debit": "DEBIT",
+		"title": "TITLE",
+		"netamount": "NET AMOUNT",
+		"utr": "UTR",
+		"amount": "Amount",
+		"settlementdate": "Settlement Date",
+		"ideainfo": "Your Payments Details are only available from 25 April 2023 onwards. Please reach out to us at +91-9999999999 for any disputes."
 	}
 }

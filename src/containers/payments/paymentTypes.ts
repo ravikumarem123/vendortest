@@ -22,27 +22,27 @@ export interface IUTR {
 }
 
 export interface IUTRItem {
-	amount: number;
-	title: string;
-	credit?: string;
-	debit?: string;
+    amount: number;
+    title: string;
+    credit?: string;
+    debit?: string;
 }
 
 export interface IPaymentIngestionInfo {
-	debitNoteType: null | string;
-	documentCreatedDate: Dayjs | null;
-	documentNumber: number;
-	documentType: string;
-	excessPaidInPrevPayment: number;
-	excessPaidUtrId: string | null;
-	linkedInvoiceCreatedDate: Dayjs | null;
-	linkedInvoiceNumber: number | null;
-	netInvoiceAmount:  number | null;
-	netSettledAmount: number | null;
-	settledDate: number | null;
-	tds: number | null;
-	transactionRemark: string | null;
-	utr: string;
+    debitNoteType: null | string;
+    documentCreatedDate: Dayjs | null;
+    documentNumber: number;
+    documentType: string;
+    excessPaidInPrevPayment: number;
+    excessPaidUtrId: string | null;
+    linkedInvoiceCreatedDate: Dayjs | null;
+    linkedInvoiceNumber: number | null;
+    netInvoiceAmount: number | null;
+    netSettledAmount: number | null;
+    settledDate: number | null;
+    tds: number | null;
+    transactionRemark: string | null;
+    utr: string;
 }
 
 export interface PaymentInitialState {
@@ -52,19 +52,19 @@ export interface PaymentInitialState {
     error: null | string;
     defaultStartTime?: Dayjs | null;
     defaultEndTime?: Dayjs | null;
-	utrDetails: {
-		settledDate?: Dayjs | null,
-		utr?: string,
-		totalAmount?: number | null,
-		items?: Array<IUTRItem>
-	}
-	paymentAdviceLoading: boolean;
-	isIngestionLoading: boolean;
+    utrDetails: {
+        settledDate?: string;
+        utr?: string;
+        totalAmount?: number | null;
+        items?: Array<IUTRItem>;
+    };
+    paymentAdviceLoading: boolean;
+    isIngestionLoading: boolean;
 }
 
 //ingestionData: {
 //	paymentInfoHeaders?: IPaymentIngestionInfo,
-//	paymentInfoLineItems?: Array<IPaymentIngestionInfo> 
+//	paymentInfoLineItems?: Array<IPaymentIngestionInfo>
 //}
 export interface IResponse {
     success: boolean;
@@ -75,9 +75,9 @@ export interface IResponse {
 }
 
 export interface IIngestionResponse {
-	paymentInfoHeaders?: IPaymentIngestionInfo;
-	paymentInfoLineItems?: Array<IPaymentIngestionInfo>;
-	ingestionFileName?: string;
+    paymentInfoHeaders?: IPaymentIngestionInfo;
+    paymentInfoLineItems?: Array<IPaymentIngestionInfo>;
+    ingestionFileName?: string;
 }
 
 export interface IUTRPayload {
@@ -87,7 +87,7 @@ export interface IUTRPayload {
     pageNumber?: number;
     utr?: string;
     dateClicked?: boolean;
-	searchText?: string;
+    searchText?: string;
 }
 
 export interface IUTRDetailsPayload {
@@ -102,4 +102,13 @@ export interface ActionResult<T> extends Action<string> {
 
 export interface Error {
     error: string;
+}
+
+export interface IPaymentPayload {
+    pageNumber: number;
+    pageSize?: number;
+    dateClicked?: boolean;
+    fromDate?: Dayjs | null;
+    toDate?: Dayjs | null;
+    paymentError?: string | null;
 }

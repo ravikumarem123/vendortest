@@ -5,6 +5,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { IUTRItem } from './paymentTypes';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
 	items: Array<IUTRItem>;
@@ -13,15 +14,18 @@ interface IProps {
 
 const PaymentAdviceTable: React.FC<IProps> = ({ items, amount }) => {
 
+	const { t } = useTranslation('');
+
+
 	return (
 		<TableContainer>
 			<Table aria-label="simple table">
 				<TableHead>
 					<TableRow>
-						<TableCell className='p-table-head-text'>TITLE</TableCell>
-						<TableCell className='p-table-head-text' align="center">CREDIT</TableCell>
-						<TableCell className='p-table-head-text' align="center">DEBIT</TableCell>
-						<TableCell className='p-table-head-text' align="right">NET AMOUNT</TableCell>
+						<TableCell className='p-table-head-text'>{t('payment.title')}</TableCell>
+						<TableCell className='p-table-head-text' align="center">{t('payment.credit')}</TableCell>
+						<TableCell className='p-table-head-text' align="center">{t('payment.debit')}</TableCell>
+						<TableCell className='p-table-head-text' align="right">{t('payment.netamount')}</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
@@ -40,7 +44,7 @@ const PaymentAdviceTable: React.FC<IProps> = ({ items, amount }) => {
 					))}
 					<TableRow className='p-table-cell-row'>
 						<TableCell component="th" scope="row" className='p-table-cell-title'>
-							Total Amount
+							{t('payment.totalamount')}
 						</TableCell>
 						<TableCell align='center'></TableCell>
 						<TableCell align='center'></TableCell>

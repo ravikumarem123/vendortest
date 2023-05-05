@@ -1,4 +1,5 @@
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
+import { useTranslation } from 'react-i18next';
 import { IUTR } from './paymentTypes';
 
 interface IPros {
@@ -9,6 +10,9 @@ interface IPros {
 }
 
 const PaymentUTRCard: React.FC<IPros> = ({ utrInfo, handleUTRCardClick, activeUTRCard, index }) => {
+
+	const { t } = useTranslation();
+
 	return (
 		<div
 			className={`utr-card-container ${utrInfo.utr === activeUTRCard ? 'active-utr-card' : ''}`}
@@ -19,14 +23,14 @@ const PaymentUTRCard: React.FC<IPros> = ({ utrInfo, handleUTRCardClick, activeUT
 			</div>
 			<div className="utr-card-titles">
 				<div className="utr-card-titles-container">
-					<p>UTR</p>
-					<p>Amount</p>
-					<p>Settlement Date</p>
+					<p>{t('payment.utr')}</p>
+					<p>{t('payment.amount')}</p>
+					<p>{t('payment.settlementdate')}</p>
 				</div>
 			</div>
 			<div className="utr-card-data">
 				<div className="utr-card-data-container">
-					<p>{utrInfo.utr.length > 16 ? `${utrInfo.utr.slice(0,15)}...` : utrInfo.utr}</p>
+					<p>{utrInfo.utr.length > 16 ? `${utrInfo.utr.slice(0, 15)}...` : utrInfo.utr}</p>
 					<p className='utr-card-amount'>{utrInfo.amount}</p>
 					<p>on {utrInfo.settledDate}</p>
 				</div>
