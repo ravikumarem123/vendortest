@@ -5,12 +5,13 @@ import dayjs, { Dayjs } from 'dayjs';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { CircularProgress } from '@mui/material';
+import CenterLoader from '../../common/CenterLoader';
 import { isSearchClicked, getSearchedText } from '../../common/commonSelector';
 import SelectDate from '../proofofdelivery/SelectDate';
 import { useAppSelector, useAppDispatch } from "../../reduxInit/hooks";
 import PaymentUTRCard from './PaymentUTRCard';
 import PaymentAdviceCard from './PaymentAdviceCard';
-import { getPaymentError, getIsPaymentLoading, getDefaultTime, getPaymentList, getIsPaymentListHasmore } from './paymentSelector';
+import { getPaymentError, getIsPaymentLoading, getDefaultTime, getPaymentList, getIsPaymentListHasMore } from './paymentSelector';
 import { setSearchParams } from '../../common/commonSlice';
 import { sagaActions } from '../../reduxInit/sagaActions';
 import { events, sendEvents } from '../../appEvents';
@@ -49,7 +50,7 @@ const Payments = () => {
 	const paymentError = useAppSelector(getPaymentError);
 	const paymentLoading = useAppSelector(getIsPaymentLoading);
 	const getDefaultDates = useAppSelector(getDefaultTime);
-	const hasMorePayments = useAppSelector(getIsPaymentListHasmore);
+	const hasMorePayments = useAppSelector(getIsPaymentListHasMore);
 	const searchClicked = useAppSelector(isSearchClicked);
 	const searchText = useAppSelector(getSearchedText);
 	const { t } = useTranslation();
@@ -188,7 +189,7 @@ const Payments = () => {
 				{
 					paymentLoading ?
 
-						<h1 style={{ textAlign: 'center' }}> <CircularProgress /></h1>
+						(<h1 style={{ textAlign: 'center' }}> <CircularProgress /></h1>)
 
 						:
 
@@ -208,10 +209,7 @@ const Payments = () => {
 											next={fetchData}
 											hasMore={hasMorePayments}
 											scrollableTarget="scrollableDiv"
-											loader={
-												<div style={{ display: 'flex', justifyContent: 'center' }}
-												><CircularProgress /></div>
-											}
+											loader={<CenterLoader />}
 										>
 											{paymentUTRList.map((utr, index) => {
 												return (

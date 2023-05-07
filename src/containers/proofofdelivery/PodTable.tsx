@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { Invoice } from './podTypes';
 import { NoInvoice, PodIcon3 } from '../../assets';
 import { events, sendEvents } from '../../appEvents';
+import CenterLoader from '../../common/CenterLoader';
 
 interface PodTablePros {
 	lastReadInvoice: string | null;
@@ -39,7 +40,7 @@ const PodTable: React.FC<PodTablePros> = ({ lastReadInvoice, invoiceList, fetchD
 						dataLength={invoiceList?.length} //This is important field to render the next data
 						next={fetchData}
 						hasMore={lastReadInvoice ? true : false}
-						loader={<div style={{ display: 'flex', justifyContent: 'center' }}><CircularProgress /></div>}
+						loader={<CenterLoader />}
 						endMessage={<p style={{ textAlign: 'center' }}></p>}
 						// below props only if you need pull down functionality
 						refreshFunction={() => { }}

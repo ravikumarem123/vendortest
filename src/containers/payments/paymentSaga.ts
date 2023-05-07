@@ -146,7 +146,7 @@ function createIngestionData(
     return newData;
 }
 
-function createAndDownloadFile(
+function* createAndDownloadFile(
     data: IPaymentIngestionInfo[],
     fileName: string | undefined
 ) {
@@ -157,6 +157,11 @@ function createAndDownloadFile(
         writeFileXLSX(workbook, `${fileName}.xlsx`, { compression: true });
     } catch (err) {
         console.log('error in creating sheet: ', err);
+        const dialogPayload = {
+            title: 'Something went wrong',
+            content: 'Please try again after some time or contact support.',
+        };
+        yield put(setDialogOpen(dialogPayload));
     }
 }
 

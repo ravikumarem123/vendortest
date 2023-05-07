@@ -8,7 +8,7 @@ const getIsPaymentLoading = (state: RootState) => {
     return state.payment.loading;
 };
 
-const getIsPaymentListHasmore = (state: RootState) => {
+const getIsPaymentListHasMore = (state: RootState) => {
     return state.payment.hasMore;
 };
 
@@ -24,15 +24,15 @@ const getDefaultTime = (state: RootState) => {
 };
 
 const getSelectedUtrInfo = (state: RootState) => {
-	return state.payment.utrDetails;
+    return state.payment.utrDetails;
 };
 
 const getIsPaymentAdviceLoading = (state: RootState) => {
-	return state.payment.paymentAdviceLoading;
+    return state.payment.paymentAdviceLoading;
 };
 
 const getIsDownloadIngestionLoading = (state: RootState) => {
-	return state.payment.isIngestionLoading;
+    return state.payment.isIngestionLoading;
 };
 
 export {
@@ -40,8 +40,8 @@ export {
     getIsPaymentLoading,
     getPaymentError,
     getDefaultTime,
-    getIsPaymentListHasmore,
-	getSelectedUtrInfo,
-	getIsPaymentAdviceLoading,
-	getIsDownloadIngestionLoading,
+    getIsPaymentListHasMore,
+    getSelectedUtrInfo,
+    getIsPaymentAdviceLoading,
+    getIsDownloadIngestionLoading,
 };

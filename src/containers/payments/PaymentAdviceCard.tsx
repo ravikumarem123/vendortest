@@ -35,6 +35,8 @@ const PaymentAdviceCard = () => {
 		dispatch({ type: sagaActions.FETCH_UTR_INGESTION, payload });
 	}, [JSON.stringify(utrDetails)]);
 
+	const { utr, settledDate, totalAmount, items } = utrDetails;
+
 	return (
 		<div className="advice-card-container">
 			{
@@ -52,16 +54,16 @@ const PaymentAdviceCard = () => {
 						<div className="advice-card-header">
 							<p className="p-advice-head-text" style={{ fontWeight: '600' }}>{t('payment.padvicesummary')}</p>
 							<div className="p-advice-head-utr">
-								<p className="p-advice-utr">UTR {utrDetails.utr}</p>
-								<p className="p-advice-update-date">{t('payment.settledon')} {utrDetails.settledDate}
+								<p className="p-advice-utr">UTR {utr}</p>
+								<p className="p-advice-update-date">{t('payment.settledon')} {settledDate}
 								</p>
 							</div>
 						</div>
 
 						<hr />
 						<PaymentAdviceTable
-							items={utrDetails.items!}
-							amount={utrDetails.totalAmount!}
+							items={items!}
+							amount={totalAmount!}
 						/>
 						<div className="p-download-btn-container">
 							<Button
