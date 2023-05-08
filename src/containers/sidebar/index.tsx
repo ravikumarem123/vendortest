@@ -164,7 +164,7 @@ const SideBar = (props: Props) => {
 								<span style={{ fontSize: '15px' }}>
 									<a href="#">09869304115</a>
 								</span>
-								<span style={{ fontSize: '12px' }}>8AM to 8PM {t('sidebar.helpline')}</span>
+								<span style={{ fontSize: '12px' }}>10AM to 8PM {t('sidebar.helpline')}</span>
 							</div>
 
 						</div>

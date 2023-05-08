@@ -36,9 +36,13 @@ const PaymentAdviceCard = () => {
 	}, [JSON.stringify(utrDetails)]);
 
 	const { utr, settledDate, totalAmount, items } = utrDetails;
+	const isSmallerHieghtDevice = window.matchMedia("(max-height: 700px)").matches;
+	console.log(`xxxxxxxx: ${JSON.stringify(isSmallerHieghtDevice)}`);
 
 	return (
-		<div className="advice-card-container">
+		<div 
+			className="advice-card-container"
+		>
 			{
 				showEmptyUtr ?
 
