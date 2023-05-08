@@ -4,18 +4,18 @@ import CircularProgress from '@mui/material/CircularProgress';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { useTranslation } from "react-i18next";
-import SelectDate from "./SelectDate";
+import SelectDate from "../proofofdelivery/SelectDate";
 import { useAppDispatch, useAppSelector } from "../../reduxInit/hooks";
-import PodTable from "./PodTable";
 import { setSearchParams } from "../../common/commonSlice";
-import { getDefaultTime, getPodList, getIsPodLoading, getLastReadPod, getPodError } from "./podSelector";
+import { getDefaultTime, getInvoiceList, getIsInvoiceLoading, getLastReadInvoice, getInvoiceError } from "./invoiceSelector";
 import { isSearchClicked, getSearchedText } from "../../common/commonSelector";
 import { sagaActions } from "../../reduxInit/sagaActions";
 import { events, sendEvents } from "../../appEvents";
-import './pod.css';
+import InvoiceTable from "./InvoiceTable";
+import './invoice.css';
 
 
-const ProofOfDelivery = () => {
+const Invoices = () => {
 
 	const [fromDate, setFromDate] = useState<Dayjs | null>(null);
 	const [toDate, setToDate] = useState<Dayjs | null>(null);
@@ -23,11 +23,11 @@ const ProofOfDelivery = () => {
 	const searchClicked = useAppSelector(isSearchClicked);
 	const searchText = useAppSelector(getSearchedText);
 	const [dateClicked, setDateClicked] = useState<boolean>(false);
-	const lastReadInvoice = useAppSelector(getLastReadPod);
-	const isInvoiceLoading = useAppSelector(getIsPodLoading);
-	const invoiceList = useAppSelector(getPodList);
-	const podError = useAppSelector(getPodError);
-	const podLoading = useAppSelector(getIsPodLoading);
+	const lastReadInvoice = useAppSelector(getLastReadInvoice);
+	const isInvoiceLoading = useAppSelector(getIsInvoiceLoading);
+	const invoiceList = useAppSelector(getInvoiceList);
+	const podError = useAppSelector(getInvoiceError);
+	const podLoading = useAppSelector(getIsInvoiceLoading);
 	const getDefaultDates = useAppSelector(getDefaultTime);
 	const { t } = useTranslation();
 
@@ -60,7 +60,7 @@ const ProofOfDelivery = () => {
 				pageSize: 20,
 				lastReadInvoice
 			};
-			dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
+			dispatch({ type: sagaActions.FETCH_INVOICE_DETAILS, payload });
 
 		}
 	}, [dateClicked]);
@@ -69,8 +69,8 @@ const ProofOfDelivery = () => {
 		const payload = {
 			pageSize: 20
 		};
-		sendEvents(events.ON_CLICK_BACK_FROM_SEARCH, { screen: 'POD' })
-		dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
+		sendEvents(events.ON_CLICK_BACK_FROM_SEARCH, { screen: 'INVOICE' })
+		dispatch({ type: sagaActions.FETCH_INVOICE_DETAILS, payload });
 		dispatch(setSearchParams({ clicked: false, text: '' }))
 		setDateClicked(false);
 	};
@@ -87,10 +87,10 @@ const ProofOfDelivery = () => {
 			sendEvents(events.ON_CLICK_DATE_APPLY, {
 				startTime: dayjs(fromDate).startOf('day').valueOf(),
 				endTime: dayjs(toDate).endOf('day').valueOf(),
-				screen: 'POD'
+				screen: 'INVOICE'
 			});
 			dispatch({
-				type: sagaActions.FETCH_POD_DETAILS,
+				type: sagaActions.FETCH_INVOICE_DETAILS,
 				payload,
 			});
 		}
@@ -109,7 +109,7 @@ const ProofOfDelivery = () => {
 			setDateClicked(false);
 		} else {
 			dispatch({
-				type: sagaActions.FETCH_POD_DETAILS,
+				type: sagaActions.FETCH_INVOICE_DETAILS,
 				payload,
 			});
 		}
@@ -128,9 +128,7 @@ const ProofOfDelivery = () => {
 	const handleBackToTop = () => {
 		window.scrollTo({ top: 0, behavior: 'smooth' });
 	};
-
 	return (
-
 		<div className="pod-container">
 
 			{
@@ -179,7 +177,7 @@ const ProofOfDelivery = () => {
 						<h1 style={{ textAlign: 'center' }}> <CircularProgress /></h1>
 						:
 
-						<PodTable
+						<InvoiceTable
 							lastReadInvoice={lastReadInvoice}
 							invoiceList={invoiceList}
 							fetchData={fetchData}
@@ -200,4 +198,4 @@ const ProofOfDelivery = () => {
 	);
 };
 
-export default ProofOfDelivery;
+export default Invoices;

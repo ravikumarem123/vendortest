@@ -74,6 +74,9 @@ const SearchBox = () => {
 		} else if (pathname === '/payment') {
 			setSearchType(SearchIndex.UTR);
 			setSearchPlaceholder('payment.searchbyutr');
+		} else if (pathname === '/invoices') {
+			setSearchType(SearchIndex.INVOICE);
+			setSearchPlaceholder('pod.searchbyinvoiceno');
 		}
 	}, [pathname]);
 

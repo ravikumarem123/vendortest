@@ -25,7 +25,7 @@ const getJCLedgerPayload = (
 //    searchtext?: string;
 //}
 
-const fetchInvoicePayload = (params: Props) => {
+const fetchPodPayload = (params: Props) => {
     return {
         vendorId: params.vendorId,
         pageSize: params.pageSize
@@ -77,11 +77,27 @@ const fetchUTRIngestionPayload = (params: IUTRDetailsPayload) => {
     };
 };
 
+const fetchInvoicePayload = (params: Props) => {
+    return {
+        vendorId: params.vendorId,
+        pageSize: params.pageSize
+            ? params.pageSize
+            : params.dateClicked
+            ? 20
+            : 10,
+        prevPageLastInvId: params.lastReadInvoice,
+        startTime: params.startTime,
+        endTime: params.endTime,
+        invoiceNumber: params.searchText,
+    };
+};
+
 export {
     getJCLedgerPayload,
-    fetchInvoicePayload,
+    fetchPodPayload,
     fetchLoginPayload,
     fetchGetUTRListPayload,
     fetchUTRInfoPayload,
 	fetchUTRIngestionPayload,
+	fetchInvoicePayload,
 };

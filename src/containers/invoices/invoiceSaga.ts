@@ -1,16 +1,16 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { fetchPodPayload } from '../../network/createPayload';
+import { History } from 'history';
+import { fetchInvoicePayload } from '../../network/createPayload';
 import apiRepository from '../../network/apiRepository';
 import { sagaActions } from '../../reduxInit/sagaActions';
-import { History } from 'history';
-import { setPodDetails, setPodError, setPodLoading } from './podSlice';
+import { setInvoiceDetails, setInvoiceError, setInvoiceLoading } from './invoiceSlice';
 import { setSearchParams } from '../../common/commonSlice';
-import { IResponse, ActionResult, Props, Error } from './podTypes';
+import { IResponse, ActionResult, InvoiceProps, Error } from './invoicetypes';
 import { setDialogOpen } from '../../common/commonSlice';
 
-export function* fetchPodDetails(
+export function* fetchInvoiceDetails(
     history: History,
-    action: ActionResult<Props>
+    action: ActionResult<InvoiceProps>
 ) {
     //const vendorId = 'VNDR-1526001151'; //VNDR-1526007917
     const vendorId = localStorage.getItem('vendorId') as string;
@@ -22,12 +22,12 @@ export function* fetchPodDetails(
             payload?.dateClicked ||
             !payload.lastReadInvoice
         ) {
-            yield put(setPodLoading()); // ensure first api call in pagination
+            yield put(setInvoiceLoading()); // ensure first api call in pagination
         }
 
         const result: IResponse = yield call(
-            apiRepository.getPodInfo,
-            fetchPodPayload(payload)
+            apiRepository.getInvoiceInfo,
+            fetchInvoicePayload(payload)
         );
         if (
             payload?.searchText ||
@@ -43,10 +43,10 @@ export function* fetchPodDetails(
                 setSearchParams({ clicked: true, text: payload?.searchText })
             );
         }
-        yield put(setPodDetails(result));
+        yield put(setInvoiceDetails(result));
     } catch (e: any) {
         console.log(e);
-        yield put(setPodError(e?.error?.message));
+        yield put(setInvoiceError(e?.error?.message));
         if (e?.error?.message === 'Failed to fetch') {
             const dialogPayload = {
                 title: 'Something went wrong',
@@ -88,6 +88,6 @@ export function* fetchPodDetails(
     }
 }
 
-export default function* podSaga(history: History) {
-    yield takeLatest(sagaActions.FETCH_POD_DETAILS, fetchPodDetails, history);
+export default function* invoiceSaga(history: History) {
+    yield takeLatest(sagaActions.FETCH_INVOICE_DETAILS, fetchInvoiceDetails, history);
 }
