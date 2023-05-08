@@ -4,52 +4,52 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { IUTRItem } from './paymentTypes';
+import { useTranslation } from 'react-i18next';
 
-
-function createData(
-	title: string,
-	credit: string,
-	debit: string,
-	netamount: string,
-) {
-	return { title, credit, debit, netamount };
+interface IProps {
+	items: Array<IUTRItem>;
+	amount: number;
 }
 
-const rows = [
-	createData('Invoice', '₹ 25,02,640.92', '-', '₹ 25,02,640.92'),
-	createData('Debit Notes', '-', '₹ 30,000', '-₹ 30,000'),
-	createData('CCOG Debit Notes', '-', '₹0', '-₹ 0'),
-	createData('TDS', '-', '₹ 14,000', '-₹ 14,000'),
-	createData('Total Amount', '', '', '₹ 24,58,640.92'),
-];
+const PaymentAdviceTable: React.FC<IProps> = ({ items, amount }) => {
+
+	const { t } = useTranslation('');
 
 
-const PaymentAdviceTable = () => {
 	return (
 		<TableContainer>
 			<Table aria-label="simple table">
 				<TableHead>
 					<TableRow>
-						<TableCell className='p-table-head-text'>TITLE</TableCell>
-						<TableCell className='p-table-head-text' align="center">CREDIT</TableCell>
-						<TableCell className='p-table-head-text' align="center">DEBIT</TableCell>
-						<TableCell className='p-table-head-text' align="right">NET AMOUNT</TableCell>
+						<TableCell className='p-table-head-text'>{t('payment.title')}</TableCell>
+						<TableCell className='p-table-head-text' align="center">{t('payment.credit')}</TableCell>
+						<TableCell className='p-table-head-text' align="center">{t('payment.debit')}</TableCell>
+						<TableCell className='p-table-head-text' align="right">{t('payment.netamount')}</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{rows.map((row) => (
+					{items.map((row) => (
 						<TableRow
 							key={row.title}
 							sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
 						>
-							<TableCell component="th" scope="row" className='p-table-cell-title'>
+							<TableCell scope="row">
 								{row.title}
 							</TableCell>
 							<TableCell align="center">{row.credit}</TableCell>
 							<TableCell align="center">{row.debit}</TableCell>
-							<TableCell align="right">{row.netamount}</TableCell>
+							<TableCell align="right">{row.amount}</TableCell>
 						</TableRow>
 					))}
+					<TableRow className='p-table-cell-row'>
+						<TableCell component="th" scope="row" className='p-table-cell-title'>
+							{t('payment.totalamount')}
+						</TableCell>
+						<TableCell align='center'></TableCell>
+						<TableCell align='center'></TableCell>
+						<TableCell align='right' style={{ fontWeight: 500 }}>{amount}</TableCell>
+					</TableRow>
 				</TableBody>
 			</Table>
 		</TableContainer>

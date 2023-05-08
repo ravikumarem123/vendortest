@@ -19,7 +19,7 @@ const ProofOfDelivery = () => {
 
 	const [fromDate, setFromDate] = useState<Dayjs | null>(null);
 	const [toDate, setToDate] = useState<Dayjs | null>(null);
-	const [isBttVisible, setIsBttVisible] = useState<boolean>(false);
+	const [showBackToTop, setShowBackToTop] = useState<boolean>(false);
 	const searchClicked = useAppSelector(isSearchClicked);
 	const searchText = useAppSelector(getSearchedText);
 	const [dateClicked, setDateClicked] = useState<boolean>(false);
@@ -35,6 +35,7 @@ const ProofOfDelivery = () => {
 
 
 	useEffect(() => {
+		document.body.style.overflowY = 'auto';
 		window.addEventListener('scroll', handleScroll);
 		return () => window.removeEventListener('scroll', handleScroll);
 	}, []);
@@ -52,7 +53,7 @@ const ProofOfDelivery = () => {
 		1. when user clicks remove button
 		2. when search button is clicked
 		*/
-		if (!dateClicked) {
+		if (!dateClicked && !searchClicked) {
 			setToDate(null);
 			setFromDate(null);
 			const payload = {
@@ -68,7 +69,7 @@ const ProofOfDelivery = () => {
 		const payload = {
 			pageSize: 20
 		};
-		sendEvents(events.ON_CLICK_BACK_FROM_SEARCH, {})
+		sendEvents(events.ON_CLICK_BACK_FROM_SEARCH, { screen: 'POD' })
 		dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
 		dispatch(setSearchParams({ clicked: false, text: '' }))
 		setDateClicked(false);
@@ -86,6 +87,7 @@ const ProofOfDelivery = () => {
 			sendEvents(events.ON_CLICK_DATE_APPLY, {
 				startTime: dayjs(fromDate).startOf('day').valueOf(),
 				endTime: dayjs(toDate).endOf('day').valueOf(),
+				screen: 'POD'
 			});
 			dispatch({
 				type: sagaActions.FETCH_POD_DETAILS,
@@ -117,9 +119,9 @@ const ProofOfDelivery = () => {
 		const scrollTop = window.pageYOffset;
 		const screenTop = window.innerHeight;
 		if (scrollTop > screenTop) {
-			setIsBttVisible(true);
+			setShowBackToTop(true);
 		} else {
-			setIsBttVisible(false);
+			setShowBackToTop(false);
 		}
 	};
 
@@ -173,7 +175,7 @@ const ProofOfDelivery = () => {
 				</p>
 
 				{
-					(isInvoiceLoading && invoiceList.length < 1) ?
+					isInvoiceLoading ?
 						<h1 style={{ textAlign: 'center' }}> <CircularProgress /></h1>
 						:
 
@@ -185,7 +187,7 @@ const ProofOfDelivery = () => {
 
 				}
 				{
-					isBttVisible &&
+					showBackToTop &&
 					<div className="btt-container">
 						<p className="btt-text" onClick={handleBackToTop}>{t('pod.backtotop')}  <ExpandLessIcon className="btt-icon" /></p>
 					</div>

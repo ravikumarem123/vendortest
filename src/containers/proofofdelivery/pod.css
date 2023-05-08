@@ -9,6 +9,8 @@
 	color: #301134;
 	padding: 30px 20px 20px 20px;
 	background-color: #ffffff;
+	position: fixed;
+	width: 100%;
 }
 
 .MuiInputAdornment-root .MuiButtonBase-root .MuiSvgIcon-root {
@@ -27,6 +29,7 @@
 .pod-data-container{
 	padding: 20px;
 	margin-bottom: 100px;
+	margin-top: 90px
 }
 
 .date-range-text{

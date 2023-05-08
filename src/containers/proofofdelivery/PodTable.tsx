@@ -11,8 +11,9 @@ import Paper from '@mui/material/Paper';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTranslation } from 'react-i18next';
 import { Invoice } from './podTypes';
-import { PodIcon2, NoInvoice } from '../../assets';
+import { NoInvoice, PodIcon3 } from '../../assets';
 import { events, sendEvents } from '../../appEvents';
+import CenterLoader from '../../common/CenterLoader';
 
 interface PodTablePros {
 	lastReadInvoice: string | null;
@@ -26,6 +27,7 @@ const PodTable: React.FC<PodTablePros> = ({ lastReadInvoice, invoiceList, fetchD
 
 	const handlePodClick = () => {
 		sendEvents(events.ON_CLICK_POD_DOWNLOAD, {
+			screen: 'POD'
 		});
 	};
 
@@ -38,7 +40,7 @@ const PodTable: React.FC<PodTablePros> = ({ lastReadInvoice, invoiceList, fetchD
 						dataLength={invoiceList?.length} //This is important field to render the next data
 						next={fetchData}
 						hasMore={lastReadInvoice ? true : false}
-						loader={<div style={{ display: 'flex', justifyContent: 'center' }}><CircularProgress /></div>}
+						loader={<CenterLoader />}
 						endMessage={<p style={{ textAlign: 'center' }}></p>}
 						// below props only if you need pull down functionality
 						refreshFunction={() => { }}
@@ -76,7 +78,7 @@ const PodTable: React.FC<PodTablePros> = ({ lastReadInvoice, invoiceList, fetchD
 											<TableCell align="center" style={{ fontWeight: 'bold' }}>{index + 1}</TableCell>
 											<TableCell align="center" style={{ fontWeight: 'bold' }}>{invoice.number}</TableCell>
 											<TableCell align="center" style={{ fontWeight: 'bold' }}>
-												&#8377;{new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(invoice.amount)}
+												&#8377;{new Intl.NumberFormat('en-IN', { minimumFractionDigits: 0 }).format(invoice.amount)}
 											</TableCell>
 											<TableCell align="center">
 												{dayjs(invoice.deliveryDate).format('DD/MM/YYYY')}
@@ -87,8 +89,7 @@ const PodTable: React.FC<PodTablePros> = ({ lastReadInvoice, invoiceList, fetchD
 											</TableCell>
 											<TableCell align="center" onClick={handlePodClick} >
 												<a href={invoice.podUrl} target="_blank" >
-													{/*<SimCardDownloadOutlinedIcon style={{ fontSize: '40px', color: '#d32f2f' }} />*/}
-													<img alt='pod' src={PodIcon2} style={{ width: '45px' }} />
+													<img alt='pod' src={PodIcon3} style={{ width: '45px' }} />
 												</a>
 											</TableCell>
 										</TableRow>

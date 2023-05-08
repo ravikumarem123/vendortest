@@ -18,6 +18,7 @@ interface IPros {
 	setDateClicked: Dispatch<SetStateAction<boolean>>;
 	error: string | null;
 	loading: boolean;
+	minFromDate?: Dayjs | null;
 }
 
 const SelectDate: React.FC<IPros> = (
@@ -31,6 +32,7 @@ const SelectDate: React.FC<IPros> = (
 		setDateClicked,
 		error,
 		loading,
+		minFromDate
 	}) => {
 
 	const [dateChanged, setDateChanged] = useState(false);
@@ -75,6 +77,7 @@ const SelectDate: React.FC<IPros> = (
 						value={fromDate}
 						onChange={(newValue) => handleDateChanged(newValue, 'from')}
 						disableFuture={true}
+						minDate={minFromDate}
 					/>
 				</div>
 

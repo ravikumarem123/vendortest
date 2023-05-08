@@ -4,12 +4,12 @@ const getPaymentList = (state: RootState) => {
     return state.payment.paymentList;
 };
 
-const getLastReadPayment = (state: RootState) => {
-    return state.payment.prevPageLastPaymentId;
-};
-
 const getIsPaymentLoading = (state: RootState) => {
     return state.payment.loading;
+};
+
+const getIsPaymentListHasMore = (state: RootState) => {
+    return state.payment.hasMore;
 };
 
 const getPaymentError = (state: RootState) => {
@@ -23,10 +23,25 @@ const getDefaultTime = (state: RootState) => {
     };
 };
 
+const getSelectedUtrInfo = (state: RootState) => {
+    return state.payment.utrDetails;
+};
+
+const getIsPaymentAdviceLoading = (state: RootState) => {
+    return state.payment.paymentAdviceLoading;
+};
+
+const getIsDownloadIngestionLoading = (state: RootState) => {
+    return state.payment.isIngestionLoading;
+};
+
 export {
     getPaymentList,
-    getLastReadPayment,
     getIsPaymentLoading,
     getPaymentError,
     getDefaultTime,
+    getIsPaymentListHasMore,
+    getSelectedUtrInfo,
+    getIsPaymentAdviceLoading,
+    getIsDownloadIngestionLoading,
 };
