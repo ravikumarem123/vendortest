@@ -7,8 +7,6 @@ const initialState: PodInitialState = {
     prevPageLastInvId: null,
     hasMore: true,
     error: null,
-    searchText: '',
-    searchClicked: false,
     defaultStartTime: null,
     defaultEndTime: null,
 };
@@ -41,10 +39,6 @@ const podSlice = createSlice({
             state.hasMore = payload?.prevPageLastInvId ? true : false;
             state.prevPageLastInvId = payload?.prevPageLastInvId;
         },
-        setSearchParams: (state, { payload }) => {
-            state.searchClicked = payload.clicked;
-            state.searchText = payload.text;
-        },
         setPodError: (state, { payload }) => {
             state.loading = false;
             state.error = payload;
@@ -55,6 +49,5 @@ const podSlice = createSlice({
     },
 });
 
-export const { setPodDetails, setPodError, setPodLoading, setSearchParams } =
-    podSlice.actions;
+export const { setPodDetails, setPodError, setPodLoading } = podSlice.actions;
 export default podSlice.reducer;

@@ -30,8 +30,6 @@ export interface PodInitialState {
     prevPageLastInvId: string | null;
     hasMore: boolean;
     error: null | string;
-    searchText: string;
-    searchClicked: boolean;
     defaultStartTime?: Dayjs | null;
     defaultEndTime?: Dayjs | null;
 }

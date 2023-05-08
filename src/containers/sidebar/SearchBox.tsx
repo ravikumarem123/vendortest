@@ -1,22 +1,32 @@
 import { SyntheticEvent, useEffect, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
+import { useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../reduxInit/hooks';
 import { sagaActions } from '../../reduxInit/sagaActions';
-import { isSearchClicked } from '../proofofdelivery/podSelector';
+import { isSearchClicked } from '../../common/commonSelector';
 import { sendEvents, events } from '../../appEvents';
 import { useTranslation } from 'react-i18next';
+
+enum SearchIndex {
+	INVOICE = 'INVOICE',
+	UTR = 'UTR',
+}
 
 const SearchBox = () => {
 
 	const [searchText, setSearchText] = useState<string>('');
+	const [searchPlaceholder, setSearchPlaceholder] = useState('pod.searchbyinvoiceno');
+	const [searchType, setSearchType] = useState<SearchIndex>(SearchIndex.INVOICE);
 	const dispatch = useAppDispatch();
 	const searchClicked = useAppSelector(isSearchClicked);
 	const { t } = useTranslation();
+	const { pathname } = useLocation();
 
 	const handleSearchByInvoice = () => {
 		if (searchText.length > 0) {
 			sendEvents(events.ON_CLICK_SEARCH, {
-				searchText: searchText
+				searchText: searchText,
+				screen: 'POD',
 			});
 			dispatch({
 				type: sagaActions.FETCH_POD_DETAILS, payload: {
@@ -24,23 +34,31 @@ const SearchBox = () => {
 					searchClicked: true
 				}
 			});
-		} else {
-			//toast.error("Invalid Invoice number", {
-			//	position: "top-right",
-			//	autoClose: 3000,
-			//	hideProgressBar: false,
-			//	closeOnClick: true,
-			//	pauseOnHover: true,
-			//	draggable: true,
-			//	progress: undefined,
-			//	theme: "light",
-			//});
+		}
+	};
+
+	const handleSearchByUTR = () => {
+		if (searchText.length > 0) {
+			sendEvents(events.ON_CLICK_SEARCH, {
+				searchText: searchText,
+				screen: 'PAYMENTS',
+			});
+			dispatch({
+				type: sagaActions.FETCH_PAYMENT_DETAILS, payload: {
+					searchText,
+					searchClicked: true
+				}
+			});
 		}
 	};
 
 	const handleFormSubmit = (e: SyntheticEvent) => {
 		e.preventDefault();
-		handleSearchByInvoice();
+		if (searchType === SearchIndex.UTR) {
+			handleSearchByUTR();
+		} else {
+			handleSearchByInvoice();
+		}
 	};
 
 	useEffect(() => {
@@ -48,6 +66,16 @@ const SearchBox = () => {
 			setSearchText('');
 		}
 	}, [searchClicked]);
+
+	useEffect(() => {
+		if (pathname === '/pod' || pathname === '/') {
+			setSearchType(SearchIndex.INVOICE);
+			setSearchPlaceholder('pod.searchbyinvoiceno');
+		} else if (pathname === '/payment') {
+			setSearchType(SearchIndex.UTR);
+			setSearchPlaceholder('payment.searchbyutr');
+		}
+	}, [pathname]);
 
 	return (
 		<form
@@ -57,7 +85,7 @@ const SearchBox = () => {
 			<input
 				type="text"
 				className="search-inp"
-				placeholder={t('pod.searchbyinvoiceno')}
+				placeholder={t(searchPlaceholder)}
 				name="search"
 				value={searchText}
 				onChange={(e) => setSearchText(e.target.value)}

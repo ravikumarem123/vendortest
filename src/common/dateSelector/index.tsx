@@ -4,60 +4,28 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Dayjs } from 'dayjs';
 import CloseIcon from '@mui/icons-material/Close';
+import { useAppSelector } from '../../reduxInit/hooks';
 import Button from '@mui/material/Button';
 import { BrowserView } from 'react-device-detect';
 import { useTranslation } from 'react-i18next';
+import { setToDate, setFromDate } from '../commonSlice';
+import { getToDate, getFromDate } from '../commonSelector';
 
-interface IPros {
-	fromDate: Dayjs | null;
-	toDate: Dayjs | null;
-	setFromDate: Dispatch<SetStateAction<Dayjs | null>>;
-	setToDate: Dispatch<SetStateAction<Dayjs | null>>;
-	handleDateApplyClicked: () => void;
-	dateClicked: boolean;
-	setDateClicked: Dispatch<SetStateAction<boolean>>;
-	error: string | null;
-	loading: boolean;
-	minFromDate?: Dayjs | null;
-}
 
-const SelectDate: React.FC<IPros> = (
-	{
-		fromDate,
-		toDate,
-		setFromDate,
-		setToDate,
-		handleDateApplyClicked,
-		dateClicked,
-		setDateClicked,
-		error,
-		loading,
-		minFromDate
-	}) => {
+const DateSelector = () => {
 
-	const [dateChanged, setDateChanged] = useState(false);
 	const { t } = useTranslation();
+	const fromDate = useAppSelector(getFromDate);
+	const toDate = useAppSelector(getToDate);
 
-	const handleDateChanged = (val: Dayjs | null, type: string) => {
-		type === 'to' ? setToDate(val) : setFromDate(val);
-
-		if (dateClicked && !error && !loading) {
-			setDateChanged(true);
-		} else {
-			setDateChanged(false);
-		}
-	};
 
 	const handleApplyClick = () => {
-		setDateChanged(false);
-		handleDateApplyClicked();
+
 	};
 
 	const dateClassName = ((!toDate || !fromDate)) ? 'disabled-btn' : '';
 
-
 	return (
-
 		<LocalizationProvider dateAdapter={AdapterDayjs}>
 			<div
 				className='datepicker-container'
@@ -75,9 +43,8 @@ const SelectDate: React.FC<IPros> = (
 							'.MuiOutlinedInput-notchedOutline': { md: { width: '92%' } }
 						}}
 						value={fromDate}
-						onChange={(newValue) => handleDateChanged(newValue, 'from')}
+						onChange={(newValue) => setFromDate(newValue)}
 						disableFuture={true}
-						minDate={minFromDate}
 					/>
 				</div>
 
@@ -92,39 +59,47 @@ const SelectDate: React.FC<IPros> = (
 							'.MuiOutlinedInput-notchedOutline': { md: { width: '92%' } }
 						}}
 						value={toDate}
-						onChange={(newValue) => handleDateChanged(newValue, 'to')}
+						onChange={(newValue) => setToDate(newValue)}
 					/>
 				</div>
 
 				<div>
-					{
-						((dateClicked && !error && !loading && !dateChanged)) ?
+					<Button
+						variant="outlined"
+						className={`date-apply-btn ${dateClassName}`}
+						onClick={handleApplyClick}
+					>
+						{t('pod.apply')}
+					</Button>
+					{/*{
+					((dateClicked && !podError && !podLoading && !dateChanged)) ?
 
-							<Button
-								variant="outlined"
-								className="date-apply-btn"
-								onClick={() => setDateClicked(false)}
-								startIcon={<CloseIcon />}
-							>
-								{t('pod.remove')}
-							</Button>
+						<Button
+							variant="outlined"
+							className="date-apply-btn"
+							onClick={() => setDateClicked(false)}
+							startIcon={<CloseIcon />}
+						>
+							{t('pod.remove')}
+						</Button>
 
-							:
+						:
 
-							<Button
-								variant="outlined"
-								className={`date-apply-btn ${dateClassName}`}
-								onClick={handleApplyClick}
-							>
-								{t('pod.apply')}
-							</Button>
-					}
+						<Button
+							variant="outlined"
+							className={`date-apply-btn ${dateClassName}`}
+							onClick={handleApplyClick}
+						>
+							{t('pod.apply')}
+						</Button>
+				}*/}
 				</div>
 
 			</div>
 		</LocalizationProvider>
 
 	);
+
 };
 
-export default React.memo(SelectDate);
+export default React.memo(DateSelector);

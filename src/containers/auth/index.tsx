@@ -46,7 +46,8 @@ const Login = () => {
 		};
 		if (emailId && password) {
 			sendEvents(events.ON_CLICK_LOGIN, {
-				email: emailId
+				email: emailId,
+				screen: 'LOGIN'
 			});
 			dispatch({ type: sagaActions.LOGIN, payload });
 		}

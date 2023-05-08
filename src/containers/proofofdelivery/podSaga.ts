@@ -3,12 +3,8 @@ import { fetchInvoicePayload } from '../../network/createPayload';
 import apiRepository from '../../network/apiRepository';
 import { sagaActions } from '../../reduxInit/sagaActions';
 import { History } from 'history';
-import {
-    setPodDetails,
-    setPodError,
-    setPodLoading,
-    setSearchParams,
-} from './podSlice';
+import { setPodDetails, setPodError, setPodLoading } from './podSlice';
+import { setSearchParams } from '../../common/commonSlice';
 import { IResponse, ActionResult, Props, Error } from './podTypes';
 import { setDialogOpen } from '../../common/commonSlice';
 
@@ -16,12 +12,19 @@ export function* fetchPodDetails(
     history: History,
     action: ActionResult<Props>
 ) {
-    //const testingVendorId = 'VNDR-1526001151'; //VNDR-1526007917
-    const testingVendorId = localStorage.getItem('vendorId') as string;
+    //const vendorId = 'VNDR-1526001151'; //VNDR-1526007917
+    const vendorId = localStorage.getItem('vendorId') as string;
     try {
         const { payload } = action;
-        if (payload) payload.vendorId = testingVendorId;
-        yield put(setPodLoading());
+        if (payload) payload.vendorId = vendorId;
+        if (
+            payload?.searchText ||
+            payload?.dateClicked ||
+            !payload.lastReadInvoice
+        ) {
+            yield put(setPodLoading()); // ensure first api call in pagination
+        }
+
         const result: IResponse = yield call(
             apiRepository.getPodInfo,
             fetchInvoicePayload(payload)

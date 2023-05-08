@@ -1,28 +1,25 @@
 import { useEffect, useState } from "react";
 import dayjs, { Dayjs } from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers';
 import CircularProgress from '@mui/material/CircularProgress';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { useTranslation } from "react-i18next";
 import SelectDate from "./SelectDate";
 import { useAppDispatch, useAppSelector } from "../../reduxInit/hooks";
 import PodTable from "./PodTable";
-import { setSearchParams } from "./podSlice";
-import { getDefaultTime, getInvoiceList, getIsInvoiceLoading, getLastReadInvoice, getPodError, getSearchedText, isSearchClicked } from "./podSelector";
+import { setSearchParams } from "../../common/commonSlice";
+import { getDefaultTime, getInvoiceList, getIsInvoiceLoading, getLastReadInvoice, getPodError } from "./podSelector";
+import { isSearchClicked, getSearchedText } from "../../common/commonSelector";
 import { sagaActions } from "../../reduxInit/sagaActions";
-import './pod.css';
 import { events, sendEvents } from "../../appEvents";
-
-
+import './pod.css';
 
 
 const ProofOfDelivery = () => {
 
 	const [fromDate, setFromDate] = useState<Dayjs | null>(null);
 	const [toDate, setToDate] = useState<Dayjs | null>(null);
-	const [isBttVisible, setIsBttVisible] = useState<boolean>(false);
+	const [showBackToTop, setShowBackToTop] = useState<boolean>(false);
 	const searchClicked = useAppSelector(isSearchClicked);
 	const searchText = useAppSelector(getSearchedText);
 	const [dateClicked, setDateClicked] = useState<boolean>(false);
@@ -38,6 +35,7 @@ const ProofOfDelivery = () => {
 
 
 	useEffect(() => {
+		document.body.style.overflowY = 'auto';
 		window.addEventListener('scroll', handleScroll);
 		return () => window.removeEventListener('scroll', handleScroll);
 	}, []);
@@ -55,7 +53,7 @@ const ProofOfDelivery = () => {
 		1. when user clicks remove button
 		2. when search button is clicked
 		*/
-		if (!dateClicked) {
+		if (!dateClicked && !searchClicked) {
 			setToDate(null);
 			setFromDate(null);
 			const payload = {
@@ -71,7 +69,7 @@ const ProofOfDelivery = () => {
 		const payload = {
 			pageSize: 20
 		};
-		sendEvents(events.ON_CLICK_BACK_FROM_SEARCH, {})
+		sendEvents(events.ON_CLICK_BACK_FROM_SEARCH, { screen: 'POD' })
 		dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
 		dispatch(setSearchParams({ clicked: false, text: '' }))
 		setDateClicked(false);
@@ -80,14 +78,6 @@ const ProofOfDelivery = () => {
 	const handleDateApplyClicked = () => {
 		dispatch(setSearchParams({ clicked: false, text: '' }))
 		if (toDate && fromDate) {
-			//if (dayjs(toDate).isBefore(dayjs(fromDate))) {
-			//	const dialogPayload = {
-			//		title: 'Something went wrong',
-			//		content: 'please check your internet connection and try again.',
-			//	};
-			//	dispatch(setDialogOpen(dialogPayload));
-			//	return;
-			//}
 			setDateClicked(true);
 			const payload = {
 				startTime: dayjs(fromDate).startOf('day').valueOf(),
@@ -97,6 +87,7 @@ const ProofOfDelivery = () => {
 			sendEvents(events.ON_CLICK_DATE_APPLY, {
 				startTime: dayjs(fromDate).startOf('day').valueOf(),
 				endTime: dayjs(toDate).endOf('day').valueOf(),
+				screen: 'POD'
 			});
 			dispatch({
 				type: sagaActions.FETCH_POD_DETAILS,
@@ -128,9 +119,9 @@ const ProofOfDelivery = () => {
 		const scrollTop = window.pageYOffset;
 		const screenTop = window.innerHeight;
 		if (scrollTop > screenTop) {
-			setIsBttVisible(true);
+			setShowBackToTop(true);
 		} else {
-			setIsBttVisible(false);
+			setShowBackToTop(false);
 		}
 	};
 
@@ -139,74 +130,73 @@ const ProofOfDelivery = () => {
 	};
 
 	return (
-		<LocalizationProvider dateAdapter={AdapterDayjs}>
-			<div className="pod-container">
 
-				{
-					searchClicked ?
+		<div className="pod-container">
 
-						<div className='datepicker-container'
-							onClick={handleBackClickOnSearch}
-						>
-							<ArrowBackIcon
-								className="back-icon"
-							/> Showing Search Results
-						</div>
-						:
+			{
+				searchClicked ?
 
-						<SelectDate
-							fromDate={fromDate}
-							toDate={toDate}
-							setFromDate={setFromDate}
-							setToDate={setToDate}
-							handleDateApplyClicked={handleDateApplyClicked}
-							dateClicked={dateClicked}
-							setDateClicked={setDateClicked}
-							podError={podError}
-							podLoading={podLoading}
-						/>
+					<div className='datepicker-container'
+						onClick={handleBackClickOnSearch}
+					>
+						<ArrowBackIcon
+							className="back-icon"
+						/> Showing Search Results
+					</div>
+					:
 
-				}
+					<SelectDate
+						fromDate={fromDate}
+						toDate={toDate}
+						setFromDate={setFromDate}
+						setToDate={setToDate}
+						handleDateApplyClicked={handleDateApplyClicked}
+						dateClicked={dateClicked}
+						setDateClicked={setDateClicked}
+						error={podError}
+						loading={podLoading}
+					/>
 
-				<div className="select-date-hr" ></div>
+			}
 
-				<div className="pod-data-container">
-					<p className="date-range-text">
-						{searchClicked && `${t('pod.showingdfi')} ${searchText}`}
-						{(dateClicked && !podError && !podLoading) && `${t('pod.showingdf')} 
+			<div className="select-date-hr" ></div>
+
+			<div className="pod-data-container">
+				<p className="date-range-text">
+					{searchClicked && `${t('pod.showingdfi')} ${searchText}`}
+					{(dateClicked && !podError && !podLoading) && `${t('pod.showingdf')} 
 						${dayjs(getDefaultDates?.startTime).format('DD/MM/YYYY')} 
 						${t('pod.to')} 
 						${dayjs(getDefaultDates?.endTime).format('DD/MM/YYYY')}`}
-						{(!dateClicked && !searchClicked && getDefaultDates?.startTime) && `${t('pod.showingdf')} 
+					{(!dateClicked && !searchClicked && getDefaultDates?.startTime) && `${t('pod.showingdf')} 
 						${dayjs(getDefaultDates?.startTime).format('DD/MM/YYYY')} 
 						${t('pod.to')}  
 						${dayjs(getDefaultDates?.endTime).format('DD/MM/YYYY')}`}
-					</p>
+				</p>
 
-					{
-						(isInvoiceLoading && invoiceList.length < 1) ?
-							<h1 style={{ textAlign: 'center' }}> <CircularProgress /></h1>
-							:
+				{
+					isInvoiceLoading ?
+						<h1 style={{ textAlign: 'center' }}> <CircularProgress /></h1>
+						:
 
-							<PodTable
-								lastReadInvoice={lastReadInvoice}
-								invoiceList={invoiceList}
-								fetchData={fetchData}
-							/>
+						<PodTable
+							lastReadInvoice={lastReadInvoice}
+							invoiceList={invoiceList}
+							fetchData={fetchData}
+						/>
 
-					}
-					{
-						isBttVisible &&
-						<div className="btt-container">
-							<p className="btt-text" onClick={handleBackToTop}>{t('pod.backtotop')}  <ExpandLessIcon className="btt-icon" /></p>
-						</div>
-					}
+				}
+				{
+					showBackToTop &&
+					<div className="btt-container">
+						<p className="btt-text" onClick={handleBackToTop}>{t('pod.backtotop')}  <ExpandLessIcon className="btt-icon" /></p>
+					</div>
+				}
 
-
-				</div>
 
 			</div>
-		</LocalizationProvider>
+
+		</div>
 	);
 };
 

@@ -10,6 +10,18 @@ const apiRepository = {
         const URL = 'v1/login';
         return apiHandler.post(URL, data);
     },
+    getUTRList: function (data: object) {
+        const URL = 'payments/v1/get-info';
+        return apiHandler.post(URL, data);
+    },
+    getUTRInfo: function (data: object) {
+        const URL = 'payments/v1/get-advice-info';
+        return apiHandler.post(URL, data);
+    },
+	getUTRIngestion: function (data: object) {
+		const URL = 'payments/v1/download/payment-advice';
+		return apiHandler.post(URL, data);
+	},
 };
 
 export default apiRepository;
