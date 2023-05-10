@@ -17,19 +17,19 @@ const podSlice = createSlice({
     reducers: {
         setPodDetails: (state, { payload }) => {
             if (payload?.fresh) {
-                state.invoiceList = payload.invoiceInfoList;
+                state.invoiceList = payload.podInfoList;
             } else if (
                 payload?.prevPageLastInvId &&
                 payload?.prevPageLastInvId.length > 1
             ) {
                 state.invoiceList = [
                     ...state.invoiceList,
-                    ...payload.invoiceInfoList,
+                    ...payload.podInfoList,
                 ];
             } else {
                 state.invoiceList = [
                     ...state.invoiceList,
-                    ...payload.invoiceInfoList,
+                    ...payload.podInfoList,
                 ];
             }
             state.defaultEndTime = payload.endTime;

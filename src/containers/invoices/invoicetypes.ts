@@ -50,3 +50,8 @@ export interface ActionResult<T> extends Action<string> {
 export interface Error {
     error: string;
 }
+
+export interface IFetchDataProps{
+	isDateClicked?: boolean;
+	sendLastInvoice?: boolean;
+}

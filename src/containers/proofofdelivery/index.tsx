@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import dayjs, { Dayjs } from 'dayjs';
 import CircularProgress from '@mui/material/CircularProgress';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { useTranslation } from "react-i18next";
 import SelectDate from "./SelectDate";
 import { useAppDispatch, useAppSelector } from "../../reduxInit/hooks";
@@ -12,6 +11,9 @@ import { getDefaultTime, getPodList, getIsPodLoading, getLastReadPod, getPodErro
 import { isSearchClicked, getSearchedText } from "../../common/commonSelector";
 import { sagaActions } from "../../reduxInit/sagaActions";
 import { events, sendEvents } from "../../appEvents";
+import useSmoothScroll from "../../customHooks/useSmoothScroll";
+import BackToTop from "../../common/backToTop";
+import { formatDateRange } from "../../utils/dateUtils";
 import './pod.css';
 
 
@@ -19,7 +21,7 @@ const ProofOfDelivery = () => {
 
 	const [fromDate, setFromDate] = useState<Dayjs | null>(null);
 	const [toDate, setToDate] = useState<Dayjs | null>(null);
-	const [showBackToTop, setShowBackToTop] = useState<boolean>(false);
+	//const [showBackToTop, setShowBackToTop] = useState<boolean>(false);
 	const searchClicked = useAppSelector(isSearchClicked);
 	const searchText = useAppSelector(getSearchedText);
 	const [dateClicked, setDateClicked] = useState<boolean>(false);
@@ -29,16 +31,17 @@ const ProofOfDelivery = () => {
 	const podError = useAppSelector(getPodError);
 	const podLoading = useAppSelector(getIsPodLoading);
 	const getDefaultDates = useAppSelector(getDefaultTime);
+	const showBackToTop = useSmoothScroll({ defaultShowBackToTop: false });
 	const { t } = useTranslation();
 
 	const dispatch = useAppDispatch();
 
 
-	useEffect(() => {
-		document.body.style.overflowY = 'auto';
-		window.addEventListener('scroll', handleScroll);
-		return () => window.removeEventListener('scroll', handleScroll);
-	}, []);
+	//useEffect(() => {
+	//	document.body.style.overflowY = 'auto';
+	//	window.addEventListener('scroll', handleScroll);
+	//	return () => window.removeEventListener('scroll', handleScroll);
+	//}, []);
 
 	useEffect(() => {
 		if (searchClicked) {
@@ -115,19 +118,33 @@ const ProofOfDelivery = () => {
 		}
 	};
 
-	const handleScroll = () => {
-		const scrollTop = window.pageYOffset;
-		const screenTop = window.innerHeight;
-		if (scrollTop > screenTop) {
-			setShowBackToTop(true);
-		} else {
-			setShowBackToTop(false);
+	const dateRangeText = () => {
+		if (searchClicked) {
+		  return `${t('pod.showingdfi')} ${searchText}`;
 		}
-	};
+		const { start, end } = formatDateRange(getDefaultDates?.startTime, getDefaultDates?.endTime);
+		if (dateClicked && !podError && !podLoading) { // date filter applied
+			return `${t('pod.showingdf')} ${start} ${t('pod.to')} ${end}`
+		}
+		if (!dateClicked && !searchClicked && getDefaultDates?.startTime) { // initial render
+			return `${t('pod.showingdf')} ${start} ${t('pod.to')} ${end}`
+		}
+		return null;
+	  };
 
-	const handleBackToTop = () => {
-		window.scrollTo({ top: 0, behavior: 'smooth' });
-	};
+	//const handleScroll = () => {
+	//	const scrollTop = window.pageYOffset;
+	//	const screenTop = window.innerHeight;
+	//	if (scrollTop > screenTop) {
+	//		setShowBackToTop(true);
+	//	} else {
+	//		setShowBackToTop(false);
+	//	}
+	//};
+
+	//const handleBackToTop = () => {
+	//	window.scrollTo({ top: 0, behavior: 'smooth' });
+	//};
 
 	return (
 
@@ -163,7 +180,7 @@ const ProofOfDelivery = () => {
 
 			<div className="pod-data-container">
 				<p className="date-range-text">
-					{searchClicked && `${t('pod.showingdfi')} ${searchText}`}
+					{/*{searchClicked && `${t('pod.showingdfi')} ${searchText}`}
 					{(dateClicked && !podError && !podLoading) && `${t('pod.showingdf')} 
 						${dayjs(getDefaultDates?.startTime).format('DD/MM/YYYY')} 
 						${t('pod.to')} 
@@ -171,7 +188,8 @@ const ProofOfDelivery = () => {
 					{(!dateClicked && !searchClicked && getDefaultDates?.startTime) && `${t('pod.showingdf')} 
 						${dayjs(getDefaultDates?.startTime).format('DD/MM/YYYY')} 
 						${t('pod.to')}  
-						${dayjs(getDefaultDates?.endTime).format('DD/MM/YYYY')}`}
+						${dayjs(getDefaultDates?.endTime).format('DD/MM/YYYY')}`}*/}
+						{dateRangeText()}
 				</p>
 
 				{
@@ -188,9 +206,11 @@ const ProofOfDelivery = () => {
 				}
 				{
 					showBackToTop &&
-					<div className="btt-container">
-						<p className="btt-text" onClick={handleBackToTop}>{t('pod.backtotop')}  <ExpandLessIcon className="btt-icon" /></p>
-					</div>
+
+					<BackToTop />
+					//<div className="btt-container">
+					//	<p className="btt-text" onClick={handleBackToTop}>{t('pod.backtotop')}  <ExpandLessIcon className="btt-icon" /></p>
+					//</div>
 				}
 
 

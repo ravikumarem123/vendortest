@@ -32,8 +32,8 @@ const invoiceSlice = createSlice({
                     ...payload.invoicesInfo,
                 ];
             }
-            state.defaultEndTime = payload.endTime;
-            state.defaultStartTime = payload.startTime;
+            state.defaultEndTime = payload.dataEndDate;
+            state.defaultStartTime = payload.dataStartDate;
             state.loading = false;
             state.error = null;
             state.hasMore = payload?.prevPageLastInvId ? true : false;
