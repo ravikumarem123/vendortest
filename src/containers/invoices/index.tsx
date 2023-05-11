@@ -22,7 +22,6 @@ const Invoices = () => {
 
 	const [fromDate, setFromDate] = useState<Dayjs | null>(null);
 	const [toDate, setToDate] = useState<Dayjs | null>(null);
-	//const [showBackToTop, setShowBackToTop] = useState<boolean>(false);
 	const searchClicked = useAppSelector(isSearchClicked);
 	const searchText = useAppSelector(getSearchedText);
 	const [dateClicked, setDateClicked] = useState<boolean>(false);
@@ -37,13 +36,6 @@ const Invoices = () => {
 
 	const dispatch = useAppDispatch();
 
-
-	//useEffect(() => {
-	//	document.body.style.overflowY = 'auto';
-	//	window.addEventListener('scroll', handleScroll);
-	//	return () => window.removeEventListener('scroll', handleScroll);
-	//}, []);
-
 	useEffect(() => {
 		if (searchClicked) {
 			setToDate(null);
@@ -57,21 +49,12 @@ const Invoices = () => {
 		if (!dateClicked && !searchClicked) {
 			setToDate(null);
 			setFromDate(null);
-			//const payload = {
-			//	pageSize: 20,
-			//	lastReadInvoice
-			//};
-			//dispatch({ type: sagaActions.FETCH_INVOICE_DETAILS, payload });
-			fetchData({ sendLastInvoice: true });
+			fetchData({ sendLastInvoice: true, pageSize: 20 });
 
 		}
 	}, [dateClicked]);
 
 	const handleBackClickOnSearch = () => {
-		//const payload = {
-		//	pageSize: 20
-		//};
-		//dispatch({ type: sagaActions.FETCH_INVOICE_DETAILS, payload });
 		fetchData({ sendLastInvoice: false });
 		sendEvents(events.ON_CLICK_BACK_FROM_SEARCH, { screen: 'INVOICE' });
 		dispatch(setSearchParams({ clicked: false, text: '' }))
@@ -83,15 +66,6 @@ const Invoices = () => {
 		if (toDate && fromDate) {
 			setDateClicked(true);
 			fetchData({ isDateClicked: true, sendLastInvoice: false });
-			//const payload = {
-			//	startTime: dayjs(fromDate).startOf('day').valueOf(),
-			//	endTime: dayjs(toDate).endOf('day').valueOf(),
-			//	dateClicked: true,
-			//};
-			//dispatch({
-			//	type: sagaActions.FETCH_INVOICE_DETAILS,
-			//	payload,
-			//});
 			sendEvents(events.ON_CLICK_DATE_APPLY, {
 				startTime: dayjs(fromDate).startOf('day').valueOf(),
 				endTime: dayjs(toDate).endOf('day').valueOf(),
@@ -100,15 +74,16 @@ const Invoices = () => {
 		}
 	};
 
-	const fetchData = ({sendLastInvoice = true, isDateClicked = false}: IFetchDataProps) => {
+	const fetchData = ({ sendLastInvoice = true, isDateClicked = false, pageSize = 10 }: IFetchDataProps) => {
 
 		const sendDates = isDateClicked && fromDate && !invoiceError;
 
 		let payload = {
-			lastReadInvoice: sendLastInvoice? lastReadInvoice : null,
+			lastReadInvoice: sendLastInvoice ? lastReadInvoice : null,
 			startTime: sendDates ? dayjs(fromDate).startOf('day').valueOf() : null,
 			endTime: sendDates ? dayjs(toDate).endOf('day').valueOf() : null,
-			dateClicked: isDateClicked, 
+			dateClicked: isDateClicked,
+			pageSize
 		};
 		if (invoiceError) {
 			setFromDate(null);
@@ -122,19 +97,9 @@ const Invoices = () => {
 		}
 	};
 
-	//const handleScroll = () => {
-	//	const scrollTop = window.pageYOffset;
-	//	const screenTop = window.innerHeight;
-	//	if (scrollTop > screenTop) {
-	//		setShowBackToTop(true);
-	//	} else {
-	//		setShowBackToTop(false);
-	//	}
-	//};
-
 	const dateRangeText = () => {
 		if (searchClicked) {
-		  return `${t('pod.showingdfi')} ${searchText}`;
+			return `${t('pod.showingdfi')} ${searchText}`;
 		}
 		const { start, end } = formatDateRange(getDefaultDates?.startTime, getDefaultDates?.endTime);
 		if (dateClicked && !invoiceError && !invoiceLoading) { // date filter applied
@@ -144,7 +109,7 @@ const Invoices = () => {
 			return `${t('pod.showingdf')} ${start} ${t('pod.to')} ${end}`
 		}
 		return null;
-	  };
+	};
 
 	return (
 		<div className="pod-container">
@@ -179,16 +144,7 @@ const Invoices = () => {
 
 			<div className="pod-data-container">
 				<p className="date-range-text">
-					{/*{searchClicked && `${t('pod.showingdfi')} ${searchText}`}
-					{(dateClicked && !podError && !podLoading) && `${t('pod.showingdf')} 
-						${dayjs(getDefaultDates?.startTime).format('DD/MM/YYYY')} 
-						${t('pod.to')} 
-						${dayjs(getDefaultDates?.endTime).format('DD/MM/YYYY')}`}
-					{(!dateClicked && !searchClicked && getDefaultDates?.startTime) && `${t('pod.showingdf')} 
-						${dayjs(getDefaultDates?.startTime).format('DD/MM/YYYY')} 
-						${t('pod.to')}  
-						${dayjs(getDefaultDates?.endTime).format('DD/MM/YYYY')}`}*/}
-						{dateRangeText()}
+					{dateRangeText()}
 				</p>
 
 				{
@@ -203,15 +159,7 @@ const Invoices = () => {
 						/>
 
 				}
-				{
-					showBackToTop &&
-					//<div className="btt-container">
-					//	<p className="btt-text" onClick={handleBackToTop}>{t('pod.backtotop')}  <ExpandLessIcon className="btt-icon" /></p>
-					//</div>
-					<BackToTop />
-					
-				}
-
+				{showBackToTop && <BackToTop />}
 
 			</div>
 

@@ -47,8 +47,9 @@
 	color: #301134 !important;
 }
 
-.address-cell{
-	width: 300px !important;
+.debit-note-text{
+	font-weight: 600 !important;
+	color: #e57482 !important
 }
 
 .date-apply-btn{
@@ -120,4 +121,14 @@
 .gray-text {
 	color: #808080 !important;
 	font-weight: 400;
+}
+
+.invoice-details-column{
+	display: flex !important;
+	flex-direction: column !important;
+}
+
+.horizontal-padd{
+	padding-left: 50px !important;
+	padding-right: 50px !important;
 }

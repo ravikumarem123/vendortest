@@ -61,7 +61,7 @@ const InvoiceTable: React.FC<InvoiceTablePros> = ({ lastReadInvoice, invoiceList
 									<TableRow>
 										<TableCell align="center">{t('invoice.table.sno')}</TableCell>
 										<TableCell align="center">{t('invoice.table.idetails')}</TableCell>
-										<TableCell align="center">{t('invoice.table.iamount')}</TableCell>
+										<TableCell align="center" className='horizontal-padd'>{t('invoice.table.iamount')}</TableCell>
 										<TableCell align="center">{t('invoice.table.idate')}</TableCell>
 										<TableCell align="center">{t('invoice.table.dnamount')}</TableCell>
 										<TableCell align="center">{t('invoice.table.expecteda')}</TableCell>
@@ -76,15 +76,18 @@ const InvoiceTable: React.FC<InvoiceTablePros> = ({ lastReadInvoice, invoiceList
 											sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
 										>
 											<TableCell align="center" style={{ fontWeight: 'bold' }}>{index + 1}</TableCell>
-											<TableCell 
-												align="center" 
-												style={{ fontWeight: 'bold' }} 
+											<TableCell
+												align="center"
+												style={{ fontWeight: 'bold' }}
 												onClick={handleInvoiceClick}
 											>
-												<a href={invoice.documentUrl} target="_blank" >
-													<img alt='pod' src={InvoiceThumbnail} style={{ width: '45px' }} />
-												</a>
-												<span className='gray-text'>{invoice.invoiceNumber}</span>
+												<div className='invoice-details-column'>
+													<a href={invoice.documentUrl} target="_blank" >
+														<img alt='pod' src={InvoiceThumbnail} style={{ width: '45px' }} />
+													</a>
+													<span className='gray-text'>{invoice.invoiceNumber}</span>
+												</div>
+
 											</TableCell>
 											<TableCell align="center" style={{ fontWeight: 'bold' }}>
 												{invoice.invoiceAmount}
@@ -92,7 +95,7 @@ const InvoiceTable: React.FC<InvoiceTablePros> = ({ lastReadInvoice, invoiceList
 											<TableCell align="center" className='gray-text'>
 												{invoice.invoiceDate}
 											</TableCell>
-											<TableCell align="center" className='address-cell gray-text'>
+											<TableCell align="center" className='debit-note-text'>
 												{invoice.debitNoteAmount}
 											</TableCell>
 											<TableCell align="center" style={{ fontWeight: 'bold' }}>

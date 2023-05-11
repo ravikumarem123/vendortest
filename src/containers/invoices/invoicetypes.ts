@@ -54,4 +54,5 @@ export interface Error {
 export interface IFetchDataProps{
 	isDateClicked?: boolean;
 	sendLastInvoice?: boolean;
+	pageSize?: number;
 }

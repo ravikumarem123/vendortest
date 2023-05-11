@@ -21,7 +21,6 @@ const ProofOfDelivery = () => {
 
 	const [fromDate, setFromDate] = useState<Dayjs | null>(null);
 	const [toDate, setToDate] = useState<Dayjs | null>(null);
-	//const [showBackToTop, setShowBackToTop] = useState<boolean>(false);
 	const searchClicked = useAppSelector(isSearchClicked);
 	const searchText = useAppSelector(getSearchedText);
 	const [dateClicked, setDateClicked] = useState<boolean>(false);
@@ -36,13 +35,6 @@ const ProofOfDelivery = () => {
 
 	const dispatch = useAppDispatch();
 
-
-	//useEffect(() => {
-	//	document.body.style.overflowY = 'auto';
-	//	window.addEventListener('scroll', handleScroll);
-	//	return () => window.removeEventListener('scroll', handleScroll);
-	//}, []);
-
 	useEffect(() => {
 		if (searchClicked) {
 			setToDate(null);
@@ -52,10 +44,6 @@ const ProofOfDelivery = () => {
 	}, [searchClicked]);
 
 	useEffect(() => {
-		/* this will run 
-		1. when user clicks remove button
-		2. when search button is clicked
-		*/
 		if (!dateClicked && !searchClicked) {
 			setToDate(null);
 			setFromDate(null);
@@ -120,7 +108,7 @@ const ProofOfDelivery = () => {
 
 	const dateRangeText = () => {
 		if (searchClicked) {
-		  return `${t('pod.showingdfi')} ${searchText}`;
+			return `${t('pod.showingdfi')} ${searchText}`;
 		}
 		const { start, end } = formatDateRange(getDefaultDates?.startTime, getDefaultDates?.endTime);
 		if (dateClicked && !podError && !podLoading) { // date filter applied
@@ -130,21 +118,7 @@ const ProofOfDelivery = () => {
 			return `${t('pod.showingdf')} ${start} ${t('pod.to')} ${end}`
 		}
 		return null;
-	  };
-
-	//const handleScroll = () => {
-	//	const scrollTop = window.pageYOffset;
-	//	const screenTop = window.innerHeight;
-	//	if (scrollTop > screenTop) {
-	//		setShowBackToTop(true);
-	//	} else {
-	//		setShowBackToTop(false);
-	//	}
-	//};
-
-	//const handleBackToTop = () => {
-	//	window.scrollTo({ top: 0, behavior: 'smooth' });
-	//};
+	};
 
 	return (
 
@@ -180,16 +154,7 @@ const ProofOfDelivery = () => {
 
 			<div className="pod-data-container">
 				<p className="date-range-text">
-					{/*{searchClicked && `${t('pod.showingdfi')} ${searchText}`}
-					{(dateClicked && !podError && !podLoading) && `${t('pod.showingdf')} 
-						${dayjs(getDefaultDates?.startTime).format('DD/MM/YYYY')} 
-						${t('pod.to')} 
-						${dayjs(getDefaultDates?.endTime).format('DD/MM/YYYY')}`}
-					{(!dateClicked && !searchClicked && getDefaultDates?.startTime) && `${t('pod.showingdf')} 
-						${dayjs(getDefaultDates?.startTime).format('DD/MM/YYYY')} 
-						${t('pod.to')}  
-						${dayjs(getDefaultDates?.endTime).format('DD/MM/YYYY')}`}*/}
-						{dateRangeText()}
+					{dateRangeText()}
 				</p>
 
 				{
@@ -204,15 +169,7 @@ const ProofOfDelivery = () => {
 						/>
 
 				}
-				{
-					showBackToTop &&
-
-					<BackToTop />
-					//<div className="btt-container">
-					//	<p className="btt-text" onClick={handleBackToTop}>{t('pod.backtotop')}  <ExpandLessIcon className="btt-icon" /></p>
-					//</div>
-				}
-
+				{showBackToTop && <BackToTop />}
 
 			</div>
 

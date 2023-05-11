@@ -71,16 +71,12 @@ const Payments = () => {
 		if (!dateClicked && !searchClicked) {
 			setToDate(null);
 			setFromDate(null);
-			// page: 0 is mandatory here as this gets called when user click on remove after date is applied
-			//const payload = getPaymentDetailsPayload({ pageNumber: 0, pageSize: 20 });
-			//dispatch({ type: sagaActions.FETCH_PAYMENT_DETAILS, payload });
 			fetchData({ page: 0, pageSize: 20 });
-			//setPageNumber(1);
 		}
 	}, [dateClicked]);
 
 	const fetchData = ({ page, isDateClicked = false }: IFetchDataProps) => {
-		const payload = getPaymentDetailsPayload({ pageNumber: page, dateClicked, fromDate, paymentError })
+		const payload = getPaymentDetailsPayload({ pageNumber: page, dateClicked: isDateClicked, fromDate, paymentError })
 		setPageNumber(page + 1);
 		if (paymentError) {
 			setFromDate(null);
@@ -95,9 +91,6 @@ const Payments = () => {
 	};
 
 	const handleBackClickOnSearch = () => {
-		//const payload = getPaymentDetailsPayload({ pageNumber: 0 });
-		//dispatch({ type: sagaActions.FETCH_PAYMENT_DETAILS, payload });
-		//setPageNumber(1);  // for page 0, we called above. Subsequent calls will be handled by fetchData
 		fetchData({ page: 0, pageSize: 20 });
 		sendEvents(events.ON_CLICK_BACK_FROM_SEARCH, { screen: 'PAYMENTS' });
 		dispatch(setSearchParams({ clicked: false, text: '' }));
@@ -109,12 +102,6 @@ const Payments = () => {
 		dispatch(setSearchParams({ clicked: false, text: '' }))
 		if (toDate && fromDate) {
 			setDateClicked(true);
-			//const payload = getPaymentDetailsPayload({ fromDate, toDate, dateClicked: true, pageNumber: 0 });
-			//dispatch({
-			//	type: sagaActions.FETCH_PAYMENT_DETAILS,
-			//	payload,
-			//});
-			//setPageNumber(1); // for page 0, we called above. Subsequent calls will be handled by fetchData
 			fetchData({ page: 0, pageSize: 20, isDateClicked: true });
 			sendEvents(events.ON_CLICK_DATE_APPLY, {
 				startTime: dayjs(fromDate).startOf('day').valueOf(),
@@ -142,7 +129,7 @@ const Payments = () => {
 
 	const dateRangeText = () => {
 		if (searchClicked) {
-		  return `${t('pod.showingdfi')} ${searchText}`;
+			return `${t('pod.showingdfi')} ${searchText}`;
 		}
 		const { start, end } = formatDateRange(getDefaultDates?.startTime, getDefaultDates?.endTime);
 		if (dateClicked && !paymentError && !paymentLoading) { // date filter applied
@@ -152,7 +139,7 @@ const Payments = () => {
 			return `${t('pod.showingdf')} ${start} ${t('pod.to')} ${end}`
 		}
 		return null;
-	  };
+	};
 
 	return (
 		<div className="payment-container">
@@ -187,16 +174,7 @@ const Payments = () => {
 			<div className="select-date-hr" ></div>
 			<div className='payment-data-container'>
 				<p className="date-range-text">
-					{/*{searchClicked && `${t('pod.showingdfutr')} ${searchText}`}
-					{(dateClicked && !paymentError && !paymentLoading) && `${t('pod.showingdf')} 
-						${dayjs(getDefaultDates?.startTime).format('DD/MM/YYYY')} 
-						${t('pod.to')} 
-						${dayjs(getDefaultDates?.endTime).format('DD/MM/YYYY')}`}
-					{(!dateClicked && !searchClicked && getDefaultDates?.startTime) && `${t('pod.showingdf')} 
-						${dayjs(getDefaultDates?.startTime).format('DD/MM/YYYY')} 
-						${t('pod.to')}  
-						${dayjs(getDefaultDates?.endTime).format('DD/MM/YYYY')}`}*/}
-						{dateRangeText()}
+					{dateRangeText()}
 				</p>
 
 				{
