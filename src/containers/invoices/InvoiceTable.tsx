@@ -61,8 +61,9 @@ const InvoiceTable: React.FC<InvoiceTablePros> = ({ lastReadInvoice, invoiceList
 									<TableRow>
 										<TableCell align="center">{t('invoice.table.sno')}</TableCell>
 										<TableCell align="center">{t('invoice.table.idetails')}</TableCell>
-										<TableCell align="center" className='horizontal-padd'>{t('invoice.table.iamount')}</TableCell>
+										
 										<TableCell align="center">{t('invoice.table.idate')}</TableCell>
+										<TableCell align="center" className='horizontal-padd'>{t('invoice.table.iamount')}</TableCell>
 										<TableCell align="center">{t('invoice.table.dnamount')}</TableCell>
 										{/*<TableCell align="center">{t('invoice.table.expecteda')}</TableCell>
 										<TableCell align="center">{t('invoice.table.paymentst')}</TableCell>*/}
@@ -89,13 +90,13 @@ const InvoiceTable: React.FC<InvoiceTablePros> = ({ lastReadInvoice, invoiceList
 												</div>
 
 											</TableCell>
-											<TableCell align="center" style={{ fontWeight: 'bold' }}>
-												{invoice.invoiceAmount}
-											</TableCell>
 											<TableCell align="center" className='gray-text'>
 												{invoice.invoiceDate}
 											</TableCell>
-											<TableCell align="center" className='debit-note-text'>
+											<TableCell align="center" style={{ fontWeight: 'bold' }}>
+												{invoice.invoiceAmount}
+											</TableCell>
+											<TableCell align="center" className={`${invoice.debitNoteAmount === "NA" ? '' : 'debit-note-text'}`}>
 												{invoice.debitNoteAmount}
 											</TableCell>
 											{/*<TableCell align="center" style={{ fontWeight: 'bold' }}>
