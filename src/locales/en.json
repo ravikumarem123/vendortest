@@ -65,7 +65,8 @@
 			"dnamount": "DEBIT NOTE AMOUNT",
 			"expecteda": "EXPECTED AMOUNT",
 			"paymentst": "PAYMENT STATUS",
-			"settlementd": "SETTLEMENT DETAILS"
+			"settlementd": "SETTLEMENT DETAILS",
+			"tds": "TDS"
 		}
 	}
 }

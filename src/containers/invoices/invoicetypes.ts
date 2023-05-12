@@ -6,9 +6,10 @@ export interface Invoice {
 	invoiceAmount: string;
 	invoiceDate: string;
 	invoiceNumber: string;
-	debitNoteAmount: string;
-	expectedAmount: string;
 	paymentInfo: {
+		tds: string;
+		debitNoteAmount: string;
+		expectedAmount: string;
 		paymentStatus: string;
 		settlementDetails: string;
 	}

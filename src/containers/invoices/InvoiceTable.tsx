@@ -65,6 +65,7 @@ const InvoiceTable: React.FC<InvoiceTablePros> = ({ lastReadInvoice, invoiceList
 										<TableCell align="center">{t('invoice.table.idate')}</TableCell>
 										<TableCell align="center" className='horizontal-padd'>{t('invoice.table.iamount')}</TableCell>
 										<TableCell align="center">{t('invoice.table.dnamount')}</TableCell>
+										<TableCell align="center">{t('invoice.table.tds')}</TableCell>
 										{/*<TableCell align="center">{t('invoice.table.expecteda')}</TableCell>
 										<TableCell align="center">{t('invoice.table.paymentst')}</TableCell>*/}
 										<TableCell align="center">{t('invoice.table.settlementd')}</TableCell>
@@ -96,8 +97,11 @@ const InvoiceTable: React.FC<InvoiceTablePros> = ({ lastReadInvoice, invoiceList
 											<TableCell align="center" style={{ fontWeight: 'bold' }}>
 												{invoice.invoiceAmount}
 											</TableCell>
-											<TableCell align="center" className={`${invoice.debitNoteAmount === "NA" ? '' : 'debit-note-text'}`}>
-												{invoice.debitNoteAmount}
+											<TableCell align="center" className={`${invoice?.paymentInfo?.debitNoteAmount === "NA" ? '' : 'debit-note-text'}`}>
+												{invoice?.paymentInfo?.debitNoteAmount}
+											</TableCell>
+											<TableCell align="center">
+												{invoice?.paymentInfo?.tds}
 											</TableCell>
 											{/*<TableCell align="center" style={{ fontWeight: 'bold' }}>
 												{invoice.expectedAmount}
