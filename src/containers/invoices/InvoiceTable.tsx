@@ -61,7 +61,7 @@ const InvoiceTable: React.FC<InvoiceTablePros> = ({ lastReadInvoice, invoiceList
 									<TableRow>
 										<TableCell align="center">{t('invoice.table.sno')}</TableCell>
 										<TableCell align="center">{t('invoice.table.idetails')}</TableCell>
-										
+
 										<TableCell align="center">{t('invoice.table.idate')}</TableCell>
 										<TableCell align="center" className='horizontal-padd'>{t('invoice.table.iamount')}</TableCell>
 										<TableCell align="center">{t('invoice.table.dnamount')}</TableCell>
@@ -72,8 +72,11 @@ const InvoiceTable: React.FC<InvoiceTablePros> = ({ lastReadInvoice, invoiceList
 									</TableRow>
 								</TableHead>
 								<TableBody>
-									{invoiceList.map((invoice, index) => (
-										<TableRow
+									{invoiceList.map((invoice, index) => {
+
+										const { debitNoteAmount, settlementDetails, tds } = (invoice?.paymentInfo || invoice?.paymentErrorInfo) ?? {};
+
+										return (<TableRow
 											key={invoice.documentUrl}
 											sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
 										>
@@ -98,22 +101,27 @@ const InvoiceTable: React.FC<InvoiceTablePros> = ({ lastReadInvoice, invoiceList
 												{invoice.invoiceAmount}
 											</TableCell>
 											<TableCell align="center" className={`${invoice?.paymentInfo?.debitNoteAmount === "NA" ? '' : 'debit-note-text'}`}>
-												{invoice?.paymentInfo?.debitNoteAmount}
+												{debitNoteAmount}
 											</TableCell>
 											<TableCell align="center">
-												{invoice?.paymentInfo?.tds}
+												{tds}
 											</TableCell>
 											{/*<TableCell align="center" style={{ fontWeight: 'bold' }}>
-												{invoice.expectedAmount}
-											</TableCell>
+											{invoice.expectedAmount}
+										</TableCell>
+										<TableCell align="center" >
+											{invoice?.paymentInfo?.paymentStatus}
+										</TableCell>*/}
 											<TableCell align="center" >
-												{invoice?.paymentInfo?.paymentStatus}
-											</TableCell>*/}
-											<TableCell align="center" >
-												{invoice?.paymentInfo?.settlementDetails}
+												{settlementDetails}
 											</TableCell>
-										</TableRow>
-									))}
+										</TableRow>);
+
+
+
+									}
+
+									)}
 								</TableBody>
 							</Table>
 						</TableContainer>
