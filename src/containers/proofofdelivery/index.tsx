@@ -110,7 +110,11 @@ const ProofOfDelivery = () => {
 		if (searchClicked) {
 			return `${t('pod.showingdfi')} ${searchText}`;
 		}
+
 		const { start, end } = formatDateRange(getDefaultDates?.startTime, getDefaultDates?.endTime);
+		const isDateFilterApplied = dateClicked && !podError && !podLoading;
+		const isFirstRender = !dateClicked && !searchClicked && getDefaultDates?.startTime;
+
 		if (dateClicked && !podError && !podLoading) { // date filter applied
 			return `${t('pod.showingdf')} ${start} ${t('pod.to')} ${end}`
 		}

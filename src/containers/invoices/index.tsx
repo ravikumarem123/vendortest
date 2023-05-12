@@ -104,10 +104,13 @@ const Invoices = () => {
 			return `${t('pod.showingdfi')} ${searchText}`;
 		}
 		const { start, end } = formatDateRange(getDefaultDates?.startTime, getDefaultDates?.endTime);
-		if (dateClicked && !invoiceError && !invoiceLoading) { // date filter applied
+		const isDateFilterApplied = dateClicked && !invoiceError && !invoiceLoading;
+		const isFirstRender =!dateClicked && !searchClicked && getDefaultDates?.startTime;
+
+		if (isDateFilterApplied) { // date filter applied
 			return `${t('pod.showingdf')} ${start} ${t('pod.to')} ${end}`
 		}
-		if (!dateClicked && !searchClicked && getDefaultDates?.startTime) { // initial render
+		if (isFirstRender) { // initial render
 			return `${t('pod.showingdf')} ${start} ${t('pod.to')} ${end}`
 		}
 		return null;

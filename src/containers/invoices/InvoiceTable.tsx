@@ -86,7 +86,11 @@ const TableComponent = ({ invoiceList }: TableComponentProps) => {
 							<TableCell align="center" >
 								<div>
 									<p  className={`${settledAmount === "NA" ? '' : 'settlement-amount'}`}>{settledAmount}</p>
-									<p className={`${utr === "NA" ? 'hide-utr' : 'settlement-utr'}`}>{utr}</p>
+									<p 
+										className={`${(utr === "NA" || utr==="-") ? 'hide-utr' : 'settlement-utr'}`}
+									>
+										{utr}
+									</p>
 								</div>
 							</TableCell>
 						</TableRow>);
