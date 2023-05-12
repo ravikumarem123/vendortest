@@ -100,10 +100,10 @@ const InvoiceTable: React.FC<InvoiceTablePros> = ({ lastReadInvoice, invoiceList
 											<TableCell align="center" style={{ fontWeight: 'bold' }}>
 												{invoice.invoiceAmount}
 											</TableCell>
-											<TableCell align="center" className={`${invoice?.paymentInfo?.debitNoteAmount === "NA" ? '' : 'debit-note-text'}`}>
+											<TableCell align="center" className={`${debitNoteAmount === "NA" ? '' : 'debit-note-text'}`}>
 												{debitNoteAmount}
 											</TableCell>
-											<TableCell align="center">
+											<TableCell align="center" className={`${tds === "NA" ? '' : 'debit-note-text'}`}>
 												{tds}
 											</TableCell>
 											{/*<TableCell align="center" style={{ fontWeight: 'bold' }}>
