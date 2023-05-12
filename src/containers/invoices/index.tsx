@@ -77,11 +77,13 @@ const Invoices = () => {
 	const fetchData = ({ sendLastInvoice = true, isDateClicked = false, pageSize = 10 }: IFetchDataProps) => {
 
 		const sendDates = isDateClicked && fromDate && !invoiceError;
+		const fromDateStart = dayjs(fromDate).startOf('day'); // start time of day
+		const toDateEnd = dayjs(toDate).endOf('day'); // end time of day
 
 		let payload = {
 			lastReadInvoice: sendLastInvoice ? lastReadInvoice : null,
-			startTime: sendDates ? dayjs(fromDate).startOf('day').valueOf() : null,
-			endTime: sendDates ? dayjs(toDate).endOf('day').valueOf() : null,
+			startTime: sendDates ? fromDateStart.valueOf() : null,
+			endTime: sendDates ? toDateEnd.valueOf() : null,
 			dateClicked: isDateClicked,
 			pageSize
 		};

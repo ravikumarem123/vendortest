@@ -131,11 +131,15 @@ const Payments = () => {
 		if (searchClicked) {
 			return `${t('pod.showingdfi')} ${searchText}`;
 		}
+
 		const { start, end } = formatDateRange(getDefaultDates?.startTime, getDefaultDates?.endTime);
-		if (dateClicked && !paymentError && !paymentLoading) { // date filter applied
+		const isDateFilterApplied = dateClicked && !paymentError && !paymentLoading;
+		const isFirstRender = !dateClicked && !searchClicked && getDefaultDates?.startTime;
+		
+		if (isDateFilterApplied) { // date filter applied
 			return `${t('pod.showingdf')} ${start} ${t('pod.to')} ${end}`
 		}
-		if (!dateClicked && !searchClicked && getDefaultDates?.startTime) { // initial render
+		if (isFirstRender) { // initial render
 			return `${t('pod.showingdf')} ${start} ${t('pod.to')} ${end}`
 		}
 		return null;

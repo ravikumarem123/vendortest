@@ -45,7 +45,7 @@ export function* fetchInvoiceDetails(
         }
         yield put(setInvoiceDetails(result));
     } catch (e: any) {
-        console.log(e);
+        console.error(e);
         yield put(setInvoiceError(e?.error?.message));
         if (e?.error?.message === 'Failed to fetch') {
             const dialogPayload = {

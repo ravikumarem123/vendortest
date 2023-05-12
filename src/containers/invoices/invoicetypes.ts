@@ -11,14 +11,16 @@ export interface Invoice {
 		debitNoteAmount: string;
 		expectedAmount: string;
 		paymentStatus: string;
-		settlementDetails: string;
+		settledAmount: string;
+		utr: string;
 	}
 	paymentErrorInfo?: {
 		tds: string;
 		debitNoteAmount: string;
 		expectedAmount: string;
 		paymentStatus: string;
-		settlementDetails: string;
+		settledAmount: string;
+		utr: string;
 	}
 }
 

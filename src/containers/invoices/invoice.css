@@ -132,3 +132,16 @@
 	padding-left: 50px !important;
 	padding-right: 50px !important;
 }
+
+.settlement-amount{
+	font-weight: bold;
+}
+
+.settlement-utr{
+	font-size: 0.8rem;
+	color: #808080;
+}
+
+.hide-utr{
+	display: none;
+}
