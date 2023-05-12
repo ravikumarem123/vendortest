@@ -1,4 +1,3 @@
-import { Dayjs } from 'dayjs';
 import { Md5 } from 'ts-md5';
 import { Props } from '../containers/proofofdelivery/podTypes';
 import {
@@ -14,29 +13,21 @@ const getJCLedgerPayload = (
     return `businessId=${businessId}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
 };
 
-//interface IInvoiceParams {
-//    vendorId: string;
-//    pageSize: number;
-//    startTime?: Dayjs;
-//    endTime?: Dayjs;
-//    lastReadInvoice?: string;
-//    invoiceNumber?: string;
-//    dateClicked?: string;
-//    searchtext?: string;
-//}
-
 const fetchPodPayload = (params: Props) => {
+
+	const { vendorId, pageSize, dateClicked, lastReadInvoice, startTime, endTime, searchText } = params;
+
     return {
-        vendorId: params.vendorId,
-        pageSize: params.pageSize
-            ? params.pageSize
-            : params.dateClicked
+        vendorId,
+        pageSize: pageSize
+            ? pageSize
+            : dateClicked
             ? 20
             : 10,
-        prevPageLastInvId: params.lastReadInvoice,
-        startTime: params.startTime,
-        endTime: params.endTime,
-        invoiceNumber: params.searchText,
+        prevPageLastInvId: lastReadInvoice,
+        startTime,
+        endTime,
+        invoiceNumber: searchText,
     };
 };
 
@@ -46,49 +37,60 @@ interface ILoginParams {
 }
 
 const fetchLoginPayload = (params: ILoginParams) => {
+
+	const { emailId, password } = params;
+
     return {
-        emailId: params.emailId,
-        //hashPassword: params.password,
-        hashPassword: Md5.hashStr(params.password),
+        emailId,
+        //hashPassword: password,
+        hashPassword: Md5.hashStr(password),
     };
 };
 
 const fetchGetUTRListPayload = (params: IUTRPayload) => {
+
+	const { vendorId, startTime, endTime, pageNumber, searchText  } = params;
+
     return {
-        vendorId: params.vendorId,
-        startTime: params.startTime,
-        endTime: params.endTime,
-        pageNumber: params.pageNumber,
-        utr: params.searchText,
+        vendorId,
+        startTime,
+        endTime,
+        pageNumber,
+        utr: searchText,
     };
 };
 
 const fetchUTRInfoPayload = (params: IUTRDetailsPayload) => {
-    return {
-        vendorId: params.vendorId,
-        utr: params.utr,
-    };
+
+	const { vendorId, utr } = params;
+    return { vendorId, utr };
 };
 
 const fetchUTRIngestionPayload = (params: IUTRDetailsPayload) => {
+
+	const { vendorId, utr } = params;
+
 	return {
-        vendorId: params.vendorId,
-        utr: params.utr,
+        vendorId: vendorId,
+        utr: utr,
     };
 };
 
 const fetchInvoicePayload = (params: Props) => {
+
+	const { vendorId, pageSize, dateClicked, lastReadInvoice, startTime, endTime, searchText } = params;
+
     return {
-        vendorId: params.vendorId,
-        pageSize: params.pageSize
-            ? params.pageSize
-            : params.dateClicked
+        vendorId,
+        pageSize: pageSize
+            ? pageSize
+            : dateClicked
             ? 20
             : 10,
-        prevPageLastInvId: params.lastReadInvoice,
-        startTime: params.startTime,
-        endTime: params.endTime,
-        invoiceNumber: params.searchText,
+        prevPageLastInvId: lastReadInvoice,
+        startTime,
+        endTime,
+        invoiceNumber: searchText,
     };
 };
 
