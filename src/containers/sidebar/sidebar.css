@@ -86,8 +86,8 @@
 	display: flex;
 	align-items: center;
 	padding: 7px 8px;
-    min-width: 180px;
-	margin-right: 40px;
+    min-width: 185px;
+	margin-right: 36px;
 }
 
 .report-issue-container span{
