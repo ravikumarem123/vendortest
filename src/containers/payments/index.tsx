@@ -16,7 +16,8 @@ import { setSearchParams } from '../../common/commonSlice';
 import { sagaActions } from '../../reduxInit/sagaActions';
 import { events, sendEvents } from '../../appEvents';
 import { NoInvoice, PaymentIdea } from '../../assets';
-import { IPaymentPayload } from './paymentTypes';
+import { IPaymentPayload, IFetchDataProps } from './paymentTypes';
+import { formatDateRange } from '../../utils/dateUtils';
 import './payments.css';
 
 const PAGE_SIZE = 10;
@@ -67,25 +68,16 @@ const Payments = () => {
 	}, [searchClicked]);
 
 	useEffect(() => {
-		/* 
-		when user clicks remove button
-		when search button is clicked or first run
-		*/
 		if (!dateClicked && !searchClicked) {
 			setToDate(null);
 			setFromDate(null);
-			// page: 0 is mandatory here as this gets called when user click on remove after date is applied
-			const payload = getPaymentDetailsPayload({ pageNumber: 0, pageSize: 20 });
-			dispatch({ type: sagaActions.FETCH_PAYMENT_DETAILS, payload });
-			setPageNumber(1);
-			//fetchData();
+			fetchData({ page: 0, pageSize: 20 });
 		}
 	}, [dateClicked]);
 
-	// can't pass parameters as inifinite scroll use this in next call
-	const fetchData = () => {
-		const payload = getPaymentDetailsPayload({ pageNumber, dateClicked, fromDate, paymentError })
-		setPageNumber(pageNumber + 1);
+	const fetchData = ({ page, isDateClicked = false }: IFetchDataProps) => {
+		const payload = getPaymentDetailsPayload({ pageNumber: page, dateClicked: isDateClicked, fromDate, paymentError })
+		setPageNumber(page + 1);
 		if (paymentError) {
 			setFromDate(null);
 			setToDate(null);
@@ -99,9 +91,7 @@ const Payments = () => {
 	};
 
 	const handleBackClickOnSearch = () => {
-		const payload = getPaymentDetailsPayload({ pageNumber: 0 });
-		dispatch({ type: sagaActions.FETCH_PAYMENT_DETAILS, payload });
-		setPageNumber(1);  // for page 0, we called above. Subsequent calls will be handled by fetchData
+		fetchData({ page: 0, pageSize: 20 });
 		sendEvents(events.ON_CLICK_BACK_FROM_SEARCH, { screen: 'PAYMENTS' });
 		dispatch(setSearchParams({ clicked: false, text: '' }));
 		setActiveUTRCard(null);
@@ -112,12 +102,7 @@ const Payments = () => {
 		dispatch(setSearchParams({ clicked: false, text: '' }))
 		if (toDate && fromDate) {
 			setDateClicked(true);
-			const payload = getPaymentDetailsPayload({ fromDate, toDate, dateClicked: true, pageNumber: 0 });
-			dispatch({
-				type: sagaActions.FETCH_PAYMENT_DETAILS,
-				payload,
-			});
-			setPageNumber(1); // for page 0, we called above. Subsequent calls will be handled by fetchData
+			fetchData({ page: 0, pageSize: 20, isDateClicked: true });
 			sendEvents(events.ON_CLICK_DATE_APPLY, {
 				startTime: dayjs(fromDate).startOf('day').valueOf(),
 				endTime: dayjs(toDate).endOf('day').valueOf(),
@@ -141,6 +126,24 @@ const Payments = () => {
 			payload,
 		});
 	}, [activeUTRCard]);
+
+	const dateRangeText = () => {
+		if (searchClicked) {
+			return `${t('pod.showingdfi')} ${searchText}`;
+		}
+
+		const { start, end } = formatDateRange(getDefaultDates?.startTime, getDefaultDates?.endTime);
+		const isDateFilterApplied = dateClicked && !paymentError && !paymentLoading;
+		const isFirstRender = !dateClicked && !searchClicked && getDefaultDates?.startTime;
+		
+		if (isDateFilterApplied) { // date filter applied
+			return `${t('pod.showingdf')} ${start} ${t('pod.to')} ${end}`
+		}
+		if (isFirstRender) { // initial render
+			return `${t('pod.showingdf')} ${start} ${t('pod.to')} ${end}`
+		}
+		return null;
+	};
 
 	return (
 		<div className="payment-container">
@@ -175,15 +178,7 @@ const Payments = () => {
 			<div className="select-date-hr" ></div>
 			<div className='payment-data-container'>
 				<p className="date-range-text">
-					{searchClicked && `${t('pod.showingdfutr')} ${searchText}`}
-					{(dateClicked && !paymentError && !paymentLoading) && `${t('pod.showingdf')} 
-						${dayjs(getDefaultDates?.startTime).format('DD/MM/YYYY')} 
-						${t('pod.to')} 
-						${dayjs(getDefaultDates?.endTime).format('DD/MM/YYYY')}`}
-					{(!dateClicked && !searchClicked && getDefaultDates?.startTime) && `${t('pod.showingdf')} 
-						${dayjs(getDefaultDates?.startTime).format('DD/MM/YYYY')} 
-						${t('pod.to')}  
-						${dayjs(getDefaultDates?.endTime).format('DD/MM/YYYY')}`}
+					{dateRangeText()}
 				</p>
 
 				{
@@ -206,7 +201,7 @@ const Payments = () => {
 									<div className='utr-cards-div' id="scrollableDiv">
 										<InfiniteScroll
 											dataLength={paymentUTRList.length} //This is important field to render the next data
-											next={fetchData}
+											next={() => fetchData({ page: pageNumber })}
 											hasMore={hasMorePayments}
 											scrollableTarget="scrollableDiv"
 											loader={<CenterLoader />}

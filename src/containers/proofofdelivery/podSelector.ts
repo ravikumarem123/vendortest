@@ -1,14 +1,14 @@
 import type { RootState } from '../../reduxInit/store';
 
-const getInvoiceList = (state: RootState) => {
+const getPodList = (state: RootState) => {
     return state.pod.invoiceList;
 };
 
-const getLastReadInvoice = (state: RootState) => {
+const getLastReadPod = (state: RootState) => {
     return state.pod.prevPageLastInvId;
 };
 
-const getIsInvoiceLoading = (state: RootState) => {
+const getIsPodLoading = (state: RootState) => {
     return state.pod.loading;
 };
 
@@ -24,9 +24,9 @@ const getDefaultTime = (state: RootState) => {
 };
 
 export {
-    getInvoiceList,
-    getLastReadInvoice,
-    getIsInvoiceLoading,
+    getPodList,
+    getLastReadPod,
+    getIsPodLoading,
     getPodError,
     getDefaultTime,
 };

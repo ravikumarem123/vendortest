@@ -119,6 +119,19 @@ const SideBar = (props: Props) => {
 						/>
 					</ListItemButton>
 				</ListItem>
+				<ListItem
+					key={'invoices'}
+					disablePadding
+					className={activeTab === 'invoices' ? 'active-tab' : 'default-tab'}
+					onClick={() => handleSideMenuClick('invoices')}
+				>
+					<ListItemButton>
+						<ListItemText
+							className='list-item-text'
+							primary={t('sidebar.invoices')}
+						/>
+					</ListItemButton>
+				</ListItem>
 			</List>
 		</div>
 	);

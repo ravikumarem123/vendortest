@@ -22,6 +22,10 @@ const apiRepository = {
 		const URL = 'payments/v1/download/payment-advice';
 		return apiHandler.post(URL, data);
 	},
+	getInvoiceInfo: function (data: object) {
+        const URL = 'invoice/v1/get/info';
+        return apiHandler.post(URL, data);
+    },
 };
 
 export default apiRepository;
