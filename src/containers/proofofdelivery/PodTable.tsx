@@ -25,9 +25,10 @@ const PodTable: React.FC<PodTablePros> = ({ lastReadInvoice, invoiceList, fetchD
 
 	const { t } = useTranslation();
 
-	const handlePodClick = () => {
+	const handlePodClick = (invoice: string) => {
 		sendEvents(events.ON_CLICK_POD_DOWNLOAD, {
-			screen: 'POD'
+			screen: 'POD',
+			invoice
 		});
 	};
 
@@ -87,7 +88,7 @@ const PodTable: React.FC<PodTablePros> = ({ lastReadInvoice, invoiceList, fetchD
 												<p style={{ fontWeight: '500' }}>{invoice.buyerInfo?.name ?? 'Buyer'}</p>
 												{invoice.buyerInfo?.addressDetails ?? 'dummy address'}
 											</TableCell>
-											<TableCell align="center" onClick={handlePodClick} >
+											<TableCell align="center" onClick={() => handlePodClick(invoice.number)} >
 												<a href={invoice.podUrl} target="_blank" >
 													<img alt='pod' src={PodIcon3} style={{ width: '45px' }} />
 												</a>

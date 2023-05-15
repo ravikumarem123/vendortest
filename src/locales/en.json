@@ -24,7 +24,8 @@
 		"gstno": "GST No.",
 		"logout": "Logout",
 		"proofofdelivery": "Proof of Delivery",
-		"payment": "Payments"
+		"payment": "Payments",
+		"invoices": "Invoices"
 	},
 	"pod": {
 		"searchbyinvoiceno": "Search by Invoice No.",
@@ -64,5 +65,18 @@
 		"amount": "Amount",
 		"settlementdate": "Settlement Date",
 		"ideainfo": "Your Payments Details are only available from 2 May 2023 onwards. Please reach out to us at  +91-9869304115 for any disputes."
+	},
+	"invoice": {
+		"table": {
+			"sno": "S NO.",
+			"idetails": "INVOICE DETAILS",
+			"iamount": "INVOICE AMOUNT",
+			"idate": "INVOICE DATE",
+			"dnamount": "DEBIT NOTE AMOUNT",
+			"expecteda": "EXPECTED AMOUNT",
+			"paymentst": "PAYMENT STATUS",
+			"settlementd": "SETTLEMENT DETAILS",
+			"tds": "TDS"
+		}
 	}
 }

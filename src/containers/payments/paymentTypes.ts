@@ -112,3 +112,9 @@ export interface IPaymentPayload {
     toDate?: Dayjs | null;
     paymentError?: string | null;
 }
+
+export interface IFetchDataProps{
+	page: number;
+	pageSize?: number;
+	isDateClicked?: boolean;
+}
