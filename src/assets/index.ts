@@ -16,8 +16,8 @@ const EmptyUTRImg =
     'https://j24storelogoandcovers.s3.ap-southeast-1.amazonaws.com/vendorstaticimages/emptyUtr.svg';
 const PaymentIdea =
     'https://j24storelogoandcovers.s3.ap-southeast-1.amazonaws.com/vendorstaticimages/payments_idea.svg';
-const InvoiceThumbnail = 
-	'https://j24storelogoandcovers.s3.ap-southeast-1.amazonaws.com/vendorstaticimages/invoicethumbnail.svg';
+const InvoiceThumbnail =
+    'https://j24storelogoandcovers.s3.ap-southeast-1.amazonaws.com/vendorstaticimages/invoicethumbnail.svg';
 
 export {
     Loginhead,
@@ -29,5 +29,5 @@ export {
     EmptyUTRImg,
     PodIcon3,
     PaymentIdea,
-	InvoiceThumbnail,
+    InvoiceThumbnail,
 };

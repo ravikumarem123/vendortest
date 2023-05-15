@@ -12,4 +12,8 @@ interface ICommonState {
     dateClicked: boolean;
 }
 
-export type { ICommonState };
+interface ICommonDummy {
+    test: string;
+}
+
+export type { ICommonState, ICommonDummy };

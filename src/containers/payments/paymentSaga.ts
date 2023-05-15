@@ -1,13 +1,13 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { writeFileXLSX, utils } from 'xlsx';
+import { History } from 'history';
 import {
     fetchGetUTRListPayload,
     fetchUTRInfoPayload,
     fetchUTRIngestionPayload,
 } from '../../network/createPayload';
 import apiRepository from '../../network/apiRepository';
-import { sagaActions } from '../../reduxInit/sagaActions';
-import { History } from 'history';
+import sagaActions from '../../reduxInit/sagaActions';
 import {
     setUTRList,
     setPaymentError,
@@ -17,16 +17,14 @@ import {
     setIngestionLoading,
     resetUTRDetails,
 } from './paymentSlice';
-import { setSearchParams } from '../../common/commonSlice';
+import { setSearchParams, setDialogOpen } from '../../common/commonSlice';
 import {
     IResponse,
     ActionResult,
     IUTRPayload,
-    Error,
     IIngestionResponse,
     IPaymentIngestionInfo,
 } from './paymentTypes';
-import { setDialogOpen } from '../../common/commonSlice';
 
 function* handleAPIErrors(e: any) {
     yield put(setPaymentError(e?.error?.message));
@@ -36,37 +34,35 @@ function* handleAPIErrors(e: any) {
             content: 'please check your internet connection and try again.',
         };
         yield put(setDialogOpen(dialogPayload));
+    } else if (e?.error?.cause?.status === 401) {
+        const dialogPayload = {
+            title: 'Something went wrong',
+            content: `${e?.error?.message} You’’ll be logged out, please login again to continue`,
+            logout: true,
+        };
+        yield put(setDialogOpen(dialogPayload));
+    } else if (e?.error?.cause?.status?.toString().includes('5')) {
+        const dialogPayload = {
+            title: 'Something went wrong',
+            content: `Please try again after some time`,
+        };
+        yield put(setDialogOpen(dialogPayload));
+    } else if (e?.error?.cause?.status?.toString().includes('4')) {
+        const dialogPayload = {
+            title: 'Something went wrong',
+            content: `${
+                e?.error?.message
+                    ? e?.error?.message
+                    : 'Please try again after some time'
+            }`,
+        };
+        yield put(setDialogOpen(dialogPayload));
     } else {
-        if (e?.error?.cause?.status === 401) {
-            const dialogPayload = {
-                title: 'Something went wrong',
-                content: `${e?.error?.message} You’’ll be logged out, please login again to continue`,
-                logout: true,
-            };
-            yield put(setDialogOpen(dialogPayload));
-        } else if (e?.error?.cause?.status?.toString().includes('5')) {
-            const dialogPayload = {
-                title: 'Something went wrong',
-                content: `Please try again after some time`,
-            };
-            yield put(setDialogOpen(dialogPayload));
-        } else if (e?.error?.cause?.status?.toString().includes('4')) {
-            const dialogPayload = {
-                title: 'Something went wrong',
-                content: `${
-                    e?.error?.message
-                        ? e?.error?.message
-                        : 'Please try again after some time'
-                }`,
-            };
-            yield put(setDialogOpen(dialogPayload));
-        } else {
-            const dialogPayload = {
-                title: 'Something went wrong',
-                content: 'Please try again after some time',
-            };
-            yield put(setDialogOpen(dialogPayload));
-        }
+        const dialogPayload = {
+            title: 'Something went wrong',
+            content: 'Please try again after some time',
+        };
+        yield put(setDialogOpen(dialogPayload));
     }
 }
 
@@ -74,7 +70,7 @@ export function* fetchPaymentDetails(
     history: History,
     action: ActionResult<IUTRPayload>
 ) {
-    //const vendorId = 'VNDR-1526001151'; //VNDR-1526007917
+    // const vendorId = 'VNDR-1526001151'; //VNDR-1526007917
     const vendorId = localStorage.getItem('vendorId') as string;
     try {
         const { payload } = action;
@@ -102,7 +98,6 @@ export function* fetchPaymentDetails(
         }
         yield put(setUTRList(result));
     } catch (e: any) {
-        console.log(e);
         yield call(handleAPIErrors, e);
     }
 }
@@ -110,7 +105,7 @@ export function* fetchPaymentDetails(
 export function* fetchUTRDetails(action: ActionResult<IUTRPayload>) {
     const vendorId = localStorage.getItem('vendorId') as string;
     yield put(resetUTRDetails());
-    //const vendorId = 'VNDR-1526001151';
+    // const vendorId = 'VNDR-1526001151';
     try {
         const { payload } = action;
         if (payload) payload.vendorId = vendorId;
@@ -121,7 +116,6 @@ export function* fetchUTRDetails(action: ActionResult<IUTRPayload>) {
         );
         yield put(setUTRdetails(result));
     } catch (e: any) {
-        console.log(e);
         yield call(handleAPIErrors, e);
     }
 }
@@ -136,6 +130,7 @@ function createIngestionData(
                 const newKey =
                     result.paymentInfoHeaders![key as keyof typeof newItem];
                 if (newKey) {
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
                     newItem[newKey] = item[key as keyof typeof item];
                 }
@@ -156,7 +151,7 @@ function* createAndDownloadFile(
         utils.book_append_sheet(workbook, worksheet, 'Settlement Details');
         writeFileXLSX(workbook, `${fileName}.xlsx`, { compression: true });
     } catch (err) {
-        console.log('error in creating sheet: ', err);
+        console.error('error in creating sheet: ', err);
         const dialogPayload = {
             title: 'Something went wrong',
             content: 'Please try again after some time or contact support.',
@@ -167,7 +162,7 @@ function* createAndDownloadFile(
 
 export function* fetchUTRIngestion(action: ActionResult<IUTRPayload>) {
     const vendorId = localStorage.getItem('vendorId') as string;
-    //const vendorId = 'VNDR-1526001151';
+    // const vendorId = 'VNDR-1526001151';
     try {
         const { payload } = action;
         if (payload) payload.vendorId = vendorId;
@@ -184,7 +179,6 @@ export function* fetchUTRIngestion(action: ActionResult<IUTRPayload>) {
         yield call(createAndDownloadFile, newData, result.ingestionFileName);
         yield put(setIngestionLoading(false));
     } catch (e: any) {
-        console.log(e);
         yield call(handleAPIErrors, e);
     }
 }
