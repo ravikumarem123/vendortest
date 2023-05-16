@@ -11,15 +11,16 @@ import { useAppDispatch } from '../../reduxInit/hooks';
 import { JeetLogo } from '../../assets';
 import sagaActions from '../../reduxInit/sagaActions';
 import { events, sendEvents } from '../../appEvents';
+import COLORS from '../../utils/cssutils';
 import './auth.css';
 
 const useStyles = makeStyles(() => ({
     root: {
-        backgroundColor: '#301134 !important',
+        backgroundColor: `${COLORS.purple} !important`,
         height: '50px',
         width: '330px',
         '&:hover': {
-            backgroundColor: '#301134',
+            backgroundColor: COLORS.purple,
         },
     },
 }));
@@ -109,7 +110,7 @@ const Login = () => {
                                         </IconButton>
                                     </InputAdornment>
                                 ),
-                                style: { width: '255px' },
+                                style: { width: '330px' },
                             }}
                             placeholder={t('auth.enterpassword')}
                             className="login-input"

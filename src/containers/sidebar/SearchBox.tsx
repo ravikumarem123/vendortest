@@ -2,10 +2,9 @@ import { SyntheticEvent, useEffect, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAppDispatch, useAppSelector } from '../../reduxInit/hooks';
-import sagaActions from '../../reduxInit/sagaActions';
+import { useAppSelector } from '../../reduxInit/hooks';
 import { isSearchClicked } from '../../common/commonSelector';
-import { sendEvents, events } from '../../appEvents';
+import searchFunctionsMap from './searchFunctions';
 
 enum SearchIndex {
     POD = 'POD',
@@ -19,74 +18,13 @@ const SearchBox = () => {
         'pod.searchbyinvoiceno'
     );
     const [searchType, setSearchType] = useState<SearchIndex>(SearchIndex.POD);
-    const dispatch = useAppDispatch();
     const searchClicked = useAppSelector(isSearchClicked);
     const { t } = useTranslation();
     const { pathname } = useLocation();
 
-    const handleSearchByPOD = () => {
-        if (searchText.length > 0) {
-            sendEvents(events.ON_CLICK_SEARCH, {
-                searchText,
-                screen: 'POD',
-            });
-            dispatch({
-                type: sagaActions.FETCH_POD_DETAILS,
-                payload: {
-                    searchText,
-                    searchClicked: true,
-                },
-            });
-        }
-    };
-
-    const handleSearchByUTR = () => {
-        if (searchText.length > 0) {
-            sendEvents(events.ON_CLICK_SEARCH, {
-                searchText,
-                screen: 'PAYMENTS',
-            });
-            dispatch({
-                type: sagaActions.FETCH_PAYMENT_DETAILS,
-                payload: {
-                    searchText,
-                    searchClicked: true,
-                },
-            });
-        }
-    };
-
-    const handleSearchByInvoice = () => {
-        if (searchText.length > 0) {
-            sendEvents(events.ON_CLICK_SEARCH, {
-                searchText,
-                screen: 'INVOICE',
-            });
-            dispatch({
-                type: sagaActions.FETCH_INVOICE_DETAILS,
-                payload: {
-                    searchText,
-                    searchClicked: true,
-                },
-            });
-        }
-    };
-
     const handleFormSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
-        switch (searchType) {
-            case SearchIndex.UTR:
-                handleSearchByUTR();
-                break;
-            case SearchIndex.POD:
-                handleSearchByPOD();
-                break;
-            case SearchIndex.INVOICE:
-                handleSearchByInvoice();
-                break;
-            default:
-            //
-        }
+        searchFunctionsMap[searchType](searchText);
     };
 
     useEffect(() => {

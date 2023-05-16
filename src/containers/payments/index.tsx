@@ -203,7 +203,7 @@ const Payments = () => {
 
                 {paymentLoading ? (
                     <h1 style={{ textAlign: 'center' }}>
-                        {' '}
+                        &nbsp;
                         <CircularProgress />
                     </h1>
                 ) : paymentUTRList && paymentUTRList.length === 0 ? (

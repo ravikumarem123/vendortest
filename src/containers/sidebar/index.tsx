@@ -14,10 +14,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useLocation, useNavigate, Outlet } from 'react-router-dom';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import Toolbar from '@mui/material/Toolbar';
-import Menu from '@mui/material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import Fade from '@mui/material/Fade';
-import LogoutIcon from '@mui/icons-material/Logout';
 import { BrowserView, MobileView } from 'react-device-detect';
 import { useAppDispatch, useAppSelector } from '../../reduxInit/hooks';
 import SearchBox from './SearchBox';
@@ -26,6 +22,8 @@ import { events, sendEvents } from '../../appEvents';
 import { JeetLogo } from '../../assets';
 import { resetSearchState } from '../../common/commonSlice';
 import './sidebar.css';
+import COLORS from '../../utils/cssutils';
+import ProfileContainer from './ProfileContainer';
 
 const drawerWidth = 240;
 
@@ -80,7 +78,12 @@ const SideBar = (props: Props) => {
 
     const drawer = (
         <div>
-            <Toolbar sx={{ backgroundColor: '#301134', color: '#ffffff' }}>
+            <Toolbar
+                sx={{
+                    backgroundColor: `${COLORS.purple}`,
+                    color: `${COLORS.white}`,
+                }}
+            >
                 <p className="portal-title" onClick={handleHomeClick}>
                     <img src={JeetLogo} alt="logo" className="logo-jeet" />
                 </p>
@@ -198,68 +201,13 @@ const SideBar = (props: Props) => {
                         </div>
                     </MobileView>
 
-                    <div className="user-icon-container">
-                        <div className="user-info">
-                            <p className="user-name">{t('sidebar.welcome')}</p>
-                            <p className="user-business-name">
-                                {userDetails?.businessName}
-                            </p>
-                        </div>
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleMenu}
-                            color="default"
-                            className="icon-btn"
-                        >
-                            <AccountCircle className="user-icon" />
-                        </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorEl}
-                            keepMounted
-                            TransitionComponent={Fade}
-                            open={Boolean(anchorEl)}
-                            onClose={handleClose}
-                            sx={{}}
-                            PaperProps={{
-                                style: {
-                                    width: '280px',
-                                    minHeight: '130px',
-                                    border: '1px solid #301134',
-                                },
-                            }}
-                        >
-                            <table className="user-business-info">
-                                <tbody>
-                                    <tr>
-                                        <th>{t('sidebar.businessname')}:</th>
-                                        <td> {userDetails?.businessName} </td>
-                                    </tr>
-                                    <tr>
-                                        <th>{t('sidebar.businessaddress')}:</th>
-                                        <td>{userDetails?.businessAddress}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>{t('sidebar.gstno')}:</th>
-                                        <td>{userDetails?.gstNumber}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <hr style={{ width: '90%' }} />
-                            <div
-                                className="logout-container"
-                                onClick={handleLogout}
-                            >
-                                <LogoutIcon className="logout-icon" />
-                                <span className="logout-text">
-                                    {t('sidebar.logout')}
-                                </span>
-                            </div>
-                        </Menu>
-                    </div>
+                    <ProfileContainer
+                        userDetails={userDetails}
+                        handleMenu={handleMenu}
+                        handleClose={handleClose}
+                        handleLogout={handleLogout}
+                        anchorEl={anchorEl}
+                    />
                 </Toolbar>
             </AppBar>
             <Box
