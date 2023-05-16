@@ -10,6 +10,14 @@ const apiRepository = {
         const URL = 'v1/login';
         return apiHandler.post(URL, data);
     },
+	verifyEmail: function (data: object) {
+		const URL = '';
+		return apiHandler.post(URL, data);
+	},
+	verifyOTP: function (data: object) {
+		const URL = '';
+		return apiHandler.post(URL, data);
+	},
     getUTRList: function (data: object) {
         const URL = 'payments/v1/get-info';
         return apiHandler.post(URL, data);
@@ -26,6 +34,14 @@ const apiRepository = {
         const URL = 'invoice/v1/get/info';
         return apiHandler.post(URL, data);
     },
+	validatePassword: function(data: object) {
+		const URL = '';
+		return apiHandler.post(URL, data);
+	},
+	setPassword: function (data: object) {
+		const URL = '';
+		return apiHandler.post(URL, data);
+	},
 };
 
 export default apiRepository;

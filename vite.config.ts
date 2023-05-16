@@ -7,10 +7,13 @@ export default defineConfig({
     server: {
         proxy: {
             '/api': {
-                target: 'http://test.api.jumbotail.com:5555',
+                target: 'http://172.31.1.36:5555',
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/api/, ''),
             },
         },
     },
 });
+
+
+// http://172.31.1.36:5555/v1/

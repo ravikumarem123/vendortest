@@ -3,8 +3,10 @@
 		"login": "Login",
 		"email": "E-mail",
 		"password": "Password",
+		"reenterpassword":  "Re-enter password",
 		"enteremail": "Enter email",
 		"enterpassword": "Enter password",
+		"enterpasswordagain": "Enter password again",
 		"next": "Next",
 		"enterregemailId": "Please enter your email-ID registered with Jumbotail",
 		"authentication": "Authentication",
@@ -13,7 +15,8 @@
 		"pleaseenterotp": "Please enter your 6 digit OTP shared to you on",
 		"emailotp": "Email OTP",
 		"enternewpass": "Please enter a new password for your profile",
-		"enterpass": "Please enter your new password to login"
+		"enterpass": "Please enter your new password to login",
+		"continue": "Continue"
 
 	},
 	"sidebar": {

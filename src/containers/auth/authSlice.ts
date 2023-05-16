@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { AuthInitialState } from './authTypes';
+import { AUTH_SCREENS, AuthInitialState } from './authTypes';
 
 const initialState: AuthInitialState = {
     emailId: '',
@@ -12,6 +12,7 @@ const initialState: AuthInitialState = {
         businessName: '',
         gstNumber: '',
     },
+	activeScreen: AUTH_SCREENS.HOME_PAGE
 };
 
 const authSlice = createSlice({
@@ -20,6 +21,7 @@ const authSlice = createSlice({
     reducers: {
         setAuthdetails: (state, { payload }) => {
             state.userDetails = payload;
+			state.loading = false;
         },
         setAuthError: (state, { payload }) => {
             state.loading = false;

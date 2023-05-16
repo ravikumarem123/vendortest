@@ -7,4 +7,12 @@ const getUserDetails = (state: RootState) => {
     return userDetails;
 };
 
-export { getUserDetails };
+const getActiveScreen = (state: RootState) => {
+	return state.auth.activeScreen;
+};
+
+const getIsAuthLoading = (state: RootState) => {
+	return state.auth.loading;
+};
+
+export { getUserDetails, getActiveScreen, getIsAuthLoading };

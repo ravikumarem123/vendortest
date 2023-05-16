@@ -47,6 +47,22 @@ const fetchLoginPayload = (params: ILoginParams) => {
     };
 };
 
+const fetchVerifyEmailPayload = () => {
+	return  {};
+};
+
+const fetchVerifyOtpPayload = () => {
+	return  {};
+};
+
+const fetchValidatePasswordPayload = () => {
+	return {};
+};
+
+const fetchSetPasswordPayload = () => {
+	return {};
+};
+
 const fetchGetUTRListPayload = (params: IUTRPayload) => {
 
 	const { vendorId, startTime, endTime, pageNumber, searchText  } = params;
@@ -102,4 +118,8 @@ export {
     fetchUTRInfoPayload,
 	fetchUTRIngestionPayload,
 	fetchInvoicePayload,
+	fetchVerifyEmailPayload,
+	fetchVerifyOtpPayload,
+	fetchValidatePasswordPayload,
+	fetchSetPasswordPayload,
 };

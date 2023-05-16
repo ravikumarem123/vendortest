@@ -1,10 +1,12 @@
 import { useTranslation } from "react-i18next";
 import OtpInput from 'react-otp-input';
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, InputAdornment, IconButton } from "@mui/material";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { makeStyles } from '@mui/styles';
 import EditIcon from '@mui/icons-material/Edit';
 import AuthHeader from "../AuthHeader";
-import { IEnterOtpProps, IHomePageProps, ISelectAuthTypeProps, ISetPasswordProps } from "../authTypes";
+import { IEnterOtpProps, IEnterPasswordProps, IHomePageProps, ISelectAuthTypeProps, ISetPasswordProps } from "../authTypes";
 import { PaymentIdea } from "../../../assets";
 
 const useStyles = makeStyles((theme) => ({
@@ -22,6 +24,7 @@ export function HomePageScreen({
 	handleEmailSubmit,
 	emailId,
 	setEmailId,
+	isAuthLoading,
 }: IHomePageProps) {
 
 	const { t } = useTranslation();
@@ -66,7 +69,11 @@ export function HomePageScreen({
 };
 
 
-export function SelectAuthTypeScreen({ email, editFn }: ISelectAuthTypeProps) {
+export function SelectAuthTypeScreen({ 
+	email, 
+	editFn, 
+	isAuthLoading 
+}: ISelectAuthTypeProps) {
 
 	const { t } = useTranslation();
 
@@ -119,6 +126,7 @@ export function EnterOtpScreen({
 	handleOtpSubmit,
 	otp,
 	setOtp,
+	isAuthLoading,
 }: IEnterOtpProps) {
 
 	const { t } = useTranslation();
@@ -156,62 +164,161 @@ export function EnterOtpScreen({
 	);
 };
 
-//export function SetPasswordScreen({
-//	showPassword,
-//	setShowPassword
-//}: ISetPasswordProps) {
+export function SetPasswordScreen({
+	password,
+	setPassword,
+	verifyPassword,
+	setVerifyPassword,
+	showPassword,
+	setShowPassword,
+	handlesetPasswordSubmit,
+	isAuthLoading,
+}: ISetPasswordProps) {
 
-//	const handleClickShowPassword = () => setShowPassword(!showPassword);
-//	const handleMouseDownPassword = () => setShowPassword(!showPassword);
+	const { t } = useTranslation();
+	const buttonClasses = useStyles();
 
-//	return (
-//		<>
-//			<AuthHeader
-//				headText='auth.setpass'
-//				subHeadText='auth.enternewpass'
-//			/>
+	const handleClickShowPassword = () => setShowPassword(!showPassword);
+	const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
-//			<TextField
-//				label={t('auth.password')}
-//				type={showPassword ? "text" : "password"}
-//				variant="outlined"
-//				InputLabelProps={{
-//					shrink: true,
-//				}}
-//				InputProps={{
-//					endAdornment: (
-//						<InputAdornment position="end">
-//							<IconButton
-//								aria-label="toggle password visibility"
-//								onClick={handleClickShowPassword}
-//								onMouseDown={handleMouseDownPassword}
-//							>
-//								{showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-//							</IconButton>
-//						</InputAdornment>
-//					)
-//				}}
-//				inputProps={{
-//					style: { width: '255px' },
-//				}}
-//				placeholder={t('auth.enterpassword')}
-//				className='login-input'
-//				sx={{ display: 'block' }}
-//				value={password}
-//				required
-//				onChange={(e) => setPassword(e.target.value)}
-//			/>
-//		</>
-//	);
-//};
+	return (
+		<>
+			<AuthHeader
+				headText='auth.setpass'
+				subHeadText='auth.enternewpass'
+			/>
+			<form onSubmit={handlesetPasswordSubmit}>
+				<div className='input-fields'>
+					<TextField
+						label={t('auth.password')}
+						variant="outlined"
+						type={showPassword ? "text" : "password"}
+						InputLabelProps={{
+							shrink: true,
+						}}
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton
+										aria-label="toggle password visibility"
+										onClick={handleClickShowPassword}
+										onMouseDown={handleMouseDownPassword}
+									>
+										{showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+									</IconButton>
+								</InputAdornment>
+							),
+							style: { width: '330px' },
+						}}
+						placeholder={t('auth.enterpassword')}
+						className='login-input'
+						sx={{ display: 'block' }}
+						value={password}
+						required
+						onChange={(e) => setPassword(e.target.value)}
+					/>
+					<TextField
+						label={t('auth.reenterpassword')}
+						type={showPassword ? "text" : "password"}
+						variant="outlined"
+						InputLabelProps={{
+							shrink: true,
+						}}
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton
+										aria-label="toggle password visibility"
+										onClick={handleClickShowPassword}
+										onMouseDown={handleMouseDownPassword}
+									>
+										{showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+									</IconButton>
+								</InputAdornment>
+							),
+							style: { width: '330px' },
+						}}
+						placeholder={t('auth.enterpasswordagain')}
+						className='login-input'
+						sx={{ display: 'block' }}
+						value={verifyPassword}
+						required
+						onChange={(e) => setVerifyPassword(e.target.value)}
+					/>
+					<Button
+						variant="contained"
+						type='submit'
+						classes={{ root: buttonClasses.root }}
+					>
+						{t('auth.continue')}
+					</Button>
+				</div>
+			</form>
+		</>
+	);
+};
 
-export function EnterPasswordScreen() {
+export function EnterPasswordScreen({
+		password,
+		setPassword,
+		showPassword,
+		setShowPassword,
+		handleEnterPasswordSubmit,
+		isAuthLoading,
+	}: IEnterPasswordProps) {
+	
+	const { t } = useTranslation();
+	const buttonClasses = useStyles();
+
+	const handleClickShowPassword = () => setShowPassword(!showPassword);
+	const handleMouseDownPassword = () => setShowPassword(!showPassword);
+	
 	return (
 		<>
 			<AuthHeader
 				headText='auth.password'
 				subHeadText='auth.enterpass'
 			/>
+			<form onSubmit={handleEnterPasswordSubmit}>
+				<div className='input-fields'>
+					<TextField
+						label={t('auth.password')}
+						variant="outlined"
+						type={showPassword ? "text" : "password"}
+						InputLabelProps={{
+							shrink: true,
+						}}
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton
+										aria-label="toggle password visibility"
+										onClick={handleClickShowPassword}
+										onMouseDown={handleMouseDownPassword}
+									>
+										{showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+									</IconButton>
+								</InputAdornment>
+							),
+							style: { width: '330px' },
+						}}
+						placeholder={t('auth.enterpassword')}
+						className='login-input'
+						sx={{ display: 'block' }}
+						value={password}
+						required
+						onChange={(e) => setPassword(e.target.value)}
+					/>
+
+					<Button
+						variant="contained"
+						type='submit'
+						classes={{ root: buttonClasses.root }}
+					>
+						{t('auth.login')}
+					</Button>
+				</div>
+			</form>
 		</>
 	);
 };
