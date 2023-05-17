@@ -8,22 +8,25 @@ import {
 const getJCLedgerPayload = (
     businessId: string,
     pageNumber: number,
-    pageSize: number = 10
+    pageSize = 10
 ) => {
     return `businessId=${businessId}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
 };
 
 const fetchPodPayload = (params: Props) => {
-
-	const { vendorId, pageSize, dateClicked, lastReadInvoice, startTime, endTime, searchText } = params;
+    const {
+        vendorId,
+        pageSize,
+        dateClicked,
+        lastReadInvoice,
+        startTime,
+        endTime,
+        searchText,
+    } = params;
 
     return {
         vendorId,
-        pageSize: pageSize
-            ? pageSize
-            : dateClicked
-            ? 20
-            : 10,
+        pageSize: pageSize || (dateClicked ? 20 : 10),
         prevPageLastInvId: lastReadInvoice,
         startTime,
         endTime,
@@ -37,8 +40,7 @@ interface ILoginParams {
 }
 
 const fetchLoginPayload = (params: ILoginParams) => {
-
-	const { emailId, password } = params;
+    const { emailId, password } = params;
 
     return {
         emailId,
@@ -47,73 +49,69 @@ const fetchLoginPayload = (params: ILoginParams) => {
 };
 
 const fetchVerifyEmailPayload = (emailId: string) => {
-	return  { emailId };
+    return { emailId };
 };
 
 interface IFecthOtpParams {
-	emailId: string;
-   	sessionId: string;
+    emailId: string;
+    sessionId: string;
     loginPurpose: string;
 }
 
 const fetchGenerateOtpPayload = (params: IFecthOtpParams) => {
+    const { emailId, sessionId, loginPurpose } = params;
 
-	const { emailId, sessionId, loginPurpose } = params;
-
-	return {
-		emailId,
-   		sessionId,
-		loginPurpose
-	};
+    return {
+        emailId,
+        sessionId,
+        loginPurpose,
+    };
 };
 
 interface IVerifyOtpParams {
-	emailId: string;
-   	sessionId: string;
+    emailId: string;
+    sessionId: string;
     otp: string;
 }
 
 const fetchVerifyOtpPayload = (params: IVerifyOtpParams) => {
+    const { emailId, sessionId, otp } = params;
 
-	const { emailId, sessionId, otp } = params;
-
-	return {
-		emailId,
-		sessionId,
-		otp
-	};
+    return {
+        emailId,
+        sessionId,
+        otp,
+    };
 };
 
 interface ISetPasswordPayload {
-	emailId: string;
+    emailId: string;
     sessionId: string;
     password: string;
-};
+}
 
 const fetchValidatePasswordPayload = (params: ISetPasswordPayload) => {
-	const { emailId, sessionId, password } = params;
+    const { emailId, sessionId, password } = params;
 
-	return {
-		emailId,
-		sessionId,
-		password: Md5.hashStr(password)
-	};
+    return {
+        emailId,
+        sessionId,
+        password: Md5.hashStr(password),
+    };
 };
 
 const fetchSetPasswordPayload = (params: ISetPasswordPayload) => {
+    const { emailId, sessionId, password } = params;
 
-	const { emailId, sessionId, password } = params;
-
-	return {
-		emailId,
-		sessionId,
-		password: Md5.hashStr(password)
-	};
+    return {
+        emailId,
+        sessionId,
+        password: Md5.hashStr(password),
+    };
 };
 
 const fetchGetUTRListPayload = (params: IUTRPayload) => {
-
-	const { vendorId, startTime, endTime, pageNumber, searchText  } = params;
+    const { vendorId, startTime, endTime, pageNumber, searchText } = params;
 
     return {
         vendorId,
@@ -125,32 +123,33 @@ const fetchGetUTRListPayload = (params: IUTRPayload) => {
 };
 
 const fetchUTRInfoPayload = (params: IUTRDetailsPayload) => {
-
-	const { vendorId, utr } = params;
+    const { vendorId, utr } = params;
     return { vendorId, utr };
 };
 
 const fetchUTRIngestionPayload = (params: IUTRDetailsPayload) => {
+    const { vendorId, utr } = params;
 
-	const { vendorId, utr } = params;
-
-	return {
-        vendorId: vendorId,
-        utr: utr,
+    return {
+        vendorId,
+        utr,
     };
 };
 
 const fetchInvoicePayload = (params: Props) => {
-
-	const { vendorId, pageSize, dateClicked, lastReadInvoice, startTime, endTime, searchText } = params;
+    const {
+        vendorId,
+        pageSize,
+        dateClicked,
+        lastReadInvoice,
+        startTime,
+        endTime,
+        searchText,
+    } = params;
 
     return {
         vendorId,
-        pageSize: pageSize
-            ? pageSize
-            : dateClicked
-            ? 20
-            : 10,
+        pageSize: pageSize || (dateClicked ? 20 : 10),
         prevPageLastInvId: lastReadInvoice,
         startTime,
         endTime,
@@ -164,11 +163,11 @@ export {
     fetchLoginPayload,
     fetchGetUTRListPayload,
     fetchUTRInfoPayload,
-	fetchUTRIngestionPayload,
-	fetchInvoicePayload,
-	fetchVerifyEmailPayload,
-	fetchGenerateOtpPayload,
-	fetchVerifyOtpPayload,
-	fetchValidatePasswordPayload,
-	fetchSetPasswordPayload,
+    fetchUTRIngestionPayload,
+    fetchInvoicePayload,
+    fetchVerifyEmailPayload,
+    fetchGenerateOtpPayload,
+    fetchVerifyOtpPayload,
+    fetchValidatePasswordPayload,
+    fetchSetPasswordPayload,
 };

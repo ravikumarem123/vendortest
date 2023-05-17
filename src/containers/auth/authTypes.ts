@@ -1,11 +1,11 @@
-import { Dispatch, FormEventHandler, SetStateAction } from "react";
+import { Dispatch, FormEventHandler, SetStateAction } from 'react';
 
 export interface UserDetails {
     vendorId: string;
     primaryPhoneNumber: string;
-	primaryEmail: string;
-	businessName: string;
-	displayName: string;
+    primaryEmail: string;
+    businessName: string;
+    displayName: string;
     businessAddress: string;
     gstNumber: string;
 }
@@ -16,76 +16,76 @@ export interface AuthInitialState {
     loading: boolean;
     error: string;
     userDetails: UserDetails;
-	activeScreen: string;
-	otp: string;
-	authSession: string;
+    activeScreen: string;
+    otp: string;
+    authSession: string;
 }
 
 export interface IHomePageProps {
-	emailId: string;
-	setEmailId: Dispatch<SetStateAction<string>>;
-	handleEmailSubmit: FormEventHandler<HTMLFormElement>;
-	isAuthLoading: boolean;
-};
+    emailId: string;
+    setEmailId: Dispatch<SetStateAction<string>>;
+    handleEmailSubmit: FormEventHandler<HTMLFormElement>;
+    isAuthLoading: boolean;
+}
 
 export interface ISetPasswordProps {
-	password: string;
-	setPassword: Dispatch<SetStateAction<string>>;
-	verifyPassword: string;
-	setVerifyPassword: Dispatch<SetStateAction<string>>;
-	showPassword: boolean;
-	setShowPassword: Dispatch<SetStateAction<boolean>>;
-	handlesetPasswordSubmit: FormEventHandler<HTMLFormElement>;
-	isAuthLoading: boolean;
-};
+    password: string;
+    setPassword: Dispatch<SetStateAction<string>>;
+    verifyPassword: string;
+    setVerifyPassword: Dispatch<SetStateAction<string>>;
+    showPassword: boolean;
+    setShowPassword: Dispatch<SetStateAction<boolean>>;
+    handlesetPasswordSubmit: FormEventHandler<HTMLFormElement>;
+    isAuthLoading: boolean;
+}
 
 export interface IEnterPasswordProps {
-	password: string,
-	setPassword:  Dispatch<SetStateAction<string>>;
-	showPassword: boolean;
-	setShowPassword: Dispatch<SetStateAction<boolean>>;
-	handleEnterPasswordSubmit: FormEventHandler<HTMLFormElement>;
-	isAuthLoading: boolean;
-};
+    password: string;
+    setPassword: Dispatch<SetStateAction<string>>;
+    showPassword: boolean;
+    setShowPassword: Dispatch<SetStateAction<boolean>>;
+    handleEnterPasswordSubmit: FormEventHandler<HTMLFormElement>;
+    isAuthLoading: boolean;
+}
 
 export const AUTH_SCREENS = {
-	LOGIN_WITH_OTP_AND_SET_PWD_PAGE: 'LOGIN_WITH_OTP_AND_SET_PWD_PAGE',
+    LOGIN_WITH_OTP_AND_SET_PWD_PAGE: 'LOGIN_WITH_OTP_AND_SET_PWD_PAGE',
     VALIDATE_OTP_PAGE: 'VALIDATE_OTP_PAGE',
     LOGIN_WITH_PWD_OR_OTP_PAGE: 'LOGIN_WITH_PWD_OR_OTP_PAGE',
     FORGOT_PWD_PAGE: 'FORGOT_PWD_PAGE',
     SET_PWD_PAGE: 'SET_PWD_PAGE',
     VALIDATE_PWD_PAGE: 'VALIDATE_PWD_PAGE',
-    HOME_PAGE: 'HOME_PAGE'
+    HOME_PAGE: 'HOME_PAGE',
 };
 
 export interface ISelectAuthTypeProps {
-	email: string;
-	editFn: () => void;
-	isAuthLoading: boolean;
-	handleClickOtpLogin: () => void;
-	handleClickPwdLogin: () => void;
-};
+    email: string;
+    editFn: () => void;
+    isAuthLoading: boolean;
+    handleClickOtpLogin: () => void;
+    handleClickPwdLogin: () => void;
+}
 
 export interface ILoginWithPasswordProps {
-	email: string;
-	editFn: () => void;
-	password: string,
-	setPassword:  Dispatch<SetStateAction<string>>;
-	isAuthLoading: boolean;
-	showPassword: boolean;
-	setShowPassword: Dispatch<SetStateAction<boolean>>;
-	handleClickOtpLogin: () => void;
-	handleSubmitLoginWithPwd: FormEventHandler<HTMLFormElement>;
-};
+    email: string;
+    editFn: () => void;
+    password: string;
+    setPassword: Dispatch<SetStateAction<string>>;
+    isAuthLoading: boolean;
+    showPassword: boolean;
+    setShowPassword: Dispatch<SetStateAction<boolean>>;
+    handleClickOtpLogin: () => void;
+    handleSubmitLoginWithPwd: FormEventHandler<HTMLFormElement>;
+}
 
-export interface IEnterOtpProps{
-	email: string;
-	editFn: () => void;
-	otp: string;
-	setOtp: Dispatch<SetStateAction<string>>;
-	handleOtpSubmit: FormEventHandler<HTMLFormElement>;
-	isAuthLoading: boolean;
-};
+export interface IEnterOtpProps {
+    email: string;
+    editFn: () => void;
+    otp: string;
+    setOtp: Dispatch<SetStateAction<string>>;
+    handleOtpSubmit: FormEventHandler<HTMLFormElement>;
+    isAuthLoading: boolean;
+}
 export interface IResponse {
     vendorId: string;
     businessName: string;
@@ -94,35 +94,35 @@ export interface IResponse {
 }
 
 export interface IVerifyEmailResponse {
-	emailId: string;
-	nextPage: string;
-	sessionId: string;
-};
+    emailId: string;
+    nextPage: string;
+    sessionId: string;
+}
 
 export interface IGenerateOtpResponse {
-	nextPage: string;
-	sessionId: string;
-};
+    nextPage: string;
+    sessionId: string;
+}
 
 export interface IValidateOtpResponse {
-	nextPage: string;
-	userData: {
-		accessToken: string;
-		profile: UserDetails;
-	}
-};
+    nextPage: string;
+    userData: {
+        accessToken: string;
+        profile: UserDetails;
+    };
+}
 
 export interface ISetPasswordResponse {
-	nextPage: string;
+    nextPage: string;
 }
 
 export const LOGIN_PURPOSE = {
-	FIRST_LOGIN: 'FIRST_LOGIN',
-	LOGIN: 'LOGIN',
-	FORGOT_PASSWORD: 'FORGOT_PASSWORD'
+    FIRST_LOGIN: 'FIRST_LOGIN',
+    LOGIN: 'LOGIN',
+    FORGOT_PASSWORD: 'FORGOT_PASSWORD',
 };
 
 export type ScreenName =
-	| 'LOGIN_WITH_OTP_AND_SET_PWD_PAGE'
-	| 'LOGIN_WITH_PWD_OR_OTP_PAGE'
-	| string;
+    | 'LOGIN_WITH_OTP_AND_SET_PWD_PAGE'
+    | 'LOGIN_WITH_PWD_OR_OTP_PAGE'
+    | string;

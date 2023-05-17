@@ -1,18 +1,19 @@
+/* eslint-disable prefer-promise-reject-errors */
 import { sendEvents, events } from '../appEvents';
 
 const baseurl = import.meta.env.VITE_API_URL;
 
-export const getToken = function () {
+export const getToken = () => {
     const authToken = localStorage.getItem('accessToken');
     return authToken || '';
 };
 
-const http = function (
+const http = (
     path: string,
     method: RequestInit,
     content: string,
     headers: object | null = null
-) {
+) => {
     const url = baseurl + path;
     method.headers = {
         Accept: '*/*',
@@ -20,9 +21,9 @@ const http = function (
     if (content) {
         method.headers['content-type'] = content;
     }
-	const token = getToken();
+    const token = getToken();
     if (token) {
-        method.headers['Authorization'] = 'Bearer ' + token;
+        method.headers.Authorization = `Bearer ${token}`;
     }
     method.credentials = 'include';
     method.signal = AbortSignal.timeout(5000);
@@ -42,15 +43,14 @@ const http = function (
                 const text = await response.json();
                 sendEvents(events.HTTP_API_FAILURE, {
                     error: JSON.stringify(text),
-					url: url,
+                    url,
                 });
-                console.log(text);
                 throw new Error(text.error.error, {
                     cause: { status: text.statusCode },
                 });
             })
             .then((response) => {
-                //console.log('Received ' + path + ' response: ', response);
+                // console.log('Received ' + path + ' response: ', response);
                 if (response.statusCode !== 200) {
                     sendEvents(events.HTTP_API_FAILURE, {
                         error: JSON.stringify(response),
@@ -58,19 +58,18 @@ const http = function (
                     reject({ error: response.error });
                 }
                 if (response.data) {
-					sendEvents(events.HTTP_API_SUCCESS, {
-						body: method?.body,
-						url: url,
-					});
+                    sendEvents(events.HTTP_API_SUCCESS, {
+                        body: method?.body,
+                        url,
+                    });
                     resolve(response.data);
                 } else {
                     resolve(response);
                 }
             })
-            .catch(function (e) {
-                console.log(e?.name);
-                console.log(e?.message);
-                console.log('Request to ' + path + ' failed: ', e);
+            .catch((e) => {
+                // eslint-disable-next-line no-console
+                console.log(`Request to ${path} failed: `, e);
                 reject({ error: e });
             });
     });
@@ -78,7 +77,7 @@ const http = function (
 
 const apiHandler = {
     // TODO: change object type to the union of all the types in createPayload.ts
-    post: function (path: string, data: object, headers = null) {
+    post(path: string, data: object, headers = null) {
         return http(
             path,
             { method: 'POST', body: JSON.stringify(data) },
@@ -87,7 +86,7 @@ const apiHandler = {
         );
     },
 
-    put: function (path: string, data: object) {
+    put(path: string, data: object) {
         return http(
             path,
             { method: 'PUT', body: JSON.stringify(data) },
@@ -95,7 +94,7 @@ const apiHandler = {
         );
     },
 
-    get: function (path: string, params: string) {
+    get(path: string, params: string) {
         return http(`${path}${params}`, { method: 'GET' }, 'application/json');
     },
 };

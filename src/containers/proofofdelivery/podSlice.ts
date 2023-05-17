@@ -36,7 +36,7 @@ const podSlice = createSlice({
             state.defaultStartTime = payload.startTime;
             state.loading = false;
             state.error = null;
-            state.hasMore = payload?.prevPageLastInvId ? true : false;
+            state.hasMore = !!payload?.prevPageLastInvId;
             state.prevPageLastInvId = payload?.prevPageLastInvId;
         },
         setPodError: (state, { payload }) => {

@@ -38,7 +38,7 @@ const paymentSlice = createSlice({
         setPaymentError: (state, { payload }) => {
             state.loading = false;
             state.paymentAdviceLoading = false;
-			state.isIngestionLoading = false;
+            state.isIngestionLoading = false;
             state.error = payload;
         },
         setPaymentLoading: (state) => {
@@ -58,9 +58,9 @@ const paymentSlice = createSlice({
         setIngestionLoading: (state, { payload }) => {
             state.isIngestionLoading = payload;
         },
-		resetUTRDetails: (state) => {
-			state.utrDetails = {}
-		}
+        resetUTRDetails: (state) => {
+            state.utrDetails = {};
+        },
     },
 });
 
@@ -71,6 +71,6 @@ export const {
     setUTRdetails,
     setPaymentAdviceLoading,
     setIngestionLoading,
-	resetUTRDetails,
+    resetUTRDetails,
 } = paymentSlice.actions;
 export default paymentSlice.reducer;

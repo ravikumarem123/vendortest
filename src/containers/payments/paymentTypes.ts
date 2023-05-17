@@ -1,4 +1,4 @@
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { Action } from 'redux';
 
 export interface VendorAddress {
@@ -62,10 +62,10 @@ export interface PaymentInitialState {
     isIngestionLoading: boolean;
 }
 
-//ingestionData: {
+// ingestionData: {
 //	paymentInfoHeaders?: IPaymentIngestionInfo,
 //	paymentInfoLineItems?: Array<IPaymentIngestionInfo>
-//}
+// }
 export interface IResponse {
     success: boolean;
     statusCode: number;
@@ -113,8 +113,8 @@ export interface IPaymentPayload {
     paymentError?: string | null;
 }
 
-export interface IFetchDataProps{
-	page: number;
-	pageSize?: number;
-	isDateClicked?: boolean;
+export interface IFetchDataProps {
+    page: number;
+    pageSize?: number;
+    isDateClicked?: boolean;
 }
