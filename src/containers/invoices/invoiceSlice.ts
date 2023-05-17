@@ -36,7 +36,7 @@ const invoiceSlice = createSlice({
             state.defaultStartTime = payload.dataStartDate;
             state.loading = false;
             state.error = null;
-            state.hasMore = payload?.prevPageLastInvId ? true : false;
+            state.hasMore = !!payload?.prevPageLastInvId;
             state.prevPageLastInvId = payload?.prevPageLastInvId;
         },
         setInvoiceError: (state, { payload }) => {
@@ -49,5 +49,6 @@ const invoiceSlice = createSlice({
     },
 });
 
-export const { setInvoiceDetails, setInvoiceError, setInvoiceLoading } = invoiceSlice.actions;
+export const { setInvoiceDetails, setInvoiceError, setInvoiceLoading } =
+    invoiceSlice.actions;
 export default invoiceSlice.reducer;

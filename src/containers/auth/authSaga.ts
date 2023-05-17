@@ -1,9 +1,8 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { NavigateFunction } from 'react-router-dom';
-import { sagaActions } from '../../reduxInit/sagaActions';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import { Action } from 'redux';
 import { History } from 'history';
-import { UserDetails, IResponse } from './authTypes';
+import sagaActions from '../../reduxInit/sagaActions';
+import { IResponse } from './authTypes';
 import { fetchLoginPayload } from '../../network/createPayload';
 import apiRepository from '../../network/apiRepository';
 import { setDialogOpen } from '../../common/commonSlice';
@@ -34,49 +33,46 @@ export function* login(history: History, action: ActionResult<Props>) {
         localStorage.setItem('userDetails', JSON.stringify(result));
         yield call(history.push, '/');
     } catch (e: any) {
-        console.log('error in login: ', e);
         if (e?.error?.message === 'Failed to fetch') {
             const dialogPayload = {
                 title: 'Something went wrong',
                 content: 'please check your internet connection and try again.',
             };
             yield put(setDialogOpen(dialogPayload));
+        } else if (e?.error?.cause?.status === 401) {
+            const dialogPayload = {
+                title: 'Something went wrong',
+                content: `${e?.error?.message}`,
+                logout: true,
+            };
+            yield put(setDialogOpen(dialogPayload));
+        } else if (e?.error?.cause?.status?.toString().includes('5')) {
+            const dialogPayload = {
+                title: 'Something went wrong',
+                content: `Please try again after some time`,
+            };
+            yield put(setDialogOpen(dialogPayload));
+        } else if (e?.error?.cause?.status?.toString().includes('4')) {
+            const dialogPayload = {
+                title: 'Something went wrong',
+                content: `${
+                    e?.error?.message
+                        ? e?.error?.message
+                        : 'Please try again after some time'
+                }`,
+            };
+            yield put(setDialogOpen(dialogPayload));
         } else {
-            if (e?.error?.cause?.status === 401) {
-                const dialogPayload = {
-                    title: 'Something went wrong',
-                    content: `${e?.error?.message}`,
-                    logout: true,
-                };
-                yield put(setDialogOpen(dialogPayload));
-            } else if (e?.error?.cause?.status?.toString().includes('5')) {
-                const dialogPayload = {
-                    title: 'Something went wrong',
-                    content: `Please try again after some time`,
-                };
-                yield put(setDialogOpen(dialogPayload));
-            } else if (e?.error?.cause?.status?.toString().includes('4')) {
-                const dialogPayload = {
-                    title: 'Something went wrong',
-                    content: `${
-                        e?.error?.message
-                            ? e?.error?.message
-                            : 'Please try again after some time'
-                    }`,
-                };
-                yield put(setDialogOpen(dialogPayload));
-            } else {
-                const dialogPayload = {
-                    title: 'Something went wrong',
-                    content: 'Please try again after some time',
-                };
-                yield put(setDialogOpen(dialogPayload));
-            }
+            const dialogPayload = {
+                title: 'Something went wrong',
+                content: 'Please try again after some time',
+            };
+            yield put(setDialogOpen(dialogPayload));
         }
     }
 }
 
-//export function* logout() {
+// export function* logout() {
 //    //try {
 //    //    const result = yield call(apiRepository.logout, {});
 //    //    localStorage.clear();
@@ -94,7 +90,7 @@ export function* login(history: History, action: ActionResult<Props>) {
 //    //        })
 //    //    );
 //    //}
-//}
+// }
 
 export default function* authSaga(history: History) {
     yield takeLatest(sagaActions.LOGIN, login, history);

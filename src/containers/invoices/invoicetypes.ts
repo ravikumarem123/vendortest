@@ -2,26 +2,26 @@ import { Dayjs } from 'dayjs';
 import { Action } from 'redux';
 
 export interface Invoice {
-	documentUrl: string;
-	invoiceAmount: string;
-	invoiceDate: string;
-	invoiceNumber: string;
-	paymentInfo?: {
-		tds: string;
-		debitNoteAmount: string;
-		expectedAmount: string;
-		paymentStatus: string;
-		settledAmount: string;
-		utr: string;
-	}
-	paymentErrorInfo?: {
-		tds: string;
-		debitNoteAmount: string;
-		expectedAmount: string;
-		paymentStatus: string;
-		settledAmount: string;
-		utr: string;
-	}
+    documentUrl: string;
+    invoiceAmount: string;
+    invoiceDate: string;
+    invoiceNumber: string;
+    paymentInfo?: {
+        tds: string;
+        debitNoteAmount: string;
+        expectedAmount: string;
+        paymentStatus: string;
+        settledAmount: string;
+        utr: string;
+    };
+    paymentErrorInfo?: {
+        tds: string;
+        debitNoteAmount: string;
+        expectedAmount: string;
+        paymentStatus: string;
+        settledAmount: string;
+        utr: string;
+    };
 }
 
 export interface InvoiceInitialState {
@@ -61,8 +61,8 @@ export interface Error {
     error: string;
 }
 
-export interface IFetchDataProps{
-	isDateClicked?: boolean;
-	sendLastInvoice?: boolean;
-	pageSize?: number;
+export interface IFetchDataProps {
+    isDateClicked?: boolean;
+    sendLastInvoice?: boolean;
+    pageSize?: number;
 }

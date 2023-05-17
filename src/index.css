@@ -1,3 +1,10 @@
+:root{
+	--purple: #301134;
+	--gray: #808080;
+	--white: #ffffff;
+	--disabled: #c5c5c5;
+}
+
 body{
 	margin: 0;
 	font-family: 'Roboto', sans-serif;

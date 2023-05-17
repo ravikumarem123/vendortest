@@ -1,18 +1,17 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+import { History } from 'history';
 import { fetchPodPayload } from '../../network/createPayload';
 import apiRepository from '../../network/apiRepository';
-import { sagaActions } from '../../reduxInit/sagaActions';
-import { History } from 'history';
+import sagaActions from '../../reduxInit/sagaActions';
 import { setPodDetails, setPodError, setPodLoading } from './podSlice';
-import { setSearchParams } from '../../common/commonSlice';
-import { IResponse, ActionResult, Props, Error } from './podTypes';
-import { setDialogOpen } from '../../common/commonSlice';
+import { setSearchParams, setDialogOpen } from '../../common/commonSlice';
+import { IResponse, ActionResult, Props } from './podTypes';
 
 export function* fetchPodDetails(
     history: History,
     action: ActionResult<Props>
 ) {
-    //const vendorId = 'VNDR-1526001151'; //VNDR-1526007917
+    // const vendorId = 'VNDR-1526001151'; //VNDR-1526007917
     const vendorId = localStorage.getItem('vendorId') as string;
     try {
         const { payload } = action;
@@ -45,7 +44,6 @@ export function* fetchPodDetails(
         }
         yield put(setPodDetails(result));
     } catch (e: any) {
-        console.log(e);
         yield put(setPodError(e?.error?.message));
         if (e?.error?.message === 'Failed to fetch') {
             const dialogPayload = {
@@ -53,37 +51,35 @@ export function* fetchPodDetails(
                 content: 'please check your internet connection and try again.',
             };
             yield put(setDialogOpen(dialogPayload));
+        } else if (e?.error?.cause?.status === 401) {
+            const dialogPayload = {
+                title: 'Something went wrong',
+                content: `${e?.error?.message} You’’ll be logged out, please login again to continue`,
+                logout: true,
+            };
+            yield put(setDialogOpen(dialogPayload));
+        } else if (e?.error?.cause?.status?.toString().includes('5')) {
+            const dialogPayload = {
+                title: 'Something went wrong',
+                content: `Please try again after some time`,
+            };
+            yield put(setDialogOpen(dialogPayload));
+        } else if (e?.error?.cause?.status?.toString().includes('4')) {
+            const dialogPayload = {
+                title: 'Something went wrong',
+                content: `${
+                    e?.error?.message
+                        ? e?.error?.message
+                        : 'Please try again after some time'
+                }`,
+            };
+            yield put(setDialogOpen(dialogPayload));
         } else {
-            if (e?.error?.cause?.status === 401) {
-                const dialogPayload = {
-                    title: 'Something went wrong',
-                    content: `${e?.error?.message} You’’ll be logged out, please login again to continue`,
-                    logout: true,
-                };
-                yield put(setDialogOpen(dialogPayload));
-            } else if (e?.error?.cause?.status?.toString().includes('5')) {
-                const dialogPayload = {
-                    title: 'Something went wrong',
-                    content: `Please try again after some time`,
-                };
-                yield put(setDialogOpen(dialogPayload));
-            } else if (e?.error?.cause?.status?.toString().includes('4')) {
-                const dialogPayload = {
-                    title: 'Something went wrong',
-                    content: `${
-                        e?.error?.message
-                            ? e?.error?.message
-                            : 'Please try again after some time'
-                    }`,
-                };
-                yield put(setDialogOpen(dialogPayload));
-            } else {
-                const dialogPayload = {
-                    title: 'Something went wrong',
-                    content: 'Please try again after some time',
-                };
-                yield put(setDialogOpen(dialogPayload));
-            }
+            const dialogPayload = {
+                title: 'Something went wrong',
+                content: 'Please try again after some time',
+            };
+            yield put(setDialogOpen(dialogPayload));
         }
     }
 }

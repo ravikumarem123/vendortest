@@ -8,22 +8,25 @@ import {
 const getJCLedgerPayload = (
     businessId: string,
     pageNumber: number,
-    pageSize: number = 10
+    pageSize = 10
 ) => {
     return `businessId=${businessId}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
 };
 
 const fetchPodPayload = (params: Props) => {
-
-	const { vendorId, pageSize, dateClicked, lastReadInvoice, startTime, endTime, searchText } = params;
+    const {
+        vendorId,
+        pageSize,
+        dateClicked,
+        lastReadInvoice,
+        startTime,
+        endTime,
+        searchText,
+    } = params;
 
     return {
         vendorId,
-        pageSize: pageSize
-            ? pageSize
-            : dateClicked
-            ? 20
-            : 10,
+        pageSize: pageSize || (dateClicked ? 20 : 10),
         prevPageLastInvId: lastReadInvoice,
         startTime,
         endTime,
@@ -37,19 +40,17 @@ interface ILoginParams {
 }
 
 const fetchLoginPayload = (params: ILoginParams) => {
-
-	const { emailId, password } = params;
+    const { emailId, password } = params;
 
     return {
         emailId,
-        //hashPassword: password,
+        // hashPassword: password,
         hashPassword: Md5.hashStr(password),
     };
 };
 
 const fetchGetUTRListPayload = (params: IUTRPayload) => {
-
-	const { vendorId, startTime, endTime, pageNumber, searchText  } = params;
+    const { vendorId, startTime, endTime, pageNumber, searchText } = params;
 
     return {
         vendorId,
@@ -61,32 +62,33 @@ const fetchGetUTRListPayload = (params: IUTRPayload) => {
 };
 
 const fetchUTRInfoPayload = (params: IUTRDetailsPayload) => {
-
-	const { vendorId, utr } = params;
+    const { vendorId, utr } = params;
     return { vendorId, utr };
 };
 
 const fetchUTRIngestionPayload = (params: IUTRDetailsPayload) => {
+    const { vendorId, utr } = params;
 
-	const { vendorId, utr } = params;
-
-	return {
-        vendorId: vendorId,
-        utr: utr,
+    return {
+        vendorId,
+        utr,
     };
 };
 
 const fetchInvoicePayload = (params: Props) => {
-
-	const { vendorId, pageSize, dateClicked, lastReadInvoice, startTime, endTime, searchText } = params;
+    const {
+        vendorId,
+        pageSize,
+        dateClicked,
+        lastReadInvoice,
+        startTime,
+        endTime,
+        searchText,
+    } = params;
 
     return {
         vendorId,
-        pageSize: pageSize
-            ? pageSize
-            : dateClicked
-            ? 20
-            : 10,
+        pageSize: pageSize || (dateClicked ? 20 : 10),
         prevPageLastInvId: lastReadInvoice,
         startTime,
         endTime,
@@ -100,6 +102,6 @@ export {
     fetchLoginPayload,
     fetchGetUTRListPayload,
     fetchUTRInfoPayload,
-	fetchUTRIngestionPayload,
-	fetchInvoicePayload,
+    fetchUTRIngestionPayload,
+    fetchInvoicePayload,
 };

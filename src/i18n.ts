@@ -20,13 +20,13 @@ declare module 'i18next' {
 }
 
 i18n.use(initReactI18next).init({
-    resources: resources,
+    resources,
     returnNull: false,
-    lng: 'en', //default language
+    lng: 'en', // default language
     interpolation: {
         escapeValue: false,
     },
-    debug: process.env.NODE_ENV === 'development' ? true : false, // enable debug mode
+    debug: process.env.NODE_ENV === 'development', // enable debug mode
 });
 
 export default i18n;
