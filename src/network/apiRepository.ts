@@ -11,11 +11,15 @@ const apiRepository = {
         return apiHandler.post(URL, data);
     },
 	verifyEmail: function (data: object) {
-		const URL = '';
+		const URL = 'v1/login/validate-user-email';
+		return apiHandler.post(URL, data);
+	},
+	generateOTP: function (data: object) {
+		const URL = 'v1/login/generate-otp';
 		return apiHandler.post(URL, data);
 	},
 	verifyOTP: function (data: object) {
-		const URL = '';
+		const URL = 'v1/login/validate-otp';
 		return apiHandler.post(URL, data);
 	},
     getUTRList: function (data: object) {
@@ -35,11 +39,11 @@ const apiRepository = {
         return apiHandler.post(URL, data);
     },
 	validatePassword: function(data: object) {
-		const URL = '';
+		const URL = 'v1/login/validate-user-password';
 		return apiHandler.post(URL, data);
 	},
 	setPassword: function (data: object) {
-		const URL = '';
+		const URL = 'v1/login/set-user-password';
 		return apiHandler.post(URL, data);
 	},
 };

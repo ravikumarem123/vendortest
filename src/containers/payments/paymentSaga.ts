@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { writeFileXLSX, utils } from 'xlsx';
 import {
     fetchGetUTRListPayload,
@@ -27,6 +27,7 @@ import {
     IPaymentIngestionInfo,
 } from './paymentTypes';
 import { setDialogOpen } from '../../common/commonSlice';
+import { getVendorId } from '../auth/authSelector';
 
 function* handleAPIErrors(e: any) {
     yield put(setPaymentError(e?.error?.message));
@@ -75,7 +76,8 @@ export function* fetchPaymentDetails(
     action: ActionResult<IUTRPayload>
 ) {
     //const vendorId = 'VNDR-1526001151'; //VNDR-1526007917
-    const vendorId = localStorage.getItem('vendorId') as string;
+    //const vendorId = localStorage.getItem('vendorId') as string;
+	const vendorId: string = yield select(getVendorId);
     try {
         const { payload } = action;
         if (payload) payload.vendorId = vendorId;
@@ -108,7 +110,8 @@ export function* fetchPaymentDetails(
 }
 
 export function* fetchUTRDetails(action: ActionResult<IUTRPayload>) {
-    const vendorId = localStorage.getItem('vendorId') as string;
+    //const vendorId = localStorage.getItem('vendorId') as string;
+	const vendorId: string = yield select(getVendorId);
     yield put(resetUTRDetails());
     //const vendorId = 'VNDR-1526001151';
     try {
@@ -166,7 +169,8 @@ function* createAndDownloadFile(
 }
 
 export function* fetchUTRIngestion(action: ActionResult<IUTRPayload>) {
-    const vendorId = localStorage.getItem('vendorId') as string;
+    //const vendorId = localStorage.getItem('vendorId') as string;
+	const vendorId: string = yield select(getVendorId);
     //const vendorId = 'VNDR-1526001151';
     try {
         const { payload } = action;

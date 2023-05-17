@@ -7,6 +7,7 @@
 		"enteremail": "Enter email",
 		"enterpassword": "Enter password",
 		"enterpasswordagain": "Enter password again",
+		"enterpwdtologin": "Please enter your password to login",
 		"next": "Next",
 		"enterregemailId": "Please enter your email-ID registered with Jumbotail",
 		"authentication": "Authentication",
@@ -14,6 +15,7 @@
 		"setpass": "Set Password",
 		"pleaseenterotp": "Please enter your 6 digit OTP shared to you on",
 		"emailotp": "Email OTP",
+		"loginwithemailotp": "Login with email OTP",
 		"enternewpass": "Please enter a new password for your profile",
 		"enterpass": "Please enter your new password to login",
 		"continue": "Continue"

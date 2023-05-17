@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { History } from 'history';
 import { fetchInvoicePayload } from '../../network/createPayload';
 import apiRepository from '../../network/apiRepository';
@@ -7,13 +7,15 @@ import { setInvoiceDetails, setInvoiceError, setInvoiceLoading } from './invoice
 import { setSearchParams } from '../../common/commonSlice';
 import { IResponse, ActionResult, InvoiceProps, Error } from './invoicetypes';
 import { setDialogOpen } from '../../common/commonSlice';
+import { getVendorId } from '../auth/authSelector';
 
 export function* fetchInvoiceDetails(
     history: History,
     action: ActionResult<InvoiceProps>
 ) {
     //const vendorId = 'VNDR-1526001151'; //VNDR-1526007917
-    const vendorId = localStorage.getItem('vendorId') as string;
+    //const vendorId = localStorage.getItem('vendorId') as string;
+	const vendorId: string = yield select(getVendorId);
     try {
         const { payload } = action;
         if (payload) payload.vendorId = vendorId;

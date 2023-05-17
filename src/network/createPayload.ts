@@ -42,25 +42,73 @@ const fetchLoginPayload = (params: ILoginParams) => {
 
     return {
         emailId,
-        //hashPassword: password,
         hashPassword: Md5.hashStr(password),
     };
 };
 
-const fetchVerifyEmailPayload = () => {
-	return  {};
+const fetchVerifyEmailPayload = (emailId: string) => {
+	return  { emailId };
 };
 
-const fetchVerifyOtpPayload = () => {
-	return  {};
+interface IFecthOtpParams {
+	emailId: string;
+   	sessionId: string;
+    loginPurpose: string;
+}
+
+const fetchGenerateOtpPayload = (params: IFecthOtpParams) => {
+
+	const { emailId, sessionId, loginPurpose } = params;
+
+	return {
+		emailId,
+   		sessionId,
+		loginPurpose
+	};
 };
 
-const fetchValidatePasswordPayload = () => {
-	return {};
+interface IVerifyOtpParams {
+	emailId: string;
+   	sessionId: string;
+    otp: string;
+}
+
+const fetchVerifyOtpPayload = (params: IVerifyOtpParams) => {
+
+	const { emailId, sessionId, otp } = params;
+
+	return {
+		emailId,
+		sessionId,
+		otp
+	};
 };
 
-const fetchSetPasswordPayload = () => {
-	return {};
+interface ISetPasswordPayload {
+	emailId: string;
+    sessionId: string;
+    password: string;
+};
+
+const fetchValidatePasswordPayload = (params: ISetPasswordPayload) => {
+	const { emailId, sessionId, password } = params;
+
+	return {
+		emailId,
+		sessionId,
+		password: Md5.hashStr(password)
+	};
+};
+
+const fetchSetPasswordPayload = (params: ISetPasswordPayload) => {
+
+	const { emailId, sessionId, password } = params;
+
+	return {
+		emailId,
+		sessionId,
+		password: Md5.hashStr(password)
+	};
 };
 
 const fetchGetUTRListPayload = (params: IUTRPayload) => {
@@ -119,6 +167,7 @@ export {
 	fetchUTRIngestionPayload,
 	fetchInvoicePayload,
 	fetchVerifyEmailPayload,
+	fetchGenerateOtpPayload,
 	fetchVerifyOtpPayload,
 	fetchValidatePasswordPayload,
 	fetchSetPasswordPayload,

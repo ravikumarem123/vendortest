@@ -2,7 +2,10 @@ import { Dispatch, FormEventHandler, SetStateAction } from "react";
 
 export interface UserDetails {
     vendorId: string;
-    businessName: string;
+    primaryPhoneNumber: string;
+	primaryEmail: string;
+	businessName: string;
+	displayName: string;
     businessAddress: string;
     gstNumber: string;
 }
@@ -14,13 +17,8 @@ export interface AuthInitialState {
     error: string;
     userDetails: UserDetails;
 	activeScreen: string;
-}
-
-export interface IResponse {
-    vendorId: string;
-    businessName: string;
-    businessAddress: string;
-    gstNumber: string;
+	otp: string;
+	authSession: string;
 }
 
 export interface IHomePageProps {
@@ -64,11 +62,67 @@ export interface ISelectAuthTypeProps {
 	email: string;
 	editFn: () => void;
 	isAuthLoading: boolean;
+	handleClickOtpLogin: () => void;
+	handleClickPwdLogin: () => void;
+};
+
+export interface ILoginWithPasswordProps {
+	email: string;
+	editFn: () => void;
+	password: string,
+	setPassword:  Dispatch<SetStateAction<string>>;
+	isAuthLoading: boolean;
+	showPassword: boolean;
+	setShowPassword: Dispatch<SetStateAction<boolean>>;
+	handleClickOtpLogin: () => void;
+	handleSubmitLoginWithPwd: FormEventHandler<HTMLFormElement>;
 };
 
 export interface IEnterOtpProps{
+	email: string;
+	editFn: () => void;
 	otp: string;
 	setOtp: Dispatch<SetStateAction<string>>;
 	handleOtpSubmit: FormEventHandler<HTMLFormElement>;
 	isAuthLoading: boolean;
 };
+export interface IResponse {
+    vendorId: string;
+    businessName: string;
+    businessAddress: string;
+    gstNumber: string;
+}
+
+export interface IVerifyEmailResponse {
+	emailId: string;
+	nextPage: string;
+	sessionId: string;
+};
+
+export interface IGenerateOtpResponse {
+	nextPage: string;
+	sessionId: string;
+};
+
+export interface IValidateOtpResponse {
+	nextPage: string;
+	userData: {
+		accessToken: string;
+		profile: UserDetails;
+	}
+};
+
+export interface ISetPasswordResponse {
+	nextPage: string;
+}
+
+export const LOGIN_PURPOSE = {
+	FIRST_LOGIN: 'FIRST_LOGIN',
+	LOGIN: 'LOGIN',
+	FORGOT_PASSWORD: 'FORGOT_PASSWORD'
+};
+
+export type ScreenName =
+	| 'LOGIN_WITH_OTP_AND_SET_PWD_PAGE'
+	| 'LOGIN_WITH_PWD_OR_OTP_PAGE'
+	| string;

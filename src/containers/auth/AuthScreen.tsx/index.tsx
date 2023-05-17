@@ -6,7 +6,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { makeStyles } from '@mui/styles';
 import EditIcon from '@mui/icons-material/Edit';
 import AuthHeader from "../AuthHeader";
-import { IEnterOtpProps, IEnterPasswordProps, IHomePageProps, ISelectAuthTypeProps, ISetPasswordProps } from "../authTypes";
+import { AUTH_SCREENS, IEnterOtpProps, IEnterPasswordProps, IHomePageProps, ILoginWithPasswordProps, ISelectAuthTypeProps, ISetPasswordProps } from "../authTypes";
 import { PaymentIdea } from "../../../assets";
 
 const useStyles = makeStyles((theme) => ({
@@ -17,6 +17,10 @@ const useStyles = makeStyles((theme) => ({
 		'&:hover': {
 			backgroundColor: '#301134',
 		},
+		'&:disabled': {
+			backgroundColor: '#808080 !important',
+			color: "#ffffff !important"
+		}
 	},
 }));
 
@@ -58,6 +62,7 @@ export function HomePageScreen({
 					<Button
 						variant="contained"
 						type='submit'
+						disabled={isAuthLoading}
 						classes={{ root: buttonClasses.root }}
 					>
 						{t('auth.next')}
@@ -69,10 +74,12 @@ export function HomePageScreen({
 };
 
 
-export function SelectAuthTypeScreen({ 
-	email, 
-	editFn, 
-	isAuthLoading 
+export function SelectAuthTypeScreen({
+	email,
+	editFn,
+	isAuthLoading,
+	handleClickOtpLogin,
+	handleClickPwdLogin,
 }: ISelectAuthTypeProps) {
 
 	const { t } = useTranslation();
@@ -88,6 +95,8 @@ export function SelectAuthTypeScreen({
 					variant="outlined"
 					type='submit'
 					className="outline-login-btn"
+					disabled={isAuthLoading}
+					onClick={handleClickOtpLogin}
 				>
 					{t('auth.emailotp')}
 				</Button>
@@ -98,6 +107,7 @@ export function SelectAuthTypeScreen({
 					variant="outlined"
 					type='submit'
 					className="outline-login-btn"
+					onClick={handleClickPwdLogin}
 				>
 					{t('auth.setpass')}
 				</Button>
@@ -108,7 +118,7 @@ export function SelectAuthTypeScreen({
 						Note: OTP will be sent to you on
 					</p>
 					<p className="login-header-email">
-						<span>{'email@gmail.com'}</span>
+						<span>{email}</span>
 						<EditIcon
 							className="login-header-email-edit-icon"
 							onClick={editFn}
@@ -123,6 +133,8 @@ export function SelectAuthTypeScreen({
 
 
 export function EnterOtpScreen({
+	email,
+	editFn,
 	handleOtpSubmit,
 	otp,
 	setOtp,
@@ -137,7 +149,8 @@ export function EnterOtpScreen({
 			<AuthHeader
 				headText='auth.emailotp'
 				subHeadText='auth.pleaseenterotp'
-				email="abc.enterprise@gmail.com"
+				email={email}
+				editFn={editFn}
 			/>
 			<form onSubmit={handleOtpSubmit}>
 				<div className='input-fields'>
@@ -155,6 +168,7 @@ export function EnterOtpScreen({
 						variant="contained"
 						type='submit'
 						classes={{ root: buttonClasses.root }}
+						disabled={otp.length < 1 }
 					>
 						{t('auth.login')}
 					</Button>
@@ -249,6 +263,7 @@ export function SetPasswordScreen({
 						variant="contained"
 						type='submit'
 						classes={{ root: buttonClasses.root }}
+						disabled={!(password.length > 0 && verifyPassword.length > 0 && password === verifyPassword)}
 					>
 						{t('auth.continue')}
 					</Button>
@@ -259,20 +274,20 @@ export function SetPasswordScreen({
 };
 
 export function EnterPasswordScreen({
-		password,
-		setPassword,
-		showPassword,
-		setShowPassword,
-		handleEnterPasswordSubmit,
-		isAuthLoading,
-	}: IEnterPasswordProps) {
-	
+	password,
+	setPassword,
+	showPassword,
+	setShowPassword,
+	handleEnterPasswordSubmit,
+	isAuthLoading,
+}: IEnterPasswordProps) {
+
 	const { t } = useTranslation();
 	const buttonClasses = useStyles();
 
 	const handleClickShowPassword = () => setShowPassword(!showPassword);
 	const handleMouseDownPassword = () => setShowPassword(!showPassword);
-	
+
 	return (
 		<>
 			<AuthHeader
@@ -316,6 +331,91 @@ export function EnterPasswordScreen({
 						classes={{ root: buttonClasses.root }}
 					>
 						{t('auth.login')}
+					</Button>
+				</div>
+			</form>
+		</>
+	);
+};
+
+
+export function LoginWithPassword({
+	email,
+	editFn,
+	password,
+	setPassword,
+	isAuthLoading,
+	showPassword,
+	setShowPassword,
+	handleClickOtpLogin,
+	handleSubmitLoginWithPwd,
+}: ILoginWithPasswordProps) {
+
+	const { t } = useTranslation();
+	const buttonClasses = useStyles();
+
+	const handleClickShowPassword = () => setShowPassword(!showPassword);
+	const handleMouseDownPassword = () => setShowPassword(!showPassword);
+
+	return (
+		<>
+			<AuthHeader
+				headText='auth.password'
+				subHeadText='auth.enterpwdtologin'
+				email={email}
+				editFn={editFn}
+			/>
+
+			<form onSubmit={handleSubmitLoginWithPwd}>
+				<div className='input-fields'>
+					<TextField
+						label={t('auth.password')}
+						variant="outlined"
+						type={showPassword ? "text" : "password"}
+						InputLabelProps={{
+							shrink: true,
+						}}
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton
+										aria-label="toggle password visibility"
+										onClick={handleClickShowPassword}
+										onMouseDown={handleMouseDownPassword}
+									>
+										{showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+									</IconButton>
+								</InputAdornment>
+							),
+							style: { width: '330px' },
+						}}
+						placeholder={t('auth.enterpassword')}
+						className='login-input'
+						sx={{ display: 'block' }}
+						value={password}
+						required
+						onChange={(e) => setPassword(e.target.value)}
+					/>
+
+					<Button
+						variant="contained"
+						type='submit'
+						classes={{ root: buttonClasses.root }}
+						disabled={password.length < 1}
+					>
+						{t('auth.login')}
+					</Button>
+
+					<p className="gray-text or-separator">OR</p>
+
+					<Button
+						variant="outlined"
+						type='submit'
+						className="outline-login-btn"
+						disabled={isAuthLoading}
+						onClick={handleClickOtpLogin}
+					>
+						{t('auth.loginwithemailotp')}
 					</Button>
 				</div>
 			</form>
