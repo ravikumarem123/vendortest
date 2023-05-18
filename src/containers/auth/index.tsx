@@ -36,7 +36,6 @@ const Login = () => {
     };
 
     const handleClickOtpLogin = () => {
-        console.log('inside handle click otp login');
         dispatch({
             type: sagaActions.AUTH.GENERATE_OTP,
             payload: { loginPurpose: LOGIN_PURPOSE.LOGIN },

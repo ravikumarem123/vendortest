@@ -37,7 +37,6 @@ const authSlice = createSlice({
             state.error = payload;
         },
         setActiveAuthScreen: (state, { payload }) => {
-            console.log(payload);
             state.activeScreen = payload;
         },
         setAuthSession: (state, { payload }) => {

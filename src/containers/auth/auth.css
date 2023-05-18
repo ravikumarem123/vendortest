@@ -33,7 +33,6 @@
 .login-head-img{
 	position: relative;
 	top: 60px;
-	/*left: 25px;*/
 	width: 120px;
 }
 
@@ -54,13 +53,11 @@
 }
 
 .login-input{
-	/*display: block !important;*/
     margin-bottom: 30px !important;
-	 /*!important;*/
 }
 
 .gray-text{
-	color: #808080;
+	color: var(--gray);
 }
 
 .login-header-container{
@@ -89,7 +86,7 @@
     border: 1px solid #E1E1E1;
     padding: 3px;
     background: #E1E1E1;
-    color: #ffffff;
+    color: var(--white);
 }
 
 .otp-input{

@@ -40,7 +40,6 @@ interface ActionResult<T> extends Action<string> {
 }
 
 function* handleAPIErrors(e: any) {
-    // yield put(setPaymentError(e?.error?.message));
     if (e?.error?.message === 'Failed to fetch') {
         const dialogPayload = {
             title: 'Something went wrong',

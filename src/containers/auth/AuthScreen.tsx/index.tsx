@@ -15,18 +15,19 @@ import {
     ISetPasswordProps,
 } from '../authTypes';
 import { PaymentIdea } from '../../../assets';
+import COLORS from '../../../utils/cssutils';
 
 const useStyles = makeStyles(() => ({
     root: {
-        backgroundColor: '#301134 !important',
+        backgroundColor: `${COLORS.purple} !important`,
         height: '50px',
         width: '330px',
         '&:hover': {
-            backgroundColor: '#301134',
+            backgroundColor: COLORS.purple,
         },
         '&:disabled': {
-            backgroundColor: '#808080 !important',
-            color: '#ffffff !important',
+            backgroundColor: `${COLORS.gray} !important`,
+            color: `${COLORS.white} !important`,
         },
     },
 }));
@@ -200,6 +201,12 @@ export const SetPasswordScreen = ({
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
+    const isDisabled = !(
+        password.length > 0 &&
+        verifyPassword.length > 0 &&
+        password === verifyPassword
+    );
+
     return (
         <>
             <AuthHeader
@@ -276,13 +283,7 @@ export const SetPasswordScreen = ({
                         variant="contained"
                         type="submit"
                         classes={{ root: buttonClasses.root }}
-                        disabled={
-                            !(
-                                password.length > 0 &&
-                                verifyPassword.length > 0 &&
-                                password === verifyPassword
-                            )
-                        }
+                        disabled={isDisabled}
                     >
                         {t('auth.continue')}
                     </Button>
