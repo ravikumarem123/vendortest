@@ -32,6 +32,7 @@ const AuthHeader = ({ headText, subHeadText, email, editFn, icon }: IProps) => {
                 <span
                     onMouseEnter={handlePopoverOpen}
                     onMouseLeave={handlePopoverClose}
+                    className="pwd-info-icon"
                 >
                     {icon}
                 </span>

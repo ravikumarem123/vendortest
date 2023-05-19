@@ -123,24 +123,24 @@ export const SelectAuthTypeScreen = ({
                     {t('auth.setpass')}
                 </Button>
 
-                {/* <div className="auth-type-info-box">
+                <div className="auth-type-info-box">
                     <p>
                         <img
                             src={PaymentIdea}
                             alt="info"
-                            style={{ width: '19px' }}
+                            className="info-idea-img"
                         />
                         Note: OTP will be sent to you on
                     </p>
                     <p className="login-header-email">
                         <span>{email}</span>
-                        <EditIcon
+                        {/* <EditIcon
                             className="login-header-email-edit-icon"
                             onClick={editFn}
                             style={{ fontSize: '12px' }}
-                        />
+                        /> */}
                     </p>
-                </div> */}
+                </div>
             </div>
         </>
     );
