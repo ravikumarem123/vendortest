@@ -10,10 +10,11 @@ import {
     SetPasswordScreen,
 } from './AuthScreen.tsx';
 import { AUTH_SCREENS, LOGIN_PURPOSE } from './authTypes';
+import { sendEvents, events } from '../../appEvents';
 import { getActiveScreen, getIsAuthLoading } from './authSelector';
 import { setActiveAuthScreen } from './authSlice';
-import './auth.css';
 import { setDialogOpen } from '../../common/commonSlice';
+import './auth.css';
 
 const Login = () => {
     const [emailId, setEmailId] = useState<string>('');
@@ -33,6 +34,9 @@ const Login = () => {
             emailId,
         };
         if (emailId) {
+            sendEvents(events.AUTH.ON_CLICK_VERIFY_EMAIL, {
+                email: emailId,
+            });
             dispatch({ type: sagaActions.AUTH.VERIFY_EMAIL, payload });
         }
     };
@@ -42,6 +46,10 @@ const Login = () => {
         if (activeScreen === AUTH_SCREENS.VALIDATE_PWD_PAGE) {
             loginPurpose = LOGIN_PURPOSE.SET_PASSWORD;
         }
+        sendEvents(events.AUTH.ON_SELECT_EMAIL_OTP, {
+            email: emailId,
+            authenticalFlow: loginPurpose,
+        });
         dispatch({
             type: sagaActions.AUTH.GENERATE_OTP,
             payload: { loginPurpose },
@@ -49,6 +57,10 @@ const Login = () => {
     };
 
     const handleClickPwdLogin = () => {
+        sendEvents(events.AUTH.ON_SELECT_SET_PASSWORD, {
+            email: emailId,
+            authenticalFlow: LOGIN_PURPOSE.SET_PASSWORD,
+        });
         dispatch({
             type: sagaActions.AUTH.GENERATE_OTP,
             payload: { loginPurpose: LOGIN_PURPOSE.SET_PASSWORD },
@@ -61,6 +73,7 @@ const Login = () => {
             password,
         };
         if (password) {
+            sendEvents(events.AUTH.ON_SUBMIT_PASSWORD, { email: emailId });
             dispatch({ type: sagaActions.AUTH.VALIDATE_PASSWORD, payload });
             setIsForgotPwdClick(false);
         }
@@ -72,11 +85,13 @@ const Login = () => {
             otp,
         };
         if (otp) {
+            sendEvents(events.AUTH.ON_SUBMIT_OTP, { email: emailId });
             dispatch({ type: sagaActions.AUTH.VERIFY_OTP, payload });
         }
     };
 
     const handleResendOtp = () => {
+        sendEvents(events.AUTH.ON_CLICK_RESEND_OTP, { email: emailId });
         dispatch({ type: sagaActions.AUTH.RESEND_OTP });
         if (!timer) {
             setTimer(30);
@@ -94,12 +109,13 @@ const Login = () => {
                     content: 'Password must be atleast 6 characters',
                 })
             );
-        }
-        const payload = {
-            password,
-            verifyPassword,
-        };
-        if (otp) {
+        } else {
+            const payload = {
+                password,
+                verifyPassword,
+            };
+            sendEvents(events.AUTH.ON_SUBMIT_SET_PASSWORD, { email: emailId });
+
             dispatch({ type: sagaActions.AUTH.SET_PASSWORD, payload });
             setPassword('');
             setVerifyPassword('');
@@ -125,6 +141,10 @@ const Login = () => {
 
     const handleForgotPwdClick = () => {
         dispatch(setActiveAuthScreen(AUTH_SCREENS.VALIDATE_OTP_PAGE));
+        sendEvents(events.AUTH.ON_CLICK_FORGOT_PASSWORD, {
+            email: emailId,
+            authenticationFlow: LOGIN_PURPOSE.RESET_PASSWORD,
+        });
         dispatch({
             type: sagaActions.AUTH.GENERATE_OTP,
             payload: { loginPurpose: LOGIN_PURPOSE.RESET_PASSWORD },
