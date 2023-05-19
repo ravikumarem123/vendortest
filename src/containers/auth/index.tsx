@@ -4,7 +4,6 @@ import sagaActions from '../../reduxInit/sagaActions';
 import AuthContainer from './AuthContainer';
 import {
     EnterOtpScreen,
-    EnterPasswordScreen,
     HomePageScreen,
     LoginWithPassword,
     SelectAuthTypeScreen,
@@ -14,10 +13,13 @@ import { AUTH_SCREENS, LOGIN_PURPOSE } from './authTypes';
 import { getActiveScreen, getIsAuthLoading } from './authSelector';
 import { setActiveAuthScreen } from './authSlice';
 import './auth.css';
+import { setDialogOpen } from '../../common/commonSlice';
 
 const Login = () => {
     const [emailId, setEmailId] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const [timer, setTimer] = useState(30);
+    const [isForgotPwdClick, setIsForgotPwdClick] = useState(false);
     const [verifyPassword, setVerifyPassword] = useState<string>('');
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [otp, setOtp] = useState('');
@@ -36,16 +38,20 @@ const Login = () => {
     };
 
     const handleClickOtpLogin = () => {
+        let loginPurpose = LOGIN_PURPOSE.LOGIN;
+        if (activeScreen === AUTH_SCREENS.VALIDATE_PWD_PAGE) {
+            loginPurpose = LOGIN_PURPOSE.SET_PASSWORD;
+        }
         dispatch({
             type: sagaActions.AUTH.GENERATE_OTP,
-            payload: { loginPurpose: LOGIN_PURPOSE.LOGIN },
+            payload: { loginPurpose },
         });
     };
 
     const handleClickPwdLogin = () => {
         dispatch({
             type: sagaActions.AUTH.GENERATE_OTP,
-            payload: { loginPurpose: LOGIN_PURPOSE.FIRST_LOGIN },
+            payload: { loginPurpose: LOGIN_PURPOSE.SET_PASSWORD },
         });
     };
 
@@ -56,6 +62,7 @@ const Login = () => {
         };
         if (password) {
             dispatch({ type: sagaActions.AUTH.VALIDATE_PASSWORD, payload });
+            setIsForgotPwdClick(false);
         }
     };
 
@@ -69,8 +76,25 @@ const Login = () => {
         }
     };
 
+    const handleResendOtp = () => {
+        dispatch({ type: sagaActions.AUTH.RESEND_OTP });
+        if (!timer) {
+            setTimer(30);
+        }
+        setOtp('');
+    };
+
     const handlesetPasswordSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
+
+        if (password.length < 6) {
+            dispatch(
+                setDialogOpen({
+                    title: 'Invalid Password',
+                    content: 'Password must be atleast 6 characters',
+                })
+            );
+        }
         const payload = {
             password,
             verifyPassword,
@@ -89,11 +113,24 @@ const Login = () => {
         };
         if (password) {
             dispatch({ type: sagaActions.AUTH.VALIDATE_PASSWORD, payload });
+            setIsForgotPwdClick(false);
         }
     };
 
     const handleClickEditEmail = () => {
         dispatch(setActiveAuthScreen(AUTH_SCREENS.HOME_PAGE));
+        setIsForgotPwdClick(false);
+        setTimer(30);
+    };
+
+    const handleForgotPwdClick = () => {
+        dispatch(setActiveAuthScreen(AUTH_SCREENS.VALIDATE_OTP_PAGE));
+        dispatch({
+            type: sagaActions.AUTH.GENERATE_OTP,
+            payload: { loginPurpose: LOGIN_PURPOSE.RESET_PASSWORD },
+        });
+        setPassword('');
+        setIsForgotPwdClick(true);
     };
 
     const renderActiveScreen = (): JSX.Element => {
@@ -126,6 +163,10 @@ const Login = () => {
                         setOtp={setOtp}
                         handleOtpSubmit={handleOtpSubmit}
                         isAuthLoading={isAuthLoading}
+                        handleResendOtp={handleResendOtp}
+                        timer={timer}
+                        setTimer={setTimer}
+                        isForgotPwdClick={isForgotPwdClick}
                     />
                 );
             case AUTH_SCREENS.SET_PWD_PAGE:
@@ -141,17 +182,18 @@ const Login = () => {
                         isAuthLoading={isAuthLoading}
                     />
                 );
+            // case AUTH_SCREENS.VALIDATE_PWD_PAGE:
+            //    return (
+            //        <EnterPasswordScreen
+            //            password={password}
+            //            setPassword={setPassword}
+            //            showPassword={showPassword}
+            //            setShowPassword={setShowPassword}
+            //            handleEnterPasswordSubmit={handleEnterPasswordSubmit}
+            //            isAuthLoading={isAuthLoading}
+            //        />
+            //    );
             case AUTH_SCREENS.VALIDATE_PWD_PAGE:
-                return (
-                    <EnterPasswordScreen
-                        password={password}
-                        setPassword={setPassword}
-                        showPassword={showPassword}
-                        setShowPassword={setShowPassword}
-                        handleEnterPasswordSubmit={handleEnterPasswordSubmit}
-                        isAuthLoading={isAuthLoading}
-                    />
-                );
             case AUTH_SCREENS.LOGIN_WITH_PWD_OR_OTP_PAGE:
                 return (
                     <LoginWithPassword
@@ -164,6 +206,8 @@ const Login = () => {
                         isAuthLoading={isAuthLoading}
                         handleClickOtpLogin={handleClickOtpLogin}
                         handleSubmitLoginWithPwd={handleSubmitLoginWithPwd}
+                        handleForgotPwdClick={handleForgotPwdClick}
+                        isForgotPwdClick={isForgotPwdClick}
                     />
                 );
             default:

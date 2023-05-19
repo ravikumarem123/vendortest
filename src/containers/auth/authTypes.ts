@@ -76,6 +76,8 @@ export interface ILoginWithPasswordProps {
     setShowPassword: Dispatch<SetStateAction<boolean>>;
     handleClickOtpLogin: () => void;
     handleSubmitLoginWithPwd: FormEventHandler<HTMLFormElement>;
+    handleForgotPwdClick: () => void;
+    isForgotPwdClick: boolean;
 }
 
 export interface IEnterOtpProps {
@@ -85,6 +87,10 @@ export interface IEnterOtpProps {
     setOtp: Dispatch<SetStateAction<string>>;
     handleOtpSubmit: FormEventHandler<HTMLFormElement>;
     isAuthLoading: boolean;
+    handleResendOtp: () => void;
+    timer: number;
+    setTimer: Dispatch<SetStateAction<number>>;
+    isForgotPwdClick: boolean;
 }
 export interface IResponse {
     vendorId: string;
@@ -117,9 +123,10 @@ export interface ISetPasswordResponse {
 }
 
 export const LOGIN_PURPOSE = {
-    FIRST_LOGIN: 'FIRST_LOGIN',
     LOGIN: 'LOGIN',
     FORGOT_PASSWORD: 'FORGOT_PASSWORD',
+    SET_PASSWORD: 'SET_PASSWORD',
+    RESET_PASSWORD: 'RESET_PASSWORD',
 };
 
 export type ScreenName =

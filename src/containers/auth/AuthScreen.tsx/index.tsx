@@ -1,8 +1,10 @@
+import { useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import OtpInput from 'react-otp-input';
 import { TextField, Button, InputAdornment, IconButton } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { makeStyles } from '@mui/styles';
 import EditIcon from '@mui/icons-material/Edit';
 import AuthHeader from '../AuthHeader';
@@ -92,7 +94,7 @@ export const SelectAuthTypeScreen = ({
     return (
         <>
             <AuthHeader
-                headText="auth.authentication"
+                headText="auth.login"
                 subHeadText="auth.pleaseselectlogin"
             />
             <div className="input-fields">
@@ -106,7 +108,11 @@ export const SelectAuthTypeScreen = ({
                     {t('auth.emailotp')}
                 </Button>
 
-                <p className="gray-text or-separator">OR</p>
+                <div className="or-section">
+                    <div className="or-line" />
+                    <div className="or-text">OR</div>
+                    <div className="or-line" />
+                </div>
 
                 <Button
                     variant="outlined"
@@ -117,7 +123,7 @@ export const SelectAuthTypeScreen = ({
                     {t('auth.setpass')}
                 </Button>
 
-                <div className="auth-type-info-box">
+                {/* <div className="auth-type-info-box">
                     <p>
                         <img
                             src={PaymentIdea}
@@ -134,7 +140,7 @@ export const SelectAuthTypeScreen = ({
                             style={{ fontSize: '12px' }}
                         />
                     </p>
-                </div>
+                </div> */}
             </div>
         </>
     );
@@ -147,17 +153,33 @@ export const EnterOtpScreen = ({
     otp,
     setOtp,
     isAuthLoading,
+    handleResendOtp,
+    timer,
+    setTimer,
+    isForgotPwdClick,
 }: IEnterOtpProps) => {
     const { t } = useTranslation();
     const buttonClasses = useStyles();
 
+    const timeOutCallback = useCallback(
+        () => setTimer((currTimer) => currTimer - 1),
+        [setTimer]
+    );
+
+    useEffect(() => {
+        if (timer > 0) {
+            setTimeout(timeOutCallback, 1000);
+        }
+    }, [timer, timeOutCallback]);
+
+    const timerState = timer < 10 ? `0${timer}` : timer;
+
     return (
         <>
             <AuthHeader
-                headText="auth.emailotp"
+                headText={isForgotPwdClick ? 'auth.forgotPwd' : 'auth.emailotp'}
                 subHeadText="auth.pleaseenterotp"
                 email={email}
-                editFn={editFn}
             />
             <form onSubmit={handleOtpSubmit}>
                 <div className="input-fields">
@@ -170,6 +192,20 @@ export const EnterOtpScreen = ({
                         containerStyle="otp-input-container"
                         renderInput={(props) => <input {...props} />}
                     />
+
+                    {timer > 0 ? (
+                        <p className="footerText-otp">
+                            You can resend OTP in{' '}
+                            <span className="mobile-number">{`00:${timerState}`}</span>
+                        </p>
+                    ) : (
+                        <p
+                            className="footerText-otp mobile-number"
+                            onClick={handleResendOtp}
+                        >
+                            Resend OTP
+                        </p>
+                    )}
 
                     <Button
                         variant="contained"
@@ -212,6 +248,7 @@ export const SetPasswordScreen = ({
             <AuthHeader
                 headText="auth.setpass"
                 subHeadText="auth.enternewpass"
+                icon={<InfoOutlinedIcon />}
             />
             <form onSubmit={handlesetPasswordSubmit}>
                 <div className="input-fields">
@@ -277,6 +314,7 @@ export const SetPasswordScreen = ({
                         sx={{ display: 'block' }}
                         value={verifyPassword}
                         required
+                        onPaste={(e) => e.preventDefault()}
                         onChange={(e) => setVerifyPassword(e.target.value)}
                     />
                     <Button
@@ -349,7 +387,7 @@ export const EnterPasswordScreen = ({
                         variant="contained"
                         type="submit"
                         classes={{ root: buttonClasses.root }}
-                        disabled={isAuthLoading}
+                        disabled={isAuthLoading || password.length < 1}
                     >
                         {t('auth.login')}
                     </Button>
@@ -369,6 +407,8 @@ export const LoginWithPassword = ({
     setShowPassword,
     handleClickOtpLogin,
     handleSubmitLoginWithPwd,
+    handleForgotPwdClick,
+    isForgotPwdClick,
 }: ILoginWithPasswordProps) => {
     const { t } = useTranslation();
     const buttonClasses = useStyles();
@@ -377,12 +417,11 @@ export const LoginWithPassword = ({
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
     return (
-        <>
+        <div className="login-with-pwd-container">
             <AuthHeader
-                headText="auth.password"
+                headText="auth.login"
                 subHeadText="auth.enterpwdtologin"
                 email={email}
-                editFn={editFn}
             />
 
             <form onSubmit={handleSubmitLoginWithPwd}>
@@ -420,6 +459,10 @@ export const LoginWithPassword = ({
                         onChange={(e) => setPassword(e.target.value)}
                     />
 
+                    <p className="fp-text" onClick={handleForgotPwdClick}>
+                        Forgot Password
+                    </p>
+
                     <Button
                         variant="contained"
                         type="submit"
@@ -429,7 +472,11 @@ export const LoginWithPassword = ({
                         {t('auth.login')}
                     </Button>
 
-                    <p className="gray-text or-separator">OR</p>
+                    <div className="or-section">
+                        <div className="or-line" />
+                        <div className="or-text">OR</div>
+                        <div className="or-line" />
+                    </div>
 
                     <Button
                         variant="outlined"
@@ -442,6 +489,6 @@ export const LoginWithPassword = ({
                     </Button>
                 </div>
             </form>
-        </>
+        </div>
     );
 };
