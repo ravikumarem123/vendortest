@@ -85,7 +85,10 @@ const Login = () => {
             otp,
         };
         if (otp) {
-            sendEvents(events.AUTH.ON_SUBMIT_OTP, { email: emailId });
+            sendEvents(events.AUTH.ON_SUBMIT_OTP, {
+                email: emailId,
+                screen: activeScreen,
+            });
             dispatch({ type: sagaActions.AUTH.VERIFY_OTP, payload });
         }
     };
@@ -106,7 +109,7 @@ const Login = () => {
             dispatch(
                 setDialogOpen({
                     title: 'Invalid Password',
-                    content: 'Password must be atleast 6 characters',
+                    content: 'Use minimum 6 characters for the password',
                 })
             );
         } else {
@@ -202,17 +205,6 @@ const Login = () => {
                         isAuthLoading={isAuthLoading}
                     />
                 );
-            // case AUTH_SCREENS.VALIDATE_PWD_PAGE:
-            //    return (
-            //        <EnterPasswordScreen
-            //            password={password}
-            //            setPassword={setPassword}
-            //            showPassword={showPassword}
-            //            setShowPassword={setShowPassword}
-            //            handleEnterPasswordSubmit={handleEnterPasswordSubmit}
-            //            isAuthLoading={isAuthLoading}
-            //        />
-            //    );
             case AUTH_SCREENS.VALIDATE_PWD_PAGE:
             case AUTH_SCREENS.LOGIN_WITH_PWD_OR_OTP_PAGE:
                 return (

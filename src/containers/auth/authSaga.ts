@@ -48,7 +48,7 @@ function* handleAPIErrors(e: any) {
     } else if (e?.error?.cause?.status === 401) {
         const dialogPayload = {
             title: 'Something went wrong',
-            content: `${e?.error?.message} You’’ll be logged out, please login again to continue`,
+            content: `${e?.error?.message} Login again to continue`,
             logout: true,
         };
         yield put(setDialogOpen(dialogPayload));

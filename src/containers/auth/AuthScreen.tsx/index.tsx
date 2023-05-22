@@ -6,7 +6,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { makeStyles } from '@mui/styles';
-import EditIcon from '@mui/icons-material/Edit';
 import AuthHeader from '../AuthHeader';
 import {
     IEnterOtpProps,
@@ -84,7 +83,6 @@ export const HomePageScreen = ({
 
 export const SelectAuthTypeScreen = ({
     email,
-    editFn,
     isAuthLoading,
     handleClickOtpLogin,
     handleClickPwdLogin,
@@ -134,11 +132,6 @@ export const SelectAuthTypeScreen = ({
                     </p>
                     <p className="login-header-email">
                         <span>{email}</span>
-                        {/* <EditIcon
-                            className="login-header-email-edit-icon"
-                            onClick={editFn}
-                            style={{ fontSize: '12px' }}
-                        /> */}
                     </p>
                 </div>
             </div>
@@ -148,7 +141,6 @@ export const SelectAuthTypeScreen = ({
 
 export const EnterOtpScreen = ({
     email,
-    editFn,
     handleOtpSubmit,
     otp,
     setOtp,
@@ -229,7 +221,6 @@ export const SetPasswordScreen = ({
     showPassword,
     setShowPassword,
     handlesetPasswordSubmit,
-    isAuthLoading,
 }: ISetPasswordProps) => {
     const { t } = useTranslation();
     const buttonClasses = useStyles();
@@ -399,7 +390,6 @@ export const EnterPasswordScreen = ({
 
 export const LoginWithPassword = ({
     email,
-    editFn,
     password,
     setPassword,
     isAuthLoading,
@@ -408,7 +398,6 @@ export const LoginWithPassword = ({
     handleClickOtpLogin,
     handleSubmitLoginWithPwd,
     handleForgotPwdClick,
-    isForgotPwdClick,
 }: ILoginWithPasswordProps) => {
     const { t } = useTranslation();
     const buttonClasses = useStyles();

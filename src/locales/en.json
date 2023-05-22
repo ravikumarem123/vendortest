@@ -20,7 +20,7 @@
 		"enternewpass": "Please enter a new password for your profile",
 		"enterpass": "Please enter your new password to login",
 		"continue": "Continue",
-		"pwdvalidationchars": "Password must be atleast 6 characters"
+		"pwdvalidationchars": "Use minimum 6 characters for the password"
 
 	},
 	"sidebar": {
