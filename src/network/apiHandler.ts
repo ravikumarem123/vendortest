@@ -69,7 +69,7 @@ const http = (
             })
             .catch((e) => {
                 // eslint-disable-next-line no-console
-                console.log(`Request to ${path} failed: `, e);
+                console.log(`Request to ${path} failed: `, JSON.stringify(e));
                 reject({ error: e });
             });
     });

@@ -5,9 +5,7 @@ import sagaActions from '../../reduxInit/sagaActions';
 import {
     IVerifyEmailResponse,
     IGenerateOtpResponse,
-    ScreenName,
     AUTH_SCREENS,
-    LOGIN_PURPOSE,
     IValidateOtpResponse,
     ISetPasswordResponse,
 } from './authTypes';
@@ -17,6 +15,7 @@ import {
     fetchValidatePasswordPayload,
     fetchSetPasswordPayload,
     fetchGenerateOtpPayload,
+    resendOtpPayload,
 } from '../../network/createPayload';
 import apiRepository from '../../network/apiRepository';
 import { setDialogOpen } from '../../common/commonSlice';
@@ -49,7 +48,7 @@ function* handleAPIErrors(e: any) {
     } else if (e?.error?.cause?.status === 401) {
         const dialogPayload = {
             title: 'Something went wrong',
-            content: `${e?.error?.message} You’’ll be logged out, please login again to continue`,
+            content: `${e?.error?.message} Login again to continue`,
             logout: true,
         };
         yield put(setDialogOpen(dialogPayload));
@@ -118,8 +117,30 @@ export function* generateOTP(
                 loginPurpose: payload.loginPurpose,
             })
         );
+
         yield put(setAuthLoading(false));
         yield put(setActiveAuthScreen(result.nextPage));
+    } catch (e: any) {
+        yield call(handleAPIErrors, e);
+        yield put(setAuthLoading(false));
+    }
+}
+
+export function* resendOtp() {
+    try {
+        yield put(setAuthLoading(true));
+        const emailId: string = yield select(getUserEmail);
+        const sessionId: string = yield select(getAuthSessionId);
+
+        yield call(
+            apiRepository.resendOTP,
+            resendOtpPayload({
+                emailId,
+                sessionId,
+            })
+        );
+        yield put(setAuthLoading(false));
+        // yield put(setActiveAuthScreen(result.nextPage));
     } catch (e: any) {
         yield call(handleAPIErrors, e);
         yield put(setAuthLoading(false));
@@ -180,6 +201,7 @@ export function* setPassword(
                 password: payload.password,
             })
         );
+        yield put(setAuthLoading(false));
         yield put(setActiveAuthScreen(result.nextPage));
     } catch (e: any) {
         yield call(handleAPIErrors, e);
@@ -227,4 +249,5 @@ export default function* authSaga(history: History) {
         history
     );
     yield takeLatest(sagaActions.AUTH.SET_PASSWORD, setPassword, history);
+    yield takeLatest(sagaActions.AUTH.RESEND_OTP, resendOtp);
 }

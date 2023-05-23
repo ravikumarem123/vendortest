@@ -18,6 +18,8 @@ const ErrorDialog = () => {
         if (dialogDetails.logout) {
             localStorage.removeItem('vendorId');
             localStorage.removeItem('userDetails');
+            // eslint-disable-next-line no-restricted-globals
+            location.reload();
             navigate('/login');
         }
         dispatch(setDialogClose());

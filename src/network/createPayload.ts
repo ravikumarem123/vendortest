@@ -64,7 +64,7 @@ const fetchGenerateOtpPayload = (params: IFecthOtpParams) => {
     return {
         emailId,
         sessionId,
-        loginPurpose,
+        authenticationFlow: loginPurpose,
     };
 };
 
@@ -81,6 +81,19 @@ const fetchVerifyOtpPayload = (params: IVerifyOtpParams) => {
         emailId,
         sessionId,
         otp,
+    };
+};
+
+interface IResendOtpPayload {
+    emailId: string;
+    sessionId: string;
+}
+
+const resendOtpPayload = (params: IResendOtpPayload) => {
+    const { emailId, sessionId } = params;
+    return {
+        emailId,
+        sessionId,
     };
 };
 
@@ -167,6 +180,7 @@ export {
     fetchInvoicePayload,
     fetchVerifyEmailPayload,
     fetchGenerateOtpPayload,
+    resendOtpPayload,
     fetchVerifyOtpPayload,
     fetchValidatePasswordPayload,
     fetchSetPasswordPayload,

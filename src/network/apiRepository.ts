@@ -18,6 +18,10 @@ const apiRepository = {
         const URL = 'v1/login/generate-otp';
         return apiHandler.post(URL, data);
     },
+    resendOTP(data: object) {
+        const URL = 'v1/login/resend-otp';
+        return apiHandler.post(URL, data);
+    },
     verifyOTP(data: object) {
         const URL = 'v1/login/validate-otp';
         return apiHandler.post(URL, data);
