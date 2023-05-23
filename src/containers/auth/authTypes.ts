@@ -85,7 +85,7 @@ export interface IEnterOtpProps {
     editFn: () => void;
     otp: string;
     setOtp: Dispatch<SetStateAction<string>>;
-    handleOtpSubmit: FormEventHandler<HTMLFormElement>;
+    handleOtpSubmit: FormEventHandler;
     isAuthLoading: boolean;
     handleResendOtp: () => void;
     timer: number;

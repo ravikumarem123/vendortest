@@ -67,7 +67,7 @@ const AuthHeader = ({ headText, subHeadText, email, editFn, icon }: IProps) => {
                 onClose={handlePopoverClose}
                 disableRestoreFocus
             >
-                <p style={{ padding: '12px' }}>
+                <p className="pawssword-validation-p">
                     {t('auth.pwdvalidationchars')}
                 </p>
             </Popover>

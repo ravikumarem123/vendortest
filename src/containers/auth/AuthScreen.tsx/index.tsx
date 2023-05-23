@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useRef, FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import OtpInput from 'react-otp-input';
 import { TextField, Button, InputAdornment, IconButton } from '@mui/material';
@@ -153,6 +153,8 @@ export const EnterOtpScreen = ({
     const { t } = useTranslation();
     const buttonClasses = useStyles();
 
+    const timeoutId = useRef<NodeJS.Timeout | undefined>();
+
     const timeOutCallback = useCallback(
         () => setTimer((currTimer) => currTimer - 1),
         [setTimer]
@@ -160,11 +162,21 @@ export const EnterOtpScreen = ({
 
     useEffect(() => {
         if (timer > 0) {
-            setTimeout(timeOutCallback, 1000);
+            timeoutId.current = setTimeout(timeOutCallback, 1000);
         }
     }, [timer, timeOutCallback]);
 
     const timerState = timer < 10 ? `0${timer}` : timer;
+
+    const handleOtpSubmitAndClearTimeout = (e: FormEvent) => {
+        clearTimeout(timeoutId.current);
+        handleOtpSubmit(e);
+    };
+
+    const handleResendOtpAndclearTimeout = () => {
+        clearTimeout(timeoutId.current);
+        handleResendOtp();
+    };
 
     return (
         <>
@@ -173,7 +185,7 @@ export const EnterOtpScreen = ({
                 subHeadText="auth.pleaseenterotp"
                 email={email}
             />
-            <form onSubmit={handleOtpSubmit}>
+            <form onSubmit={handleOtpSubmitAndClearTimeout}>
                 <div className="input-fields">
                     <OtpInput
                         value={otp}
@@ -187,13 +199,13 @@ export const EnterOtpScreen = ({
 
                     {timer > 0 ? (
                         <p className="footerText-otp">
-                            You can resend OTP in{' '}
+                            You can resend OTP in &nbsp;
                             <span className="mobile-number">{`00:${timerState}`}</span>
                         </p>
                     ) : (
                         <p
                             className="footerText-otp mobile-number"
-                            onClick={handleResendOtp}
+                            onClick={handleResendOtpAndclearTimeout}
                         >
                             Resend OTP
                         </p>

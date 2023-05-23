@@ -27,9 +27,10 @@ const TableComponent = ({ invoiceList }: TableComponentProps) => {
     const { t } = useTranslation();
 
     const handleInvoiceClick = (invoice: Invoice) => {
+        const { invoiceNumber } = invoice;
         sendEvents(events.ON_CLICK_INVOICE_DOWNLOAD, {
             screen: 'INVOICE',
-            invoice: invoice?.invoiceNumber,
+            invoice: invoiceNumber ?? '',
         });
     };
 

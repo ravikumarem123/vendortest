@@ -1,4 +1,4 @@
-import { SyntheticEvent, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../reduxInit/hooks';
 import sagaActions from '../../reduxInit/sagaActions';
 import AuthContainer from './AuthContainer';
@@ -28,7 +28,7 @@ const Login = () => {
     const isAuthLoading = useAppSelector(getIsAuthLoading);
     const dispatch = useAppDispatch();
 
-    const handleEmailSubmit = (e: SyntheticEvent) => {
+    const handleEmailSubmit = (e: FormEvent) => {
         e.preventDefault();
         const payload = {
             emailId,
@@ -67,7 +67,7 @@ const Login = () => {
         });
     };
 
-    const handleSubmitLoginWithPwd = (e: SyntheticEvent) => {
+    const handleSubmitLoginWithPwd = (e: FormEvent) => {
         e.preventDefault();
         const payload = {
             password,
@@ -79,7 +79,7 @@ const Login = () => {
         }
     };
 
-    const handleOtpSubmit = (e: SyntheticEvent) => {
+    const handleOtpSubmit = (e: FormEvent) => {
         e.preventDefault();
         const payload = {
             otp,
@@ -102,7 +102,7 @@ const Login = () => {
         setOtp('');
     };
 
-    const handlesetPasswordSubmit = (e: SyntheticEvent) => {
+    const handlesetPasswordSubmit = (e: FormEvent) => {
         e.preventDefault();
 
         if (password.length < 6) {
@@ -125,20 +125,8 @@ const Login = () => {
         }
     };
 
-    const handleEnterPasswordSubmit = (e: SyntheticEvent) => {
-        e.preventDefault();
-        const payload = {
-            password,
-        };
-        if (password) {
-            dispatch({ type: sagaActions.AUTH.VALIDATE_PASSWORD, payload });
-            setIsForgotPwdClick(false);
-        }
-    };
-
     const handleClickEditEmail = () => {
         dispatch(setActiveAuthScreen(AUTH_SCREENS.HOME_PAGE));
-        setIsForgotPwdClick(false);
         setTimer(30);
     };
 
