@@ -1,8 +1,11 @@
+import { UserDetails } from '../containers/auth/authTypes';
 import events from './constants';
 
 const sendEvents = async (eventName: string, eventProperties: object) => {
     const webhookUrl = 'https://in-webhook.hevodata.com/t/ud1knpzm4w';
-    const vendorId = localStorage.getItem('vendorId') || '';
+    const userDetailsString = localStorage.getItem('userDetails') || '{}';
+    const userDetails: UserDetails = JSON.parse(userDetailsString);
+    const { vendorId } = userDetails;
 
     const PROD = import.meta.env.MODE === 'production';
 

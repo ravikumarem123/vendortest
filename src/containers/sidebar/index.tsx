@@ -17,7 +17,7 @@ import Toolbar from '@mui/material/Toolbar';
 import { BrowserView, MobileView } from 'react-device-detect';
 import { useAppDispatch, useAppSelector } from '../../reduxInit/hooks';
 import SearchBox from './SearchBox';
-import getUserDetails from '../auth/authSelector';
+import { getUserDetails } from '../auth/authSelector';
 import { events, sendEvents } from '../../appEvents';
 import { JeetLogo } from '../../assets';
 import { resetSearchState } from '../../common/commonSlice';

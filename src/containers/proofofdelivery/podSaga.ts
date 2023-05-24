@@ -1,9 +1,10 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { History } from 'history';
 import { fetchPodPayload } from '../../network/createPayload';
 import apiRepository from '../../network/apiRepository';
 import sagaActions from '../../reduxInit/sagaActions';
 import { setPodDetails, setPodError, setPodLoading } from './podSlice';
+import { getVendorId } from '../auth/authSelector';
 import { setSearchParams, setDialogOpen } from '../../common/commonSlice';
 import { IResponse, ActionResult, Props } from './podTypes';
 
@@ -12,7 +13,8 @@ export function* fetchPodDetails(
     action: ActionResult<Props>
 ) {
     // const vendorId = 'VNDR-1526001151'; //VNDR-1526007917
-    const vendorId = localStorage.getItem('vendorId') as string;
+    // const vendorId = localStorage.getItem('vendorId') as string;
+    const vendorId: string = yield select(getVendorId);
     try {
         const { payload } = action;
         if (payload) payload.vendorId = vendorId;

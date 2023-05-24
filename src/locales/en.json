@@ -3,8 +3,25 @@
 		"login": "Login",
 		"email": "E-mail",
 		"password": "Password",
+		"reenterpassword":  "Re-enter password",
 		"enteremail": "Enter email",
-		"enterpassword": "Enter password"
+		"enterpassword": "Enter password",
+		"enterpasswordagain": "Enter password again",
+		"enterpwdtologin": "Please enter your password to login",
+		"next": "Next",
+		"enterregemailId": "Please enter your Email address registered with Jumbotail",
+		"authentication": "Authentication",
+		"pleaseselectlogin": "Please select what would you like to login with",
+		"setpass": "Set Password",
+		"pleaseenterotp": "Please enter your 6 digit OTP shared to you on",
+		"emailotp": "Email OTP",
+		"forgotPwd": "Forgot Password",
+		"loginwithemailotp": "Login with email OTP",
+		"enternewpass": "Please enter a new password for your profile",
+		"enterpass": "Please enter your new password to login",
+		"continue": "Continue",
+		"pwdvalidationchars": "Use minimum 6 characters for the password"
+
 	},
 	"sidebar": {
 		"helpline": "Helpline",

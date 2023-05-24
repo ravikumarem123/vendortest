@@ -1,7 +1,9 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { useAppSelector } from '../reduxInit/hooks';
+import { getVendorId } from '../containers/auth/authSelector';
 
 const PrivateRoutes = () => {
-    const vendorId = localStorage.getItem('vendorId');
+    const vendorId = useAppSelector(getVendorId);
     const location = useLocation();
 
     return vendorId ? (

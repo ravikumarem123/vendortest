@@ -3,6 +3,11 @@ import { sendEvents, events } from '../appEvents';
 
 const baseurl = import.meta.env.VITE_API_URL;
 
+export const getToken = () => {
+    const authToken = localStorage.getItem('accessToken');
+    return authToken || '';
+};
+
 const http = (
     path: string,
     method: RequestInit,
@@ -16,6 +21,10 @@ const http = (
     if (content) {
         method.headers['content-type'] = content;
     }
+    const token = getToken();
+    if (token) {
+        method.headers.Authorization = `Bearer ${token}`;
+    }
     method.credentials = 'include';
     method.signal = AbortSignal.timeout(5000);
 
@@ -28,7 +37,6 @@ const http = (
     return new Promise((resolve, reject) => {
         fetch(url, method)
             .then(async (response) => {
-                // console.log(response);
                 if (response.ok) {
                     return response.json();
                 }
@@ -61,7 +69,7 @@ const http = (
             })
             .catch((e) => {
                 // eslint-disable-next-line no-console
-                console.log(`Request to ${path} failed: `, e);
+                console.log(`Request to ${path} failed: `, JSON.stringify(e));
                 reject({ error: e });
             });
     });

@@ -10,6 +10,22 @@ const apiRepository = {
         const URL = 'v1/login';
         return apiHandler.post(URL, data);
     },
+    verifyEmail(data: object) {
+        const URL = 'v1/login/validate-user-email';
+        return apiHandler.post(URL, data);
+    },
+    generateOTP(data: object) {
+        const URL = 'v1/login/generate-otp';
+        return apiHandler.post(URL, data);
+    },
+    resendOTP(data: object) {
+        const URL = 'v1/login/resend-otp';
+        return apiHandler.post(URL, data);
+    },
+    verifyOTP(data: object) {
+        const URL = 'v1/login/validate-otp';
+        return apiHandler.post(URL, data);
+    },
     getUTRList(data: object) {
         const URL = 'payments/v1/get-info';
         return apiHandler.post(URL, data);
@@ -24,6 +40,14 @@ const apiRepository = {
     },
     getInvoiceInfo(data: object) {
         const URL = 'invoice/v1/get/info';
+        return apiHandler.post(URL, data);
+    },
+    validatePassword(data: object) {
+        const URL = 'v1/login/validate-user-password';
+        return apiHandler.post(URL, data);
+    },
+    setPassword(data: object) {
+        const URL = 'v1/login/set-user-password';
         return apiHandler.post(URL, data);
     },
 };

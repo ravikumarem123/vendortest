@@ -26,9 +26,11 @@ interface TableComponentProps {
 const TableComponent = ({ invoiceList }: TableComponentProps) => {
     const { t } = useTranslation();
 
-    const handleInvoiceClick = () => {
+    const handleInvoiceClick = (invoice: Invoice) => {
+        const { invoiceNumber } = invoice;
         sendEvents(events.ON_CLICK_INVOICE_DOWNLOAD, {
             screen: 'INVOICE',
+            invoice: invoiceNumber ?? '',
         });
     };
 
@@ -86,7 +88,7 @@ const TableComponent = ({ invoiceList }: TableComponentProps) => {
                                 <TableCell
                                     align="center"
                                     style={{ fontWeight: 'bold' }}
-                                    onClick={handleInvoiceClick}
+                                    onClick={() => handleInvoiceClick(invoice)}
                                 >
                                     <div className="invoice-details-column">
                                         <a
