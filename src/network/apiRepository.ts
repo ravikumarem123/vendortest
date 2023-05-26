@@ -10,6 +10,10 @@ const apiRepository = {
         const URL = 'v1/login';
         return apiHandler.post(URL, data);
     },
+    logout(data: object) {
+        const URL = 'v1/login/logout';
+        return apiHandler.post(URL, data);
+    },
     verifyEmail(data: object) {
         const URL = 'v1/login/validate-user-email';
         return apiHandler.post(URL, data);
