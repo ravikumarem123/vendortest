@@ -239,6 +239,14 @@ export function* validatePassword(
     }
 }
 
+export function* logout() {
+    try {
+        yield call(apiRepository.logout, {});
+    } catch (e: any) {
+        // No user blocker in case of logout api failure, getting logged in backend
+    }
+}
+
 export default function* authSaga(history: History) {
     yield takeLatest(sagaActions.AUTH.VERIFY_EMAIL, verifyEmail, history);
     yield takeLatest(sagaActions.AUTH.GENERATE_OTP, generateOTP, history);
@@ -250,4 +258,5 @@ export default function* authSaga(history: History) {
     );
     yield takeLatest(sagaActions.AUTH.SET_PASSWORD, setPassword, history);
     yield takeLatest(sagaActions.AUTH.RESEND_OTP, resendOtp);
+    yield takeLatest(sagaActions.AUTH.LOGOUT, logout);
 }

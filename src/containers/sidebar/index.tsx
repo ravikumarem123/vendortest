@@ -24,6 +24,7 @@ import { resetSearchState } from '../../common/commonSlice';
 import './sidebar.css';
 import COLORS from '../../utils/cssutils';
 import ProfileContainer from './ProfileContainer';
+import sagaActions from '../../reduxInit/sagaActions';
 
 const drawerWidth = 240;
 
@@ -56,6 +57,7 @@ const SideBar = (props: Props) => {
     };
 
     const handleLogout = () => {
+        dispatch({ type: sagaActions.AUTH.LOGOUT });
         sendEvents(events.ON_CLICK_LOGOUT, {});
         localStorage.removeItem('vendorId');
         localStorage.clear();
