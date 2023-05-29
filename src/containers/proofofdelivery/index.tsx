@@ -1,203 +1,187 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import CircularProgress from '@mui/material/CircularProgress';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import { useTranslation } from "react-i18next";
-import SelectDate from "./SelectDate";
-import { useAppDispatch, useAppSelector } from "../../reduxInit/hooks";
-import PodTable from "./PodTable";
-import { setSearchParams } from "../../common/commonSlice";
-import { getDefaultTime, getInvoiceList, getIsInvoiceLoading, getLastReadInvoice, getPodError } from "./podSelector";
-import { isSearchClicked, getSearchedText } from "../../common/commonSelector";
-import { sagaActions } from "../../reduxInit/sagaActions";
-import { events, sendEvents } from "../../appEvents";
+import { useTranslation } from 'react-i18next';
+import SelectDate from './SelectDate';
+import { useAppDispatch, useAppSelector } from '../../reduxInit/hooks';
+import PodTable from './PodTable';
+import { setSearchParams } from '../../common/commonSlice';
+import {
+    getDefaultTime,
+    getPodList,
+    getIsPodLoading,
+    getLastReadPod,
+    getPodError,
+} from './podSelector';
+import { isSearchClicked, getSearchedText } from '../../common/commonSelector';
+import sagaActions from '../../reduxInit/sagaActions';
+import { events, sendEvents } from '../../appEvents';
+import useSmoothScroll from '../../customHooks/useSmoothScroll';
+import BackToTop from '../../common/backToTop';
+import formatDateRange from '../../utils/dateUtils';
 import './pod.css';
 
-
 const ProofOfDelivery = () => {
+    const [fromDate, setFromDate] = useState<Dayjs | null>(null);
+    const [toDate, setToDate] = useState<Dayjs | null>(null);
+    const searchClicked = useAppSelector(isSearchClicked);
+    const searchText = useAppSelector(getSearchedText);
+    const [dateClicked, setDateClicked] = useState<boolean>(false);
+    const lastReadInvoice = useAppSelector(getLastReadPod);
+    const isInvoiceLoading = useAppSelector(getIsPodLoading);
+    const invoiceList = useAppSelector(getPodList);
+    const podError = useAppSelector(getPodError);
+    const podLoading = useAppSelector(getIsPodLoading);
+    const getDefaultDates = useAppSelector(getDefaultTime);
+    const showBackToTop = useSmoothScroll({ defaultShowBackToTop: false });
+    const { t } = useTranslation();
 
-	const [fromDate, setFromDate] = useState<Dayjs | null>(null);
-	const [toDate, setToDate] = useState<Dayjs | null>(null);
-	const [showBackToTop, setShowBackToTop] = useState<boolean>(false);
-	const searchClicked = useAppSelector(isSearchClicked);
-	const searchText = useAppSelector(getSearchedText);
-	const [dateClicked, setDateClicked] = useState<boolean>(false);
-	const lastReadInvoice = useAppSelector(getLastReadInvoice);
-	const isInvoiceLoading = useAppSelector(getIsInvoiceLoading);
-	const invoiceList = useAppSelector(getInvoiceList);
-	const podError = useAppSelector(getPodError);
-	const podLoading = useAppSelector(getIsInvoiceLoading);
-	const getDefaultDates = useAppSelector(getDefaultTime);
-	const { t } = useTranslation();
+    const dispatch = useAppDispatch();
 
-	const dispatch = useAppDispatch();
+    useEffect(() => {
+        if (searchClicked) {
+            setToDate(null);
+            setFromDate(null);
+            setDateClicked(false);
+        }
+    }, [searchClicked]);
 
+    useEffect(() => {
+        if (!dateClicked && !searchClicked) {
+            setToDate(null);
+            setFromDate(null);
+            const payload = {
+                pageSize: 20,
+                lastReadInvoice,
+            };
+            dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dateClicked]);
 
-	useEffect(() => {
-		document.body.style.overflowY = 'auto';
-		window.addEventListener('scroll', handleScroll);
-		return () => window.removeEventListener('scroll', handleScroll);
-	}, []);
+    const handleBackClickOnSearch = () => {
+        const payload = {
+            pageSize: 20,
+        };
+        sendEvents(events.ON_CLICK_BACK_FROM_SEARCH, { screen: 'POD' });
+        dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
+        dispatch(setSearchParams({ clicked: false, text: '' }));
+        setDateClicked(false);
+    };
 
-	useEffect(() => {
-		if (searchClicked) {
-			setToDate(null);
-			setFromDate(null);
-			setDateClicked(false);
-		}
-	}, [searchClicked]);
+    const handleDateApplyClicked = () => {
+        dispatch(setSearchParams({ clicked: false, text: '' }));
+        if (toDate && fromDate) {
+            setDateClicked(true);
+            const payload = {
+                startTime: dayjs(fromDate).startOf('day').valueOf(),
+                endTime: dayjs(toDate).endOf('day').valueOf(),
+                dateClicked: true,
+            };
+            sendEvents(events.ON_CLICK_DATE_APPLY, {
+                startTime: dayjs(fromDate).startOf('day').valueOf(),
+                endTime: dayjs(toDate).endOf('day').valueOf(),
+                screen: 'POD',
+            });
+            dispatch({
+                type: sagaActions.FETCH_POD_DETAILS,
+                payload,
+            });
+        }
+    };
 
-	useEffect(() => {
-		/* this will run 
-		1. when user clicks remove button
-		2. when search button is clicked
-		*/
-		if (!dateClicked && !searchClicked) {
-			setToDate(null);
-			setFromDate(null);
-			const payload = {
-				pageSize: 20,
-				lastReadInvoice
-			};
-			dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
+    const fetchData = () => {
+        const payload = {
+            lastReadInvoice,
+            startTime:
+                dateClicked && fromDate && !podError
+                    ? dayjs(fromDate).startOf('day').valueOf()
+                    : null,
+            endTime:
+                dateClicked && toDate && !podError
+                    ? dayjs(toDate).endOf('day').valueOf()
+                    : null,
+        };
+        if (podError) {
+            setFromDate(null);
+            setToDate(null);
+            setDateClicked(false);
+        } else {
+            dispatch({
+                type: sagaActions.FETCH_POD_DETAILS,
+                payload,
+            });
+        }
+    };
 
-		}
-	}, [dateClicked]);
+    const dateRangeText = () => {
+        if (searchClicked) {
+            return `${t('pod.showingdfi')} ${searchText}`;
+        }
 
-	const handleBackClickOnSearch = () => {
-		const payload = {
-			pageSize: 20
-		};
-		sendEvents(events.ON_CLICK_BACK_FROM_SEARCH, { screen: 'POD' })
-		dispatch({ type: sagaActions.FETCH_POD_DETAILS, payload });
-		dispatch(setSearchParams({ clicked: false, text: '' }))
-		setDateClicked(false);
-	};
+        const { start, end } = formatDateRange(
+            getDefaultDates?.startTime,
+            getDefaultDates?.endTime
+        );
+        const isDateFilterApplied = dateClicked && !podError && !podLoading;
+        const isFirstRender =
+            !dateClicked && !searchClicked && getDefaultDates?.startTime;
 
-	const handleDateApplyClicked = () => {
-		dispatch(setSearchParams({ clicked: false, text: '' }))
-		if (toDate && fromDate) {
-			setDateClicked(true);
-			const payload = {
-				startTime: dayjs(fromDate).startOf('day').valueOf(),
-				endTime: dayjs(toDate).endOf('day').valueOf(),
-				dateClicked: true,
-			};
-			sendEvents(events.ON_CLICK_DATE_APPLY, {
-				startTime: dayjs(fromDate).startOf('day').valueOf(),
-				endTime: dayjs(toDate).endOf('day').valueOf(),
-				screen: 'POD'
-			});
-			dispatch({
-				type: sagaActions.FETCH_POD_DETAILS,
-				payload,
-			});
-		}
-	};
+        if (isDateFilterApplied) {
+            return `${t('pod.showingdf')} ${start} ${t('pod.to')} ${end}`;
+        }
+        if (isFirstRender) {
+            return `${t('pod.showingdf')} ${start} ${t('pod.to')} ${end}`;
+        }
+        return null;
+    };
 
-	const fetchData = () => {
+    return (
+        <div className="pod-container">
+            {searchClicked ? (
+                <div
+                    className="datepicker-container"
+                    onClick={handleBackClickOnSearch}
+                >
+                    <ArrowBackIcon className="back-icon" /> Showing Search
+                    Results
+                </div>
+            ) : (
+                <SelectDate
+                    fromDate={fromDate}
+                    toDate={toDate}
+                    setFromDate={setFromDate}
+                    setToDate={setToDate}
+                    handleDateApplyClicked={handleDateApplyClicked}
+                    dateClicked={dateClicked}
+                    setDateClicked={setDateClicked}
+                    error={podError}
+                    loading={podLoading}
+                />
+            )}
 
-		let payload = {
-			lastReadInvoice,
-			startTime: (dateClicked && fromDate && !podError) ? dayjs(fromDate).startOf('day').valueOf() : null,
-			endTime: (dateClicked && toDate && !podError) ? dayjs(toDate).endOf('day').valueOf() : null,
-		};
-		if (podError) {
-			setFromDate(null);
-			setToDate(null);
-			setDateClicked(false);
-		} else {
-			dispatch({
-				type: sagaActions.FETCH_POD_DETAILS,
-				payload,
-			});
-		}
-	};
+            <div className="select-date-hr" />
 
-	const handleScroll = () => {
-		const scrollTop = window.pageYOffset;
-		const screenTop = window.innerHeight;
-		if (scrollTop > screenTop) {
-			setShowBackToTop(true);
-		} else {
-			setShowBackToTop(false);
-		}
-	};
+            <div className="pod-data-container">
+                <p className="date-range-text">{dateRangeText()}</p>
 
-	const handleBackToTop = () => {
-		window.scrollTo({ top: 0, behavior: 'smooth' });
-	};
-
-	return (
-
-		<div className="pod-container">
-
-			{
-				searchClicked ?
-
-					<div className='datepicker-container'
-						onClick={handleBackClickOnSearch}
-					>
-						<ArrowBackIcon
-							className="back-icon"
-						/> Showing Search Results
-					</div>
-					:
-
-					<SelectDate
-						fromDate={fromDate}
-						toDate={toDate}
-						setFromDate={setFromDate}
-						setToDate={setToDate}
-						handleDateApplyClicked={handleDateApplyClicked}
-						dateClicked={dateClicked}
-						setDateClicked={setDateClicked}
-						error={podError}
-						loading={podLoading}
-					/>
-
-			}
-
-			<div className="select-date-hr" ></div>
-
-			<div className="pod-data-container">
-				<p className="date-range-text">
-					{searchClicked && `${t('pod.showingdfi')} ${searchText}`}
-					{(dateClicked && !podError && !podLoading) && `${t('pod.showingdf')} 
-						${dayjs(getDefaultDates?.startTime).format('DD/MM/YYYY')} 
-						${t('pod.to')} 
-						${dayjs(getDefaultDates?.endTime).format('DD/MM/YYYY')}`}
-					{(!dateClicked && !searchClicked && getDefaultDates?.startTime) && `${t('pod.showingdf')} 
-						${dayjs(getDefaultDates?.startTime).format('DD/MM/YYYY')} 
-						${t('pod.to')}  
-						${dayjs(getDefaultDates?.endTime).format('DD/MM/YYYY')}`}
-				</p>
-
-				{
-					isInvoiceLoading ?
-						<h1 style={{ textAlign: 'center' }}> <CircularProgress /></h1>
-						:
-
-						<PodTable
-							lastReadInvoice={lastReadInvoice}
-							invoiceList={invoiceList}
-							fetchData={fetchData}
-						/>
-
-				}
-				{
-					showBackToTop &&
-					<div className="btt-container">
-						<p className="btt-text" onClick={handleBackToTop}>{t('pod.backtotop')}  <ExpandLessIcon className="btt-icon" /></p>
-					</div>
-				}
-
-
-			</div>
-
-		</div>
-	);
+                {isInvoiceLoading ? (
+                    <h1 style={{ textAlign: 'center' }}>
+                        {' '}
+                        <CircularProgress />
+                    </h1>
+                ) : (
+                    <PodTable
+                        lastReadInvoice={lastReadInvoice}
+                        invoiceList={invoiceList}
+                        fetchData={fetchData}
+                    />
+                )}
+                {showBackToTop && <BackToTop />}
+            </div>
+        </div>
+    );
 };
 
 export default ProofOfDelivery;

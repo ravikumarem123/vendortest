@@ -41,14 +41,13 @@ const commonSlice = createSlice({
         setDateClicked: (state, { payload }) => {
             state.dateClicked = payload;
         },
-		resetSearchState: (state) => {
-			state.searchClicked = false;
-			state.searchText = '';
-			state.fromDate = null;
-			state.toDate = null;
-			state.dateClicked = false;
-
-		},
+        resetSearchState: (state) => {
+            state.searchClicked = false;
+            state.searchText = '';
+            state.fromDate = null;
+            state.toDate = null;
+            state.dateClicked = false;
+        },
     },
 });
 
@@ -59,6 +58,6 @@ export const {
     setFromDate,
     setToDate,
     setDateClicked,
-	resetSearchState,
+    resetSearchState,
 } = commonSlice.actions;
 export default commonSlice.reducer;
