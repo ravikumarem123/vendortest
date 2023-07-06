@@ -5,7 +5,7 @@ interface IProps {
 }
 
 const AuthContainer = ({ children }: IProps) => {
-    console.log('inside authcontainer');
+    console.log('auth container 2');
     return (
         <div className="login-page">
             <div className="login-white-box">
