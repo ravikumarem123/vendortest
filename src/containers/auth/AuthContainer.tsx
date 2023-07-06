@@ -5,7 +5,7 @@ interface IProps {
 }
 
 const AuthContainer = ({ children }: IProps) => {
-    console.log('auth container 2');
+    console.log('auth container 3');
     return (
         <div className="login-page">
             <div className="login-white-box">
@@ -16,7 +16,6 @@ const AuthContainer = ({ children }: IProps) => {
                         className="login-head-img"
                     />
                 </div>
-                <p>Login 5</p>
                 {children}
             </div>
         </div>
