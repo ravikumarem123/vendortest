@@ -15,7 +15,7 @@ const AuthContainer = ({ children }: IProps) => {
                         className="login-head-img"
                     />
                 </div>
-                <p>Login 1</p>
+                <p>Login 2</p>
                 {children}
             </div>
         </div>
