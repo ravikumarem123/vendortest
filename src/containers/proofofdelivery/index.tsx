@@ -166,18 +166,18 @@ const ProofOfDelivery = () => {
             <div className="pod-data-container">
                 <p className="date-range-text">{dateRangeText()}</p>
 
-                {isInvoiceLoading ? (
+                {/* {isInvoiceLoading ? (
                     <h1 style={{ textAlign: 'center' }}>
                         {' '}
                         <CircularProgress />
                     </h1>
-                ) : (
-                    <PodTable
-                        lastReadInvoice={lastReadInvoice}
-                        invoiceList={invoiceList}
-                        fetchData={fetchData}
-                    />
-                )}
+                ) : ( */}
+                <PodTable
+                    lastReadInvoice={lastReadInvoice}
+                    invoiceList={invoiceList}
+                    fetchData={fetchData}
+                />
+                {/* )} */}
                 {showBackToTop && <BackToTop />}
             </div>
         </div>

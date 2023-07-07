@@ -7,7 +7,7 @@ export default defineConfig({
     server: {
         proxy: {
             '/api': {
-                target: 'http://172.31.1.36:5555/',  
+                target: 'http://vendorgatewayservice.prod.jumbotail.com:80/',  
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/api/, ''),
             },
