@@ -35,8 +35,15 @@ const TableComponent = ({ invoiceList }: TableComponentProps) => {
     };
 
     return (
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableContainer
+            component={Paper}
+            sx={{ height: `calc(100vh - 270px)` }}
+        >
+            <Table
+                sx={{ minWidth: 650 }}
+                aria-label="simple table"
+                stickyHeader
+            >
                 <TableHead>
                     <TableRow>
                         <TableCell align="center">
