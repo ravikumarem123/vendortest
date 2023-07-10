@@ -185,7 +185,9 @@ const InvoiceTable: React.FC<InvoiceTablePros> = ({
             next={fetchData}
             hasMore={!!lastReadInvoice}
             loader={<CenterLoader />}
+            scrollableTarget="invoiceScrolldiv"
             pullDownToRefresh={false}
+            hasChildren
             releaseToRefreshContent={
                 <h3 style={{ textAlign: 'center' }}>
                     &#8593; Release to refresh

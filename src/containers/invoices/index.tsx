@@ -159,18 +159,27 @@ const Invoices = () => {
             <div className="pod-data-container">
                 <p className="date-range-text">{dateRangeText()}</p>
 
-                {/* {isInvoiceLoading ? (
+                {isInvoiceLoading ? (
                     <h1 style={{ textAlign: 'center' }}>
                         {' '}
                         <CircularProgress />
                     </h1>
-                ) : ( */}
-                <InvoiceTable
-                    lastReadInvoice={lastReadInvoice}
-                    invoiceList={invoiceList}
-                    fetchData={() => fetchData({})}
-                />
-                {/* )} */}
+                ) : (
+                    <div
+                        id="invoiceScrolldiv"
+                        style={{
+                            overflow: 'auto',
+                            scrollbarWidth: 'none',
+                            height: '65vh',
+                        }}
+                    >
+                        <InvoiceTable
+                            lastReadInvoice={lastReadInvoice}
+                            invoiceList={invoiceList}
+                            fetchData={() => fetchData({})}
+                        />
+                    </div>
+                )}
                 {showBackToTop && <BackToTop />}
             </div>
         </div>

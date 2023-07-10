@@ -40,21 +40,8 @@ const PodTable = ({
             next={fetchData}
             hasMore={!!lastReadInvoice}
             loader={<CenterLoader />}
-            endMessage={<p style={{ textAlign: 'center' }} />}
-            // below props only if you need pull down functionality
-            refreshFunction={() => {}}
-            pullDownToRefresh={false}
-            pullDownToRefreshThreshold={10}
-            pullDownToRefreshContent={
-                <h3 style={{ textAlign: 'center' }}>
-                    &#8595; Pull down to refresh
-                </h3>
-            }
-            releaseToRefreshContent={
-                <h3 style={{ textAlign: 'center' }}>
-                    &#8593; Release to refresh
-                </h3>
-            }
+            hasChildren
+            scrollableTarget="podscrolldiv"
         >
             <TableContainer
                 component={Paper}
